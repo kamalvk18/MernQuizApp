@@ -1,0 +1,5 @@
+Order to complete:
+1) backend  including -- mongodb connection 
+2) frontend
+
+

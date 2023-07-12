@@ -1,0 +1,27 @@
+get http://localhost:5000/login
+
+###
+
+
+POST  http://localhost:5000/signup
+Content-Type: application/json
+
+{
+    "name":"haneesh",
+    "email":"haneeshtcsguy@gmail.com",
+    "password":"randompass",
+    "college":"anits",
+    "phone":978821778,
+    "occupation":"student"
+
+}
+###
+POST  http://localhost:5000/login
+Content-Type: application/json
+
+{
+   
+    "email":"haneeshtcsguy@gmail.com",
+    "password":"randompass"
+
+}
