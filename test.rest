@@ -2,6 +2,9 @@ get http://localhost:5000/login
 
 ###
 
+get http://localhost:5000/userdata/dabbiruhaneesh@gmail.com
+
+###
 
 POST  http://localhost:5000/signup
 Content-Type: application/json
@@ -55,3 +58,6 @@ Content-Type: application/json
     }]
 
 }
+### 
+get http://localhost:5000/quizzes
+

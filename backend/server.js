@@ -35,7 +35,7 @@ const Userschema= new mongoose.Schema({
         type:String,
         required:true
     }
-   //i will complete this
+
 })
 
 const optionSchema = new mongoose.Schema({
@@ -55,7 +55,10 @@ const questionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-
+  timeInSec:{
+    type:Number,
+    default:30
+  },
   options: [
     optionSchema
   ],
@@ -68,7 +71,10 @@ const quizschema=new mongoose.Schema({
     },
 
     description: String,
-    
+    collegeName:{
+      type:String,
+      required:true
+    },
     questions: [
       questionSchema
     ]
@@ -118,7 +124,16 @@ app.get("/quizzes", async (req, res) => {
     res.status(500).json({ message: 'An error occurred while retreiving quizzes.' });
   }
 })
-
+app.get("/userdata/:email", async (req, res) => {
+  try{
+    const usersdata = await user.find({email:req.params.email})
+    return res.json(usersdata)
+    // return res.json(usersdata)
+  }catch(error){
+    console.error('Error retreiving users', error.message);
+    res.status(500).json({ message: 'An error occurred while retreiving users.' });
+  }
+})
 app.post("/signup",async (req,res)=>{
     try{
         const { name, email, password,college,phone,occupation } = req.body;

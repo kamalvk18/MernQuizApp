@@ -3,3 +3,11 @@ Order to complete:
 2) frontend
 
 
+==> in frontend/src/components
+
+i will do landing page,loginform,registration form along with routing
+
+u do home page(i have done half),quizzes (mentioned in the design) and auth(response.token). (try to add google auth if possible or we can do that end of this proj)
+
+when i say auth what i mean is when a user directly types localhost:5000/addQuiz or localhost:5000/main he should not be allowed directly.
+
