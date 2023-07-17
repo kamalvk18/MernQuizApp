@@ -25,3 +25,33 @@ Content-Type: application/json
     "password":"randompass"
 
 }
+
+###
+POST  http://localhost:5000/addQuiz
+Content-Type: application/json
+
+{
+   
+    "subjectName":"science",
+    "description":"science quiz",
+    "questions": [{
+        "question": "Who discovered Raman effect?",
+        "options": [{
+            "option":"Ramanujan",
+            "isAnswer":false
+        },
+        {
+            "option":"CV Raman",
+            "isAnswer":true
+        },
+        {
+            "option":"Plank",
+            "isAnswer":false
+        },
+        {
+            "option":"Bohr",
+            "isAnswer":false
+        }]
+    }]
+
+}

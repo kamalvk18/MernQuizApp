@@ -13,45 +13,112 @@ const Userschema= new mongoose.Schema({
         type:String,
         required:true
     },
+
     email:{
         type:String,
         required:true
     },
+    
     password:{
         type:String,
-            required:true
+        required:true
     },
+    
     phone:Number,
+    
     college:{   
-            type:String,
-            required:true
+        type:String,
+        required:true
     },
+    
     occupation:{
         type:String,
-            required:true
+        required:true
     }
-
-
    //i will complete this
 })
-const quizschema=new mongoose.Schema({
-    //u complete
+
+const optionSchema = new mongoose.Schema({
+  option: {
+    type: String,
+    required: true
+  },
+
+  isAnswer: {
+    type: Boolean,
+    default: false
+  }
 })
+
+const questionSchema = new mongoose.Schema({
+  question: {
+    type: String,
+    required: true
+  },
+
+  options: [
+    optionSchema
+  ],
+})
+
+const quizschema=new mongoose.Schema({
+    subjectName: {
+      type: String,
+      required: true
+    },
+
+    description: String,
+    
+    questions: [
+      questionSchema
+    ]
+
+})
+
+const quiz = mongoose.model("quiz", quizschema)
+const user = mongoose.model("user", Userschema)
+
 app.use(cors())
-const user=mongoose.model("user",Userschema)
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
+app.set("view engine","ejs");
+
 app.get("/",(req,res)=>{
     res.send("hello world")
 })
-app.use(bodyParser.urlencoded({
-    extended: true
-  }));
-  app.use(bodyParser.json());
-app.post("/addquiz",async (req,res)=>{
-    //u compelete
+
+app.get("/addQuiz",(req,res)=>{
+  res.send("Add Quiz form")
 })
-app.get("/quiz",(req,res)=>{
-    //u complete
+
+app.post("/addQuiz",async (req,res)=>{
+  try{
+    const {subjectName, description, questions} = req.body;
+    const newQuiz = new quiz({
+      subjectName,
+      description,
+      questions
+    })
+    await newQuiz.save()
+    res.status(201).send("Quiz saved!!!");
+  } catch (error) {
+    console.error('Error saving quiz:', error.message);
+    res.status(500).json({ message: 'An error occurred while saving the user.' });
+  }
 })
+
+app.get("/quizzes", async (req, res) => {
+  try{
+    const allQuizes = await quiz.find()
+    res.status(200).json(allQuizes)
+  }catch(error){
+    console.error('Error retreiving quizzes', error.message);
+    res.status(500).json({ message: 'An error occurred while retreiving quizzes.' });
+  }
+})
+
 app.post("/signup",async (req,res)=>{
     try{
         const { name, email, password,college,phone,occupation } = req.body;
@@ -80,9 +147,8 @@ app.post("/signup",async (req,res)=>{
     res.status(500).json({ message: 'An error occurred while registering the user.' });
   }
 })
+
 app.post("/login", async (req,res)=>{
-
-
     const { email, password } = req.body;
     console.log(email,password)
 try{
@@ -132,5 +198,5 @@ function verifyToken(req, res, next) {
   }
 // mongoose.connect()
 app.listen(5000,(req,res)=>{
-   console.log("running!")
+   console.log("Server started at http://localhost:5000/")
 })
