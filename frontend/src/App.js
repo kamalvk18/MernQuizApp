@@ -3,8 +3,10 @@ import LandingPage from './components/LandingPage';
 import RegistrationForm from './components/RegistrationForm';
 import LoginForm from './components/LoginForm';
 import Quiz from './components/Quiz';
+import DisplayScore from './components/DisplayScore';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage';
+import Writequiz from './components/Writequiz';
 function App() {
   return (
     // first we will focus only on connecting frontend with backend once everything works then we will design a proper ui.
@@ -17,6 +19,8 @@ function App() {
       <Route exact path='/login' element={< LoginForm/>} />
       <Route exact path='/main' element={< HomePage/>} />
       <Route exact path='/addquiz' element={< Quiz/>} />
+      <Route exact path='/exam' element={< Writequiz/>} />
+      <Route exact path='/res' element={< DisplayScore/>} />
       </Routes>
       </Router>
 

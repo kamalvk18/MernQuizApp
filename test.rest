@@ -59,5 +59,7 @@ Content-Type: application/json
 
 }
 ### 
-get http://localhost:5000/quizzes
+get http://localhost:5000/quizzes/mvgr
 
+# ###
+# get http://localhost:5000/quizzes/fetch/mvgr/64b80746e35c0412d56d2e2f
