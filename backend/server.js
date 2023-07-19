@@ -95,16 +95,31 @@ app.get("/",(req,res)=>{
     res.send("hello world")
 })
 
+app.post('/check-user', async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log('Checking {email}', email)
+    // Check if the user exists
+    const userData = await user.findOne({ email });
+    // Send the response indicating whether the user exists or not
+    res.json({ exists: !!userData });
+  } catch (error) {
+    // Handle any errors that occurred during the query
+    res.status(500).json({ error: 'Error checking user' });
+  }
+}) 
+
 app.get("/addQuiz",(req,res)=>{
   res.send("Add Quiz form")
 })
 
 app.post("/addQuiz",async (req,res)=>{
   try{
-    const {subjectName, description, questions} = req.body;
+    const {subjectName, description,collegeName, questions} = req.body;
     const newQuiz = new quiz({
       subjectName,
       description,
+      collegeName,
       questions
     })
     await newQuiz.save()
@@ -115,9 +130,9 @@ app.post("/addQuiz",async (req,res)=>{
   }
 })
 
-app.get("/quizzes", async (req, res) => {
+app.get("/quizzes/:college", async (req, res) => {
   try{
-    const allQuizes = await quiz.find()
+    const allQuizes = await quiz.find({collegeName:req.params.college})
     res.status(200).json(allQuizes)
   }catch(error){
     console.error('Error retreiving quizzes', error.message);

@@ -1,16 +1,53 @@
 import React from 'react'
-import { Link } from "react-router-dom";
-// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-function LandingPage() {
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import jwtDecode from 'jwt-decode'
+const BASE_URL = 'http://localhost:5000'
+
+const LandingPage = () => {
+  const navigate=useNavigate()
+  const responseGoogle = async (response) => {
+    // decoding the response object 
+    try{
+      if (response.credential != null) {
+        const USER_CREDENTIAL = jwtDecode(response.credential);
+        const {name, email} = USER_CREDENTIAL
+
+        //Making post request to check if the user exists
+        try {
+          const res = await axios.post(BASE_URL + '/check-user', { email });
+          if (res.data.exists){
+            navigate('/main',{state:{email}})
+          } else {
+            console.log(name, email)
+            navigate('/register',{state: {name, email}})
+          }
+        } catch (error) {
+          console.log('Error checking user:', error);
+        }
+
+      } else {
+        console.log('Google login failed');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  } 
+
   return (
-    <div>
-      <Link to="/register">Register</Link>
-<hr />
+    <GoogleOAuthProvider clientId="806225457345-dlv6oecjp4db580q4oo8dj0ln8sgte6o.apps.googleusercontent.com">
+      <div>
+        <h2>Login</h2>
+        <GoogleLogin
+          buttonText="Sign in with Google"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={'single_host_origin'}
+        />
+      </div>
+    </GoogleOAuthProvider>
+  );
+};
 
-            <Link to="/login">Login</Link>
-  
-    </div>
-  )
-}
-
-export default LandingPage
+export default LandingPage;
