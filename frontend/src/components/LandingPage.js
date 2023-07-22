@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import jwtDecode from 'jwt-decode'
-import Cookies from 'js-cookie';
 const BASE_URL = 'http://localhost:5000'
 
 const LandingPage = () => {

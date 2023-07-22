@@ -218,7 +218,15 @@ app.get("/quizzes/:college", async (req, res) => {
     res.status(500).json({ message: 'An error occurred while retreiving quizzes.' });
   }
 })
-
+// app.get("/quizzes/fetch/:college/:quizid", async (req, res) => {
+//   try{
+//     const allQuizes = await quiz.find({collegeName:req.params.college})
+//     res.status(200).json(allQuizes+" "+req.params.quizid)
+//   }catch(error){
+//     console.error('Error retreiving quizzes', error.message);
+//     res.status(500).json({ message: 'An error occurred while retreiving quizzes.' });
+//   }
+// })
 app.get("/userdata/:email", async (req, res) => {
   try{
     const usersdata = await user.find({email:req.params.email})
