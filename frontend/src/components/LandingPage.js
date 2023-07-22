@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import jwtDecode from 'jwt-decode'
+import Cookies from 'js-cookie';
 const BASE_URL = 'http://localhost:5000'
 
 const LandingPage = () => {
@@ -18,9 +19,9 @@ const LandingPage = () => {
         try {
           const res = await axios.post(BASE_URL + '/check-user', { email });
           if (res.data.exists){
+            const resp = await axios.post(BASE_URL + '/login', { email }, { withCredentials: true });
             navigate('/main',{state:{email}})
           } else {
-            console.log(name, email)
             navigate('/register',{state: {name, email}})
           }
         } catch (error) {

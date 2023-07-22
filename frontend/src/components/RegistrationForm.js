@@ -26,13 +26,13 @@ const RegistrationForm = () => {
         occupation
       });
   
-      console.log(college,collegeName,phone,occupation,response.data.token);
-      if(response.data.token)
-      Navigate('/main',{state:{email}})
-    } catch (error) {
-      console.error('Error registering user:', error);
-      setError('An error occurred while registering the user.');
-    }
+      console.log(college,collegeName,phone,occupation);
+      if(response.status === 200)
+        Navigate('/main',{state:{email}})
+      } catch (error) {
+        console.error('Error registering user:', error);
+        setError('An error occurred while registering the user.');
+      }
   };
   
   return (
