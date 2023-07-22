@@ -33,9 +33,8 @@ function App() {
       <Route path='/' element={<LandingPage/>} />
       <Route exact path='/register' element={<RegistrationForm/>} />
       <Route exact path='/login' element={< LoginForm/>} />
-      {/* <Route exact path='/main' element={< HomePage/>} /> */}
       <Route path="/main" element={<PrivateRoute Component={HomePage} />} />
-      <Route exact path='/addquiz' element={< Quiz/>} />
+      <Route path="/addquiz" element={<PrivateRoute Component={Quiz} />} />
       <Route exact path='/exam' element={< Writequiz/>} />
       <Route exact path='/res' element={< DisplayScore/>} />
       </Routes>
