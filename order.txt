@@ -4,11 +4,22 @@ Order to complete:
 
 Resolve:
 
-1)when im having a quiz(that means my college has set a quiz ex:mvgr)  it is automatically redirected to exam page where as it should redirect to /main page.
-2)when im submitting quiz it is getting 401 error (in the background it is checking for authentication which i guess is no working properly).
-3) when im logging with multiple accounts in the same browser and when i click on back button , it is redirecting to previous user data.
-ex: i logged in as haneesh@gmail.com and then aftersome i go back to login page and login as kamal@gmail.com now when i click back it is going to haneesh@gmail.com
+1)we need to create a new collection named results and it should store quizname,student email,college,marks he obtained,total marks etc (we can discuss)
+2)after implementing step 1, exam results should be stored and also we need to store attempt info .
+ex: python Quiz        science quiz      python quiz
+    attempt 2: 20/30   attempt 1: 15/20  attempt 1: 15/30
+3) teacher can view all the quizzes that their college made but can edit only the quiz that he/she made.
+4)student should be able to see all the results of the quizzes he/she attempted.
 
 
-the first two worked fine without authentication just to have an idea take a fresh clone and checkout to my last commit and try to run just for refernce.
 
+
+
+
+
+
+After everything:
+1)we can limit no of attempts a user can attempt the quiz, we will ask teacher that how many times student can give the quiz, if he/she gives 1 then student should nt write more than once.
+(we will implement at last . ipudu cheste testing ki ibandi aipodi)
+2)also we can restrict time for each ques to solve write now there isnt anything like this once we start implementing ui then we can implement.
+default value is 30 sec u can check this info in server.js

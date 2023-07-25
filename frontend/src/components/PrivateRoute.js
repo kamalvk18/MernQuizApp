@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const PrivateRoute = ({ Component, ...rest }) => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [isAuthenticated, setAuthStatus] = useState(false)
     useEffect(() => {
         const checkAuthStatus = async () => {
@@ -22,7 +23,7 @@ const PrivateRoute = ({ Component, ...rest }) => {
 
     const handleNavigation = () => {
         if (isAuthenticated){
-            return <Component/>
+            return <Component userdata ={location.state}/>
         }else{
             return null
         }

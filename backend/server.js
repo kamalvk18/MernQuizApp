@@ -201,6 +201,7 @@ app.post("/addQuiz", isTeacher, async (req,res)=>{
       collegeName,
       questions
     })
+    console.log("Are you hitting this>?",newQuiz)
     await newQuiz.save()
     res.status(201).send("Quiz saved!!!");
   } catch (error) {

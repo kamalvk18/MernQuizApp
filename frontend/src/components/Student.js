@@ -29,7 +29,7 @@ const [quizzes,setquizzes]=useState([])
         {/* {console.log(item,idx,"is this really workihng")} */}
         <h2>{item.subjectName}</h2>
         <h2>{item.description}</h2>
-        <button onClick={attempt(item)} >Attempt quiz here</button>
+        <button onClick={()=>attempt(item)} >Attempt quiz here</button>
         </div>
         
       ))}

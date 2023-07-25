@@ -3,20 +3,18 @@ import Addques from './Addques'
 import axios from 'axios'; 
 import { useLocation,useNavigate} from "react-router-dom";
 function Quiz() {
-  const [ques,setques]=useState({1:"",2:"",3:"",4:"",q:"",key:"",qn:"hdfc"})
+  const navigate=useNavigate();
+  const [ques,setques]=useState({1:"",2:"",3:"",4:"",q:"",key:""})
   const base_url="http://localhost:5000"
   const location=useLocation();
   const email=location.state.userdata.email
-  // console.log(location.state.userdata)
-  const navigate=useNavigate();
+  const [subjectName,setSubjectName]=useState("")
+  const [description,setDescription]=useState("")
   const [display,setDisplay]=useState('')
   const [totalques,setTotalques]=useState([])
   const handleSubmit=async (e,req,res)=>{
     alert('saved successfully')
-    //  e.preventDefault()
-
-    const subjectName="something"
-    const description="some other"
+    e.preventDefault()
     const questions=[]
 
   
@@ -46,7 +44,7 @@ function Quiz() {
             description,
             questions,
             collegeName:location.state.userdata.college,
-          });
+          },{ withCredentials: true });
           console.log(response)
           navigate('/main',{state:{email}})
 
@@ -64,25 +62,20 @@ function Quiz() {
 return (
     <div>
   <form onSubmit={handleSubmit}>
-    
+    quiz name:
+    <input type='text' placeholder='enter the quiz name' value={subjectName} onChange={(e)=>setSubjectName(e.target.value)}/>
+    <br />
+    description :
+    <input type='text' placeholder='enter the description for the quiz' value={description} onChange={(e)=>setDescription(e.target.value)}/>
     <Addques ques={ques} setques={setques} totalques={totalques} setTotalques={setTotalques} setDisplay={setDisplay} /> 
     <button type='submit'>Submit</button>
 {/* <button type="button" onClick={addOption}>Add option </button> */}
 {/* {} */}
       
       {display}
-      {/* {optionvisible && <div>
-        option {currop}
-  <input
-  type="text"
-  placeholder="enter ur option value here"
-  value={option[currop]}
-  onChange={(e) =>{ setoption((prev)=>({...prev,currop:e.target.value}))}}></input></div>
-  } */}
       {totalques.map((data,index)=>{
         return(
           <div key={index}>
-            {/* console.log({index},{data.q},{data.key}) */}
           <h2>ques,: {data[0].q}</h2>
           <h3>option A: {data[0][1]}</h3>
           <h3>option B: {data[0][2]}</h3>

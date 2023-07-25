@@ -6,7 +6,6 @@ const Writequiz = () => {
     const data=location.state.quizdata
     const [quiz,setquiz]=useState({})
     const [actual,setActual]=useState({})
-    const [count,setcount]=useState(0)
     useEffect(()=>{
         setActual(data.questions)
     },[data])
@@ -16,24 +15,25 @@ const Writequiz = () => {
         const targ=e.target.value.split(" ")
         let ques=targ[0]
         let ans=targ[1]
-        console.log(ques,ans)
+        // console.log(ques,ans)
         setquiz({...quiz,[Number(ques)]:Number(ans)})
     }
     const submitQuiz=(e)=>{
         // e.preventDefault()
         // console.log(quiz)
+        let c=0
         actual.map((item,idx1)=>(
             item.options.forEach((op,idx2)=>{
-                console.log(op.isAnswer,Number(quiz[idx1]),Number(quiz[idx1])===idx2,idx1,idx2)
+                // console.log(op.isAnswer,Number(quiz[idx1]),Number(quiz[idx1])===idx2,idx1,idx2)
                 if(op.isAnswer && Number(quiz[idx1])===idx2){
-                   console.log("mad king")
-                //    mad king anni print avtundi but count update avvatle bro no idea why its happenning like that 
-                    setcount((count) => count + 1)
+                  //  console.log("mad king")
+                   c+=1
                 }
             })
         ))
-        console.log(count)
-        navigate('/res',{state:{count}})
+
+        // console.log(c)
+        navigate('/res',{state:{c}})
 
     }
     return (

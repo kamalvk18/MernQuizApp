@@ -24,11 +24,11 @@ const HomePage=()=> {
       navigate('/')
     }
   }
-
+  console.log(userdata)
   return (
     <div>
       
-      Logged in successfully bro!
+      Hi {userdata.name}, Logged in successfully!
       <button onClick={logOut}>Logout</button>
       {userdata && userdata.occupation==="teacher" &&  <Teacher userdata={userdata}/>}
       {userdata && userdata.occupation==="student" &&  <Student userdata={userdata}/>}
