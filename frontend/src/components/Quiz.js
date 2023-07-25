@@ -13,7 +13,7 @@ function Quiz() {
   const [totalques,setTotalques]=useState([])
   const handleSubmit=async (e,req,res)=>{
     alert('saved successfully')
-     e.preventDefault()
+    //  e.preventDefault()
 
     const subjectName="something"
     const description="some other"

@@ -2,12 +2,13 @@ Order to complete:
 1) backend  including -- mongodb connection 
 2) frontend
 
+Resolve:
 
-==> in frontend/src/components
+1)when im having a quiz(that means my college has set a quiz ex:mvgr)  it is automatically redirected to exam page where as it should redirect to /main page.
+2)when im submitting quiz it is getting 401 error (in the background it is checking for authentication which i guess is no working properly).
+3) when im logging with multiple accounts in the same browser and when i click on back button , it is redirecting to previous user data.
+ex: i logged in as haneesh@gmail.com and then aftersome i go back to login page and login as kamal@gmail.com now when i click back it is going to haneesh@gmail.com
 
-i will do landing page,loginform,registration form along with routing
 
-u do home page(i have done half),quizzes (mentioned in the design) and auth(response.token). (try to add google auth if possible or we can do that end of this proj)
-
-when i say auth what i mean is when a user directly types localhost:5000/addQuiz or localhost:5000/main he should not be allowed directly.
+the first two worked fine without authentication just to have an idea take a fresh clone and checkout to my last commit and try to run just for refernce.
 

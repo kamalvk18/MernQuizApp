@@ -20,7 +20,7 @@ const HomePage=()=> {
 
   const logOut = async () =>{
     const res = await axios.get(base_url+"/logout" , { withCredentials: true })
-    if (res.status == 200){
+    if (res.status === 200){
       navigate('/')
     }
   }

@@ -1,5 +1,5 @@
 import './App.css';
-import axios from 'axios';
+
 import LandingPage from './components/LandingPage';
 import RegistrationForm from './components/RegistrationForm';
 import LoginForm from './components/LoginForm';
@@ -10,19 +10,6 @@ import HomePage from './components/HomePage';
 import Writequiz from './components/Writequiz';
 import PrivateRoute from './components/PrivateRoute';
 function App() {
-  // const [authStatus, setAuthStatus] = useState(false);
-
-  // Check authentication status when the component mounts
-  // useEffect(() => {
-  //   const checkAuthStatus = async () => {
-  //     const res = await axios.get('http://localhost:5000/check-auth', {withCredentials: true})
-  //     if (res.status == 200){
-  //       setAuthStatus(true);
-  //     }
-  //   };
-
-  //   checkAuthStatus();
-  // }, []);
 
   return (
     // first we will focus only on connecting frontend with backend once everything works then we will design a proper ui.
