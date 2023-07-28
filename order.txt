@@ -13,13 +13,20 @@ ex: python Quiz        science quiz      python quiz
 
 
 
-
-
-
-
-
 After everything:
 1)we can limit no of attempts a user can attempt the quiz, we will ask teacher that how many times student can give the quiz, if he/she gives 1 then student should nt write more than once.
 (we will implement at last . ipudu cheste testing ki ibandi aipodi)
 2)also we can restrict time for each ques to solve write now there isnt anything like this once we start implementing ui then we can implement.
 default value is 30 sec u can check this info in server.js
+
+
+
+Dummy quiz
+
+{
+    "quizName":"pythonpaidquiz",
+    "subjectName":"Python",
+    "description":"Python",
+    "collegeName":"mvgr",
+    "questions": [{"question":"a", "options":[{"option":"a", "isAnswer":"true"}, {"option":"b"}]}]
+}
