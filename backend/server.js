@@ -176,8 +176,8 @@ app.get('/:quizName/get-results', isAuthenticated, async (req, res) => {
   try{
     const foundUser = await user.findById(req.user._id);
     await foundUser.populate('quizzesAttempted');
-    const result = foundUser.quizzesAttempted.find((result) => result.quizName === req.params.quizName);
-    if (result){
+    const result = foundUser.quizzesAttempted.filter((result) => result.quizName === req.params.quizName);
+    if (result.length > 0){
       res.status(200).json(result)
     }else{
       res.status(200).json({'message': 'You did not give this test!'})
@@ -222,6 +222,15 @@ app.post("/:quizName/:marksObtained/store-result", isAuthenticated, async (req, 
         await newQuizResult.save()
       }
       const foundUser = await user.findOne({email: req.user.email})
+      await foundUser.populate('quizzesAttempted')
+      var maxAttempt = 0;
+      foundUser.quizzesAttempted.map((result) => {
+        if (result.quizName === req.params.quizName){
+          maxAttempt = Math.max(maxAttempt, result.attempt)
+        }
+      })
+      studentResult.attempt = maxAttempt + 1
+      await studentResult.save()
       foundUser.quizzesAttempted.push(studentResult)
       await foundUser.save()
       res.status(200).send("Result saved successfully")
