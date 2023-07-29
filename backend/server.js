@@ -73,6 +73,7 @@ const quizschema=new mongoose.Schema({
     },
 
     description: String,
+    setByTeacher:String,
     collegeName:{
       type:String,
       required:true
@@ -194,11 +195,12 @@ app.get("/addQuiz",(req,res)=>{
 
 app.post("/addQuiz", isTeacher, async (req,res)=>{
   try{
-    const {subjectName, description,collegeName, questions} = req.body;
+    const {subjectName, description,collegeName,setByTeacher, questions} = req.body;
     const newQuiz = new quiz({
       subjectName,
       description,
       collegeName,
+      setByTeacher,
       questions
     })
     console.log("Are you hitting this>?",newQuiz)

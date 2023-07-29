@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import Writequiz from './components/Writequiz';
 import PrivateRoute from './components/PrivateRoute';
+import EditQuiz from './components/EditQuiz';
 function App() {
 
   return (
@@ -24,6 +25,7 @@ function App() {
       <Route path="/addquiz" element={<PrivateRoute Component={Quiz} />} />
       <Route exact path='/exam' element={< Writequiz/>} />
       <Route exact path='/res' element={< DisplayScore/>} />
+      <Route exact path='/editquiz' element={< EditQuiz/>} />
       </Routes>
       </Router>
 

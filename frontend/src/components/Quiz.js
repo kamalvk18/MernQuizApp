@@ -43,6 +43,7 @@ function Quiz() {
             subjectName,
             description,
             questions,
+            setByTeacher:location.state.userdata.email,
             collegeName:location.state.userdata.college,
           },{ withCredentials: true });
           console.log(response)
