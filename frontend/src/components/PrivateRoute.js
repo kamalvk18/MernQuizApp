@@ -23,8 +23,9 @@ const PrivateRoute = ({ Component, ...rest }) => {
 
     const handleNavigation = () => {
         if (isAuthenticated){
-            return <Component userdata ={location.state}/>
+            return <Component {...rest}/>
         }else{
+            console.log('User not authenticated to redirect to main page')
             return null
         }
     }

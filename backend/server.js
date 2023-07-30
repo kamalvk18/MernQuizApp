@@ -17,6 +17,15 @@ mongoose.connect(
     "mongodb+srv://admin:admin143@cluster0.0ggnx.mongodb.net/MernStackQuizApp"
 );
 
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}))
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
+
 //Passport configuration
 app.use(require("express-session")({
 	secret :"This project is created using MERN Stack",
@@ -84,14 +93,6 @@ const isTeacher = async (req, res, next) => {
   }
 }
 
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true,
-}))
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-app.use(bodyParser.json());
 app.set("view engine","ejs");
 
 app.get("/",(req,res)=>{
@@ -120,8 +121,9 @@ app.post('/check-user', async (req, res) => {
   }
 }) 
 
-app.get("/addQuiz",(req,res)=>{
-  res.send("Add Quiz form")
+app.get("/testing",async (req,res)=>{
+  const temp = await user.findOneAndDelete({email:'codebean0308@gmail.com'})
+  return res.json(temp)
 })
 
 app.post("/addQuiz", isTeacher, async (req,res)=>{
@@ -251,9 +253,12 @@ app.post("/signup",async (req,res)=>{
           occupation
       })
       await data.save()
-      passport.authenticate("custom", { failureRedirect: "/login" })(req, res, () => {
-        // You can perform additional actions or send a response here if needed
-        res.status(200).json({ data });
+      await passport.authenticate("custom", { failureRedirect: "/login" })(req, res, async () => {
+        // After successful authentication, manually log in the user
+        req.login(data, (err) => {
+          if (err) return next(err);
+          res.status(200).json({ message: 'User Registered' });
+        });
       });
   } catch (error) {
     console.error('Error registering user:', error.message);
