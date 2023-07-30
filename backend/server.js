@@ -7,85 +7,15 @@ passport = require("passport"),
 passportCustom = require('passport-custom');
 const CustomStrategy = passportCustom.Strategy;
 
+//requiring models
+const result = require('./models/result')
+const quiz = require('./models/quiz')
+const quizResult = require('./models/quizResult')
+const user = require('./models/user')
+
 mongoose.connect(
     "mongodb+srv://admin:admin143@cluster0.0ggnx.mongodb.net/MernStackQuizApp"
 );
-const Userschema= new mongoose.Schema({
-    name:{
-        type:String,
-        required:true
-    },
-
-    email:{
-        type:String,
-        required:true
-    },
-    
-    // password:{
-    //     type:String,
-    //     required:true
-    // },
-    
-    phone:Number,
-    
-    college:{   
-        type:String,
-        required:true
-    },
-    
-    occupation:{
-        type:String,
-        required:true
-    }
-
-})
-
-const optionSchema = new mongoose.Schema({
-  option: {
-    type: String,
-    required: true
-  },
-
-  isAnswer: {
-    type: Boolean,
-    default: false
-  }
-})
-
-const questionSchema = new mongoose.Schema({
-  question: {
-    type: String,
-    required: true
-  },
-  timeInSec:{
-    type:Number,
-    default:30
-  },
-  options: [
-    optionSchema
-  ],
-})
-
-const quizschema=new mongoose.Schema({
-    subjectName: {
-      type: String,
-      required: true
-    },
-
-    description: String,
-    setByTeacher:String,
-    collegeName:{
-      type:String,
-      required:true
-    },
-    questions: [
-      questionSchema
-    ]
-
-})
-
-const quiz = mongoose.model("quiz", quizschema)
-const user = mongoose.model("user", Userschema)
 
 //Passport configuration
 app.use(require("express-session")({
@@ -132,6 +62,7 @@ passport.deserializeUser(async (id, done) => {
 });
 
 const isAuthenticated = (req, res, next) => {
+  console.log("Authenticating user...")
   if (req.isAuthenticated()) {
     return next();
   } else {
@@ -195,15 +126,16 @@ app.get("/addQuiz",(req,res)=>{
 
 app.post("/addQuiz", isTeacher, async (req,res)=>{
   try{
-    const {subjectName, description,collegeName,setByTeacher, questions} = req.body;
+    const {quizName, subjectName, description,collegeName, questions} = req.body;
     const newQuiz = new quiz({
+      quizName,
       subjectName,
       description,
+      setBy: req.user.email,
       collegeName,
-      setByTeacher,
-      questions
+      questions,
+      totalMarks: questions.length
     })
-    console.log("Are you hitting this>?",newQuiz)
     await newQuiz.save()
     res.status(201).send("Quiz saved!!!");
   } catch (error) {
@@ -237,6 +169,74 @@ app.get("/userdata/:email", async (req, res) => {
   }catch(error){
     console.error('Error retreiving users', error.message);
     res.status(500).json({ message: 'An error occurred while retreiving users.' });
+  }
+})
+
+app.get('/:quizName/get-results', isAuthenticated, async (req, res) => {
+  try{
+    const foundUser = await user.findById(req.user._id);
+    await foundUser.populate('quizzesAttempted');
+    const result = foundUser.quizzesAttempted.filter((result) => result.quizName === req.params.quizName);
+    if (result.length > 0){
+      res.status(200).json(result)
+    }else{
+      res.status(200).json({'message': 'You did not give this test!'})
+    }
+  }catch(err){
+    return res.status(404).json(err)
+  }
+})
+
+app.get("/get-all-quizzes", isAuthenticated, async (req, res) => {
+  try{
+    const foundUser = await user.findById(req.user._id);
+    await foundUser.populate('quizzesAttempted');
+    const allQuizzes = foundUser.quizzesAttempted
+    return res.status(200).json({allQuizzes})
+  }catch(err){
+    return res.status(400).json(err)
+  }
+})
+
+app.post("/:quizName/:marksObtained/store-result", isAuthenticated, async (req, res) => {
+  try{
+    const {quizName, marksObtained} = req.params
+    const foundQuiz = await quiz.findOne({quizName})
+    if (foundQuiz){
+      const foundQuizResult = await quizResult.findOne({quizName})
+      const studentResult = new result({
+        quizName,
+        studentEmail: req.user.email,
+        marksObtained
+      })
+      
+      await studentResult.save()
+      if (foundQuizResult){
+        foundQuizResult.studentResults.push(studentResult)
+        await foundQuizResult.save()
+      }else{
+        const newQuizResult = new quizResult({
+          quizName,
+          studentResults: [studentResult]
+        })
+        await newQuizResult.save()
+      }
+      const foundUser = await user.findOne({email: req.user.email})
+      await foundUser.populate('quizzesAttempted')
+      var maxAttempt = 0;
+      foundUser.quizzesAttempted.map((result) => {
+        if (result.quizName === req.params.quizName){
+          maxAttempt = Math.max(maxAttempt, result.attempt)
+        }
+      })
+      studentResult.attempt = maxAttempt + 1
+      await studentResult.save()
+      foundUser.quizzesAttempted.push(studentResult)
+      await foundUser.save()
+      res.status(200).send("Result saved successfully")
+    }
+  } catch(error) {
+    res.send(400, error.message);
   }
 })
 
