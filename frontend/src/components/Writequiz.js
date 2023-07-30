@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation,useNavigate } from 'react-router-dom'
+import axios from 'axios'
 const Writequiz = () => {
     const location=useLocation()
     const navigate=useNavigate()
     const data=location.state.quizdata
     const [quiz,setquiz]=useState({})
     const [actual,setActual]=useState({})
+    const base_url = 'http://localhost:5000/'
     useEffect(()=>{
         setActual(data.questions)
     },[data])
@@ -18,7 +20,7 @@ const Writequiz = () => {
         // console.log(ques,ans)
         setquiz({...quiz,[Number(ques)]:Number(ans)})
     }
-    const submitQuiz=(e)=>{
+    const submitQuiz= async (e)=>{
         // e.preventDefault()
         // console.log(quiz)
         let c=0
@@ -31,10 +33,13 @@ const Writequiz = () => {
                 }
             })
         ))
-
+        try{
+          const response = await axios.post(`${base_url}${data.subjectName}/store-result`,{"score": c}, { withCredentials: true });
+          navigate('/main')
+        }catch(error){
+          console.error('Error saving quiz', error.response)
+        }
         // console.log(c)
-        navigate('/res',{state:{c}})
-
     }
     return (
     <div>
