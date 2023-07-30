@@ -24,8 +24,8 @@ const RegistrationForm = () => {
         college:college==="other"?collegeName:college,
         phone,
         occupation
-      });
-  
+      }, {withCredentials: true});
+      console.log(response)
       console.log(college,collegeName,phone,occupation);
       if(response.status === 200)
         Navigate('/main',{state:{email}})

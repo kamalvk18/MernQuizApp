@@ -17,6 +17,15 @@ mongoose.connect(
     "mongodb+srv://admin:admin143@cluster0.0ggnx.mongodb.net/MernStackQuizApp"
 );
 
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}))
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
+
 //Passport configuration
 app.use(require("express-session")({
 	secret :"This project is created using MERN Stack",
@@ -62,7 +71,7 @@ passport.deserializeUser(async (id, done) => {
 });
 
 const isAuthenticated = (req, res, next) => {
-  console.log("Authenticating user...")
+  console.log("Checking Authentication...")
   if (req.isAuthenticated()) {
     return next();
   } else {
@@ -84,14 +93,6 @@ const isTeacher = async (req, res, next) => {
   }
 }
 
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true,
-}))
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-app.use(bodyParser.json());
 app.set("view engine","ejs");
 
 app.get("/",(req,res)=>{
@@ -120,8 +121,9 @@ app.post('/check-user', async (req, res) => {
   }
 }) 
 
-app.get("/addQuiz",(req,res)=>{
-  res.send("Add Quiz form")
+app.get("/testing",async (req,res)=>{
+  const temp = await user.find({email:'codebean0308@gmail.com'})
+  return res.json(temp)
 })
 
 app.post("/addQuiz", isTeacher, async (req,res)=>{
@@ -198,10 +200,11 @@ app.get("/get-all-quizzes", isAuthenticated, async (req, res) => {
   }
 })
 
-app.post("/:quizName/:marksObtained/store-result", isAuthenticated, async (req, res) => {
+app.post("/:quizName/store-result", isAuthenticated, async (req, res) => {
   try{
-    const {quizName, marksObtained} = req.params
-    const foundQuiz = await quiz.findOne({quizName})
+    const marksObtained = req.body.score
+    const {quizName} = req.params
+    const foundQuiz = await quiz.findOne({subjectName: quizName})
     if (foundQuiz){
       const foundQuizResult = await quizResult.findOne({quizName})
       const studentResult = new result({
@@ -209,7 +212,7 @@ app.post("/:quizName/:marksObtained/store-result", isAuthenticated, async (req, 
         studentEmail: req.user.email,
         marksObtained
       })
-      
+      console.log('quiz result Found', foundQuizResult)
       await studentResult.save()
       if (foundQuizResult){
         foundQuizResult.studentResults.push(studentResult)
@@ -233,10 +236,10 @@ app.post("/:quizName/:marksObtained/store-result", isAuthenticated, async (req, 
       await studentResult.save()
       foundUser.quizzesAttempted.push(studentResult)
       await foundUser.save()
-      res.status(200).send("Result saved successfully")
+      return res.status(200).send("Result saved successfully")
     }
   } catch(error) {
-    res.send(400, error.message);
+    return res.send(400, error.message);
   }
 })
 
@@ -251,9 +254,12 @@ app.post("/signup",async (req,res)=>{
           occupation
       })
       await data.save()
-      passport.authenticate("custom", { failureRedirect: "/login" })(req, res, () => {
-        // You can perform additional actions or send a response here if needed
-        res.status(200).json({ data });
+      await passport.authenticate("custom", { failureRedirect: "/login" })(req, res, async () => {
+        // After successful authentication, manually log in the user
+        req.login(data, (err) => {
+          if (err) return next(err);
+          res.status(200).json({ message: 'User Registered' });
+        });
       });
   } catch (error) {
     console.error('Error registering user:', error.message);
