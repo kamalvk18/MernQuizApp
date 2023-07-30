@@ -71,7 +71,7 @@ passport.deserializeUser(async (id, done) => {
 });
 
 const isAuthenticated = (req, res, next) => {
-  console.log("Authenticating user...")
+  console.log("Checking Authentication...")
   if (req.isAuthenticated()) {
     return next();
   } else {
@@ -122,7 +122,7 @@ app.post('/check-user', async (req, res) => {
 }) 
 
 app.get("/testing",async (req,res)=>{
-  const temp = await user.findOneAndDelete({email:'codebean0308@gmail.com'})
+  const temp = await user.find({email:'codebean0308@gmail.com'})
   return res.json(temp)
 })
 
@@ -200,10 +200,11 @@ app.get("/get-all-quizzes", isAuthenticated, async (req, res) => {
   }
 })
 
-app.post("/:quizName/:marksObtained/store-result", isAuthenticated, async (req, res) => {
+app.post("/:quizName/store-result", isAuthenticated, async (req, res) => {
   try{
-    const {quizName, marksObtained} = req.params
-    const foundQuiz = await quiz.findOne({quizName})
+    const marksObtained = req.body.score
+    const {quizName} = req.params
+    const foundQuiz = await quiz.findOne({subjectName: quizName})
     if (foundQuiz){
       const foundQuizResult = await quizResult.findOne({quizName})
       const studentResult = new result({
@@ -211,7 +212,7 @@ app.post("/:quizName/:marksObtained/store-result", isAuthenticated, async (req, 
         studentEmail: req.user.email,
         marksObtained
       })
-      
+      console.log('quiz result Found', foundQuizResult)
       await studentResult.save()
       if (foundQuizResult){
         foundQuizResult.studentResults.push(studentResult)
@@ -235,10 +236,10 @@ app.post("/:quizName/:marksObtained/store-result", isAuthenticated, async (req, 
       await studentResult.save()
       foundUser.quizzesAttempted.push(studentResult)
       await foundUser.save()
-      res.status(200).send("Result saved successfully")
+      return res.status(200).send("Result saved successfully")
     }
   } catch(error) {
-    res.send(400, error.message);
+    return res.send(400, error.message);
   }
 })
 
