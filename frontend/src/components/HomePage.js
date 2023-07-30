@@ -16,7 +16,7 @@ const HomePage=()=> {
     .then((json) => {
         setUserdata(json[0])
     })
-  },[data])
+  },[])
 
   const logOut = async () =>{
     const res = await axios.get(base_url+"/logout" , { withCredentials: true })
@@ -24,7 +24,7 @@ const HomePage=()=> {
       navigate('/')
     }
   }
-  console.log(userdata)
+  // console.log(userdata)
   return (
     <div>
       

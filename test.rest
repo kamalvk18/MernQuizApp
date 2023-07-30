@@ -63,3 +63,30 @@ get http://localhost:5000/quizzes/mvgr
 
 # ###
 # get http://localhost:5000/quizzes/fetch/mvgr/64b80746e35c0412d56d2e2f
+
+
+###
+
+get http://localhost:5000/get-all-quizzes
+
+###
+get http://localhost:5000/edit/64c69a443cc1185994a7c4a5
+
+###
+get http://localhost:5000/get/64c69a443cc1185994a7c4a4
+
+###
+POST  http://localhost:5000/edit/64c69a443cc1185994a7c4ab
+Content-Type: application/json
+
+{
+        "question": "Who disco Raman modaaaaaaaa?",
+        "quiz_id": "64c69a443cc1185994a7c4a4",
+        "a": "Rn",
+        "b":"CV",
+        "c":"Pk",
+        "d":"Br",
+        "key":3
+
+
+}

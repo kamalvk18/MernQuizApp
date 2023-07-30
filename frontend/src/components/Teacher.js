@@ -34,7 +34,7 @@ function Teacher({userdata}) {
           
         <h2>quiz name: {q.subjectName}</h2>
         <h2>description: {q.description}</h2>
-        {q.setByTeacher===userdata.email?<button onClick={editQuiz} value={JSON.stringify(q)}>Edit This quiz</button>:""}
+        {q.setBy===userdata.email?<button onClick={editQuiz} value={JSON.stringify(q)}>Edit This quiz</button>:""}
         <hr/>
 
         </div>

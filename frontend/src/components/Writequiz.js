@@ -5,6 +5,8 @@ const Writequiz = () => {
     const location=useLocation()
     const navigate=useNavigate()
     const data=location.state.quizdata
+    const userdata=location.state.userdata
+    const email=userdata.email
     const [quiz,setquiz]=useState({})
     const [actual,setActual]=useState({})
     const base_url = 'http://localhost:5000/'
@@ -21,7 +23,7 @@ const Writequiz = () => {
         setquiz({...quiz,[Number(ques)]:Number(ans)})
     }
     const submitQuiz= async (e)=>{
-        // e.preventDefault()
+        e.preventDefault()
         // console.log(quiz)
         let c=0
         actual.map((item,idx1)=>(
@@ -35,7 +37,8 @@ const Writequiz = () => {
         ))
         try{
           const response = await axios.post(`${base_url}${data.subjectName}/store-result`,{"score": c}, { withCredentials: true });
-          navigate('/main')
+          // console.log(userdata,"ilv",userdata.email)
+          navigate('/main',{state:{email}})
         }catch(error){
           console.error('Error saving quiz', error.response)
         }

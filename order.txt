@@ -1,15 +1,8 @@
-Order to complete:
-1) backend  including -- mongodb connection 
-2) frontend
 
-Resolve:
+Implement:
+1)Handle authentication for newly added routes.
+2)lets start researching about proper frontend library by aug 2nd and start designing the ui one by one in the order it is called!
 
-1)we need to create a new collection named results and it should store quizname,student email,college,marks he obtained,total marks etc (we can discuss)
-2)after implementing step 1, exam results should be stored and also we need to store attempt info .
-ex: python Quiz        science quiz      python quiz
-    attempt 2: 20/30   attempt 1: 15/20  attempt 1: 15/30
-3) teacher can view all the quizzes that their college made but can edit only the quiz that he/she made.
-4)student should be able to see all the results of the quizzes he/she attempted.
 
 
 
@@ -18,7 +11,7 @@ After everything:
 (we will implement at last . ipudu cheste testing ki ibandi aipodi)
 2)also we can restrict time for each ques to solve write now there isnt anything like this once we start implementing ui then we can implement.
 default value is 30 sec u can check this info in server.js
-
+3)Try to cleanup the unnecessary/unused lines of code.(Try to Add some comments/documentation for some of the methods/components so that we can refer later).
 
 
 Dummy quiz

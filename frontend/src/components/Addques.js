@@ -1,8 +1,13 @@
 import React from 'react'
-
-const Addques = ({ques,setques,totalques,setTotalques,setDisplay}) => {
-    const addQuestion=()=>{
-        console.log(ques)
+import axios from 'axios';
+// import { useNavigate } from 'react-router-dom';
+const Addques = ({ques,setques,totalques,setTotalques,setDisplay,quesid,userdata,quizdata,isEdit}) => {
+  const base_url="http://localhost:5000"
+  // const email=userdata.email
+  // const navigate=useNavigate()
+    const addQuestion=async ()=>{
+        if(isEdit===undefined){
+          console.log("here in non edit ")
         const data=[...totalques]
         // console.log(dummy,data)
         data.push([ques])
@@ -12,6 +17,33 @@ const Addques = ({ques,setques,totalques,setTotalques,setDisplay}) => {
         setTimeout(()=>{
           setDisplay("ques Added")
         },2000)
+      }
+      else{
+        console.log("write logic to edit something",quesid)
+        try {
+          const response = await axios.post(base_url+'/edit/'+quesid, {
+            question:ques.q,
+            a:ques[1],
+            b:ques[2],
+            c:ques[3],
+            d:ques[4],
+            key:ques.key,
+            quiz_id:quizdata._id
+          });
+          console.log(response)
+          
+      }
+      
+      catch(err){
+        console.log(err)
+      }
+      finally{
+      // console.log("Sdfeswhgdhgvh")
+      alert("successfully updated!")
+      // console.log(userdata,quizdata)
+      window.location.reload();}
+      // navigate("/editquiz",{state:{userdata,quizdata}})
+    }
   }
   return (
     <div>

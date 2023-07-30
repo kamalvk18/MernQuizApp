@@ -1,4 +1,4 @@
-.available-quizes {
+.available-quizes, .attempted-quizes {
     display: inline-block;
     margin:20px;
 
