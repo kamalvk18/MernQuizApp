@@ -1,6 +1,10 @@
 import React, {  useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
 
 const RegistrationForm = () => {
   const location = useLocation();
@@ -36,46 +40,48 @@ const RegistrationForm = () => {
   };
   
   return (
-    <form onSubmit={handleSubmit}>
-      
-      College:
-          <select value={college} onChange={e=>setCollege(e.target.value)}>
+    <Container style = {{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems:'center', height: '100vh'}}>
+      <Row>
+        <h3>Registration Form</h3>
+      </Row>
+      <br />
+      <Row>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Phone number</Form.Label>
+          <Form.Control type="number" placeholder="Enter phone number" value={phone} onChange={(e) => setPhone(e.target.value)}/>
+          <Form.Text className="text-muted">
+            We'll never share your number with anyone else.
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Select value={college} onChange={e=>setCollege(e.target.value)}>
             {availColleges.map((option,ind) => (
               <option value={option} key={ind}>{option}</option>
             ))}
-          </select>
-          <br />
-
+          </Form.Select>
           {college==="other" && 
-          <div>
-                collegeName:<input
-                type="text"
-                placeholder="enter your college name:"
-                value={collegeName}
-                onChange={(e) => setCollegeName(e.target.value)}
-              />
-          </div>}
-          <br />
-
-          Phone number:
-            <input
-              type="number"
-              placeholder="Phone number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          < br/>
-
-          Occupation:
-            <select value={occupation} onChange={(e) => setOccupation(e.target.value)}>
-              <option value={"teacher"} key={0}>Teacher</option>
-              <option value={"student"} key={1}>Student</option>
-            </select>
-           <br />
-          
-            <button type="submit">Register</button>
-            {error && <p> Registration Failed due to {error}</p>}
-      </form>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Phone number</Form.Label>
+              <Form.Control type="text" placeholder="Enter college name" value={collegeName} onChange={(e) => setCollegeName(e.target.value)}/>
+              </Form.Group>
+          }
+        </Form.Group>
+        
+        <Form.Select value={occupation} onChange={(e) => setOccupation(e.target.value)}>
+            <option value={"teacher"} key={0}>Teacher</option>
+            <option value={"student"} key={1}>Student</option>
+        </Form.Select>
+        
+        <br/>
+        <Button variant="primary" type="submit">
+          Register
+        </Button>
+        {error && <p> Registration Failed due to {error}</p>}
+      </Form>
+      </Row>
+    </Container>
     );
   };
 

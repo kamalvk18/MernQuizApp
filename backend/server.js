@@ -123,7 +123,7 @@ app.post('/check-user', async (req, res) => {
 }) 
 
 app.get("/sarada",async (req,res)=>{
-  const temp = await quiz.find()
+  const temp = await user.findOneAndDelete({"email":"codebean0308@gmail.com"})
   return res.json(temp)
 })
 app.get("/get/:quizid",async (req,res)=>{
