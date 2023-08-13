@@ -29,7 +29,7 @@ const Addques = ({ques,setques,totalques,setTotalques,setDisplay,quesid,userdata
             d:ques[4],
             key:ques.key,
             quiz_id:quizdata._id
-          });
+          }, {withCredentials: true});
           console.log(response)
           
       }
