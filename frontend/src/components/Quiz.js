@@ -54,10 +54,7 @@ function Quiz() {
   }
 }
   
-// const add=()=>{
-
-//   console.log("add a question")
-// }  
+ 
 
 
 return (
