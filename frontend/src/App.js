@@ -10,6 +10,7 @@ import Writequiz from './components/Writequiz';
 import PrivateRoute from './components/PrivateRoute';
 import EditQuiz from './components/EditQuiz';
 import DisplayQuiz from './components/DisplayQuiz';
+
 function App() {
 
   return (

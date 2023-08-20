@@ -275,17 +275,17 @@ const LandingPage = () => {
           <h2>Login in to your account</h2>
           <h4>Don't have an account? <span>Sign Up</span></h4>
         </div>
-        <div className='custom-google-login-button'>Sign In with Google</div>
         <GoogleOAuthProvider clientId="806225457345-dlv6oecjp4db580q4oo8dj0ln8sgte6o.apps.googleusercontent.com">
-          <GoogleLogin
-            className="custom-google-login-button"
-            buttonText="Sign in with Google"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            cookiePolicy={'single_host_origin'}
-          />
+          <div className="d-flex justify-content-center align-items-center">
+            <GoogleLogin
+              className="custom-google-login-button"
+              buttonText="Sign in with Google"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={'single_host_origin'}
+            />
+          </div>
         </GoogleOAuthProvider>
-        <div className='custom-google-login-button'>Sign In with facebook</div>
         <div className="separator">
             <div className="separator-line"></div>
             <div className="separator-text">Or with email and password</div>

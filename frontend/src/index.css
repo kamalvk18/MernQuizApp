@@ -1,5 +1,18 @@
 .available-quizes, .attempted-quizes {
     display: inline-block;
-    margin:20px;
+    margin: 20px;
 
 }
+
+#form-search{
+    background-color: #666666;
+}
+
+.card-text-truncate {
+    overflow: hidden;
+    /* white-space: nowrap; */
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Show up to 2 lines */
+    -webkit-box-orient: vertical;
+  }

@@ -1,9 +1,25 @@
 import React, { useState,useEffect } from 'react'
-import { Link,useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import Button from 'react-bootstrap/Button';
+import { ButtonGroup } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container';
+
 function Teacher({userdata}) {
   const base_url="http://localhost:5000"
   const navigate=useNavigate()
   const [quiz,setquiz]=useState([])
+  const itemsPerPage = 12; // Number of items to show per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const currentItems = quiz.slice(0, indexOfLastItem);
+
+  const handleSeeMore = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
   const editQuiz=(e) => {
       
     const editquiz=JSON.parse(e.target.value)
@@ -12,7 +28,10 @@ function Teacher({userdata}) {
     navigate("/editquiz",{state: {userdata, editquiz}})  
   }
 
-  
+  const handleClick = () => {
+    navigate('/addquiz', { state: { userdata } });
+  };
+
   useEffect(()=>{
     fetch(base_url+"/quizzes/"+userdata.college)
     .then((res) => res.json())
@@ -23,24 +42,46 @@ function Teacher({userdata}) {
   },[])
   return (
     <div>
-      <Link to="/addquiz" state={{userdata}}> add Quiz</Link>
+      <div className="d-flex justify-content-between align-items-center p-3 mb-0">
+        <h5>Available quizzes by {userdata.college} are: </h5>
+        <Button variant="primary" size="sm" onClick={handleClick}>Add Quiz</Button>
+      </div>
       <hr />
-      <h4>Available quizzes by {userdata.college} are: </h4>
+      <Container>
+      <Row xs={1} md={4} className="g-4">
+        {currentItems.map((q,ind)=>(
 
-      <hr />
-      {quiz.map((q,ind)=>(
-        <div key={ind}>
-          <div>
-          
-        <h2>quiz name: {q.subjectName}</h2>
-        <h2>description: {q.description}</h2>
-        {q.setBy===userdata.email?<button onClick={editQuiz} value={JSON.stringify(q)}>Edit This quiz</button>:""}
-        <hr/>
-
-        </div>
-        {/* {q.isSetbyTeacher} */}
-        </div>
-      ))}
+          <Col key={ind}>
+          <Card id="allCards" style={{ width: '18rem' }} className = 'h-100'>
+          <Card.Body className="d-flex flex-column">
+            <Card.Title>{q.subjectName}</Card.Title>
+              <Card.Subtitle className="mb-2 text-muted">Set by: {q.setBy}</Card.Subtitle>
+              <Card.Text className="card-text-truncate">
+              Description: {q.description}
+              </Card.Text>
+              {q.setBy===userdata.email && (
+                <div className='mt-auto'>
+                  <ButtonGroup className="w-100">
+                    <Button variant="outline-warning" className="w-50" size="sm" onClick={editQuiz} value={JSON.stringify(q)}>Edit</Button>
+                    <Button variant="outline-danger" className="w-50" size="sm" onClick={editQuiz} value={JSON.stringify(q)}>Delete</Button>
+                  </ButtonGroup>
+                </div>
+              )}
+              </Card.Body>
+          </Card>  
+          </Col>
+        ))}
+      </Row>
+      <Row>
+        <Col className="d-flex justify-content-end mt-3">
+          {quiz.length > indexOfLastItem && (
+            <Button variant="primary" size="sm" onClick={handleSeeMore}>
+              See More
+            </Button>
+          )}
+        </Col>
+      </Row>
+      </Container>
 
     </div>
   )
