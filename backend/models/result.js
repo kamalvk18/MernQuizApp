@@ -19,6 +19,10 @@ const resultSchema = new mongoose.Schema({
     attempt:{
       type: Number,
       default: 1
+    },
+    date: {
+      type: Date,
+      default: Date.now // Set default value to the current date and time
     }
   })
 

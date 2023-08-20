@@ -185,26 +185,50 @@ app.get("/userdata/:email", async (req, res) => {
   }
 })
 
-app.get('/:quizName/get-results', isAuthenticated, async (req, res) => {
+app.get('/:quizName/getTotalMarks', isAuthenticated, async (req, res) => {
   try{
-    // const foundUser = await user.findById(req.user._id);
-    // await foundUser.populate('quizzesAttempted');
-    // const result = foundUser.quizzesAttempted.filter((result) => result.quizName === req.params.quizName);
-    
+   
     const foundQuiz = await quiz.findOne({subjectName: req.params.quizName})
-    // console.log(req.params.quizName,foundQuiz)
-    // result.totalMarks=foundQuiz.totalMarks
-    // if (foundQuiz){
-    //   // const foundQuizResult = await quizResult.findOne({quizName})
-    //   console.log(foundQuiz)
-    // }
     res.status(200).json(foundQuiz.totalMarks)
     
   }catch(err){
     console.log(err)
-    // return res.status(404).json(err)
+   
   }
 })
+app.get('/:quizName/getResults', async (req, res) => {
+  try {
+    const foundQuiz = await quiz.findOne({ subjectName: req.params.quizName });
+    // console.log(req.params.quizName, foundQuiz);
+
+    if (foundQuiz) {
+      const quizName = req.params.quizName; 
+
+      const foundQuizResult = await quizResult.findOne({ quizName })
+        .populate({
+          path: 'studentResults',
+          select: 'studentEmail marksObtained attempt',
+          options: {
+            sort: { marksObtained: -1 }, // Sort by marks in descending order
+            // group: 'studentEmail', // Group by studentEmail
+            // limit: 1 // Limit to 1 document per group (highest score)
+    } })
+    console.log(foundQuizResult)
+      if (foundQuizResult) {
+        res.status(200).json(foundQuizResult);
+      } else {
+        res.status(404).json({ error: 'No quiz results found' });
+      }
+    } else {
+      res.status(404).json({ error: 'Quiz not found' });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 
 app.get("/get-all-quizzes", isAuthenticated, async (req, res) => {
   try{
@@ -223,12 +247,13 @@ app.post("/:quizName/store-result", isAuthenticated, async (req, res) => {
   try{
     const marksObtained = req.body.score
     const {quizName} = req.params
+    const email=req.user.email
     const foundQuiz = await quiz.findOne({subjectName: quizName})
     if (foundQuiz){
       const foundQuizResult = await quizResult.findOne({quizName})
       const studentResult = new result({
         quizName,
-        studentEmail: req.user.email,
+        studentEmail: email,
         marksObtained
       })
       console.log('quiz result Found', foundQuizResult)
@@ -243,7 +268,7 @@ app.post("/:quizName/store-result", isAuthenticated, async (req, res) => {
         })
         await newQuizResult.save()
       }
-      const foundUser = await user.findOne({email: req.user.email})
+      const foundUser = await user.findOne({email})
       await foundUser.populate('quizzesAttempted')
       var maxAttempt = 0;
       foundUser.quizzesAttempted.map((result) => {

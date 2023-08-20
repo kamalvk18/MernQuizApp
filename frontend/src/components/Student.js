@@ -37,17 +37,11 @@ const [quizzes,setquizzes]=useState([])
             // setquizzes(json)
         },[])
         const getTotalMarks=async (quizname,marks)=>{
-          console.log("gg1")
-          const info=await axios.get(base_url+"/"+quizname+"/get-results",{withCredentials:true});
+          // console.log("gg1")
+          // const info=await axios.get(base_url+"/"+quizname+"/getTotalMarks",{withCredentials:true});
           // setMarks(m)
           // setTotal(info.data) 
-          alert("You have secured : "+ marks+"/"+info.data)
-          // const k=
-          // m+=1;
-          // const k=quizname+m;
-          // setKey(quizname+m)
-          // setDisplay({...display,[key]:true})
-          // console.log(display,display[key])
+          // alert("You have secured : "+ marks+"/"+info.data)
         }
         
 

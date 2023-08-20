@@ -90,3 +90,6 @@ Content-Type: application/json
 
 
 }
+###
+
+get http://localhost:5000/haneesh/getResults
