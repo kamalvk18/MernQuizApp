@@ -1,21 +1,36 @@
 import React,{useEffect, useState} from 'react';
 import { useLocation } from "react-router-dom";
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'; // Adjust the import path as needed
 import { Table, Card } from 'react-bootstrap';
-
+import Button from 'react-bootstrap/Button';
 const DisplayQuiz = () => {
   const base_url="http://localhost:5000/"
   const location = useLocation();
-  const quizName = location.state.quizdata.subjectName
-  const description = location.state.quizdata.description
-  const usermail = location.state.userdata.email
-  const username = location.state.userdata.name
+  const userdata=location.state.userdata
+  const quizdata=location.state.quizdata
+  const quizName = quizdata.subjectName
+  const description = quizdata.description
+  const setBy=quizdata.setBy
+  const navigate=useNavigate()
+  const usermail = userdata.email
+  const username = userdata.name
+  console.log(userdata,quizdata)
   //try to fetch quizname and descriptionn from attribute instead of api
   const [results,setResults]=useState([])
   const [leaderboard,setLeaderboard]=useState([])
   const [showAttemptHistory,setShowAttemptHistory]=useState(false)
-  
+  const editQuiz=(e) => {
+      
+    const editquiz=JSON.parse(e.target.value)
+    // console.log("edited",editquiz['subjectName'],editquiz,editquiz.subjectName)
+    // console.log("edited",editquiz,Object.entries(editquiz.split(",")[5]))
+    navigate("/editquiz",{state: {userdata, editquiz}})  
+  }
+  const attemptHere=()=>{
+    navigate("/exam",{state: {userdata, quizdata}})  
+  }
   useEffect(() => {
     const fetchResults = async () => {
       try {
@@ -83,11 +98,40 @@ const DisplayQuiz = () => {
               {quizName && (
                 <>
                   <p><strong>Quiz name:</strong> {quizName}</p>
-                  <p><strong>Description</strong> {description}</p>
-                  <button className="btn btn-primary" onClick={(e)=>setShowAttemptHistory(!showAttemptHistory)}>
+                  <p><strong>Description:</strong> {description}</p>
+                    {/* <Button variant="outline-warning" className="w-50" size="sm" onClick={editQuiz} value={JSON.stringify(q)}>Edit</Button>
+                    <Button variant="outline-danger" className="w-50" size="sm" onClick={editQuiz} value={JSON.stringify(q)}>Delete</Button> */}
+                <div style={{ display: 'flex', flexDirection: 'column' , alignItems: 'center' }}>
+                    {userdata.occupation === "student" ? (
+                      <>
+                        <Button variant="success" className='w-25 mb-2' onClick={attemptHere}>
+                          Attempt here
+                        </Button>
+                        <Button variant="primary" className="w-25" onClick={(e) => setShowAttemptHistory(!showAttemptHistory)}>
+                          View Attempt History
+                        </Button>
+                      </>
+                    ) : usermail===setBy && (
+                      <>
+                        <Button variant="outline-warning" className="w-25 mb-2" size="sm" onClick={editQuiz} value={JSON.stringify(quizdata)}>
+                          Edit
+                        </Button>
+                        <Button variant="outline-danger" className="w-25" size="sm" onClick={editQuiz} value={JSON.stringify(quizdata)}>
+                          Delete
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                  {userdata.occupation === "student" && showAttemptHistory && renderAttemptHistoryTable()}
+
+                 {/* {userdata.occupation=="student" ? (<div><Button variant="success" className='w-25 mb-4' onClick={attemptHere}>
+                    Attempt here
+                  </Button><Button variant="primary" className="w-25 mt-2" onClick={(e)=>setShowAttemptHistory(!showAttemptHistory)}>
                     View Attempt History
-                  </button>
-                  {showAttemptHistory && renderAttemptHistoryTable()}
+                  </Button></div>) : <div><Button variant="outline-warning" className="w-25 mb-4" size="sm" onClick={editQuiz} value={JSON.stringify(quizdata)}>Edit</Button>
+                   <br/>
+                    <Button variant="outline-danger" className="w-25" size="sm" onClick={editQuiz} value={JSON.stringify(quizdata)}>Delete</Button></div>}
+                  {userdata.occupation=="student" && showAttemptHistory && renderAttemptHistoryTable()} */}
                 </>
               )}
             </Card>

@@ -19,13 +19,8 @@ function Teacher({userdata}) {
   const handleSeeMore = () => {
     setCurrentPage(currentPage + 1);
   };
-
-  const editQuiz=(e) => {
-      
-    const editquiz=JSON.parse(e.target.value)
-    // console.log("edited",editquiz['subjectName'],editquiz,editquiz.subjectName)
-    // console.log("edited",editquiz,Object.entries(editquiz.split(",")[5]))
-    navigate("/editquiz",{state: {userdata, editquiz}})  
+  const viewDetails=(quizdata)=>{
+    navigate('/quiz',{state:{quizdata,userdata}})
   }
 
   const handleClick = () => {
@@ -59,14 +54,13 @@ function Teacher({userdata}) {
               <Card.Text className="card-text-truncate">
               Description: {q.description}
               </Card.Text>
-              {q.setBy===userdata.email && (
+              
                 <div className='mt-auto'>
                   <ButtonGroup className="w-100">
-                    <Button variant="outline-warning" className="w-50" size="sm" onClick={editQuiz} value={JSON.stringify(q)}>Edit</Button>
-                    <Button variant="outline-danger" className="w-50" size="sm" onClick={editQuiz} value={JSON.stringify(q)}>Delete</Button>
+                  <Button variant="outline-primary" size="sm" onClick={()=>viewDetails(q)} className='mt-auto w-100'>View details</Button>
                   </ButtonGroup>
                 </div>
-              )}
+              
               </Card.Body>
           </Card>  
           </Col>
