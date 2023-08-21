@@ -1,13 +1,16 @@
 import React,{useEffect, useState} from 'react';
+import { useLocation } from "react-router-dom";
 import axios from 'axios'
 import Navbar from './Navbar'; // Adjust the import path as needed
 import { Table, Card } from 'react-bootstrap';
 
 const DisplayQuiz = () => {
   const base_url="http://localhost:5000/"
-  const quizname="haneesh"
-  const description="this is sample quiz"
-  const usermail="dabbiruhaneesh@gmail.com"
+  const location = useLocation();
+  const quizName = location.state.quizdata.subjectName
+  const description = location.state.quizdata.description
+  const usermail = location.state.userdata.email
+  const username = location.state.userdata.name
   //try to fetch quizname and descriptionn from attribute instead of api
   const [results,setResults]=useState([])
   const [leaderboard,setLeaderboard]=useState([])
@@ -16,7 +19,7 @@ const DisplayQuiz = () => {
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const response = await axios.get(`${base_url}${quizname}/getResults`);
+        const response = await axios.get(`${base_url}${quizName}/getResults`);
         const quizResults = response.data;
         const studentResultsMap = new Map();
 
@@ -42,7 +45,7 @@ const DisplayQuiz = () => {
     };
 
     fetchResults();
-  }, [quizname]);
+  }, [quizName]);
   const renderAttemptHistoryTable = () => {
     return (
       <Table striped bordered hover>
@@ -70,17 +73,17 @@ const DisplayQuiz = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar name = {username} />
       <div className="container">
         <div className="row">
           <div className="col-lg-8 text-center mt-5 mb-4">
           <Card className="p-4 shadow">
               <h2>Quiz Details</h2>
               {/* Render quiz details */}
-              {quizname && (
+              {quizName && (
                 <>
-                  <p><strong>{quizname}</strong> {/* Add the quiz name here */}</p>
-                  <p><strong>{description}</strong> {/* Add the quiz description here */}</p>
+                  <p><strong>Quiz name:</strong> {quizName}</p>
+                  <p><strong>Description</strong> {description}</p>
                   <button className="btn btn-primary" onClick={(e)=>setShowAttemptHistory(!showAttemptHistory)}>
                     View Attempt History
                   </button>
@@ -94,24 +97,24 @@ const DisplayQuiz = () => {
           <div className="col-lg-4 text-center mt-4"> {/* Add margin to move it down */}
             <h2>Leaderboard</h2>
             <Table striped bordered hover>
-            <thead>
-        <tr>
-          <th>Student Email</th>
-          <th>Marks Obtained</th>
-        </tr>
-      </thead>
-      <tbody>
-        {leaderboard.map(result => (
-          <tr key={result._id}>
-            <td>{result.studentEmail}</td>
-            <td>{result.marksObtained}</td>
-          </tr>
-        ))}
-      </tbody>
+              <thead>
+                <tr>
+                  <th>Student Email</th>
+                  <th>Marks Obtained</th>
+                </tr>
+              </thead>
+              <tbody>
+                {leaderboard.map(result => (
+                  <tr key={result._id}>
+                    <td>{result.studentEmail}</td>
+                    <td>{result.marksObtained}</td>
+                  </tr>
+                ))}
+              </tbody>
             </Table>
           </div>
         </div>
-      </div>
+          </div>
     </div>
   );
 }
