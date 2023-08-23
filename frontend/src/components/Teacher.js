@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 
-function Teacher({userdata}) {
+function Teacher({userdata, searchQuery}) {
   const base_url="http://localhost:5000"
   const navigate=useNavigate()
   const [quiz,setquiz]=useState([])
@@ -15,6 +15,10 @@ function Teacher({userdata}) {
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastItem = currentPage * itemsPerPage;
   const currentItems = quiz.slice(0, indexOfLastItem);
+
+  const filteredQuizzes = quiz.filter(q =>
+    q.subjectName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleSeeMore = () => {
     setCurrentPage(currentPage + 1);
@@ -35,6 +39,7 @@ function Teacher({userdata}) {
         setquiz(json)
     })
   },[])
+  
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center p-3 mb-0">
@@ -44,7 +49,7 @@ function Teacher({userdata}) {
       <hr />
       <Container>
       <Row xs={1} md={4} className="g-4">
-        {currentItems.map((q,ind)=>(
+        {(filteredQuizzes || currentItems).map((q,ind)=>(
 
           <Col key={ind}>
           <Card id="allCards" style={{ width: '18rem' }} className = 'h-100'>

@@ -11,7 +11,9 @@ const HomePage=()=> {
   const navigate=useNavigate()
   const data = location.state;
   const [userdata,setUserdata]=useState([])
+  const [searchQuery, setSearchQuery] = useState('');
   const base_url="http://localhost:5000"
+
   useEffect(()=>{
     fetch(base_url+"/userdata/"+data.email)
     .then((res) => res.json())
@@ -24,10 +26,10 @@ const HomePage=()=> {
   return (
     
     <div>
-      <Navbar name = {userdata.name}/>
+      <Navbar name = {userdata.name} searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
       <Container>
-      {userdata && userdata.occupation==="teacher" &&  <Teacher userdata={userdata}/>}
-      {userdata && userdata.occupation==="student" &&  <Student userdata={userdata}/>}
+      {userdata && userdata.occupation==="teacher" &&  <Teacher userdata={userdata} searchQuery={searchQuery}/>}
+      {userdata && userdata.occupation==="student" &&  <Student userdata={userdata} searchQuery={searchQuery}/>}
       {/* {display && <h1>Add quiz </h1> } */}
       {/* u should load all the quizzes which matches with college name  */}
       </Container>

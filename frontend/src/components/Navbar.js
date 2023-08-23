@@ -4,10 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 
-const CustomNavbar = (props) => {
+const CustomNavbar = ({name, searchQuery, setSearchQuery}) => {
   const base_url = "http://localhost:5000"
   const navigate=useNavigate()
-  const name = props.name;
 
   const logOut = async () =>{
     const res = await axios.get(base_url+"/logout" , { withCredentials: true })
@@ -39,6 +38,8 @@ const CustomNavbar = (props) => {
             className="me-2"
             aria-label="Search"
             id = "form-search"
+            value={searchQuery}
+            onChange={e => setSearchQuery(e.target.value)}
           />
           <Button variant="outline-light" className="text-white">Search</Button>
         </Form>
