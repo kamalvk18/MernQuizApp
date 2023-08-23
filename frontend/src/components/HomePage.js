@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from "react-router-dom";
-import Teacher from './Teacher';
-import Student from './Student';
-import axios from 'axios';
+import { useLocation } from "react-router-dom";
+import User from './User';
 import Container from 'react-bootstrap/Container';
 import Navbar from './Navbar';
 
 const HomePage=()=> {
   const location = useLocation();
-  const navigate=useNavigate()
   const data = location.state;
   const [userdata,setUserdata]=useState([])
   const [searchQuery, setSearchQuery] = useState('');
@@ -27,11 +24,8 @@ const HomePage=()=> {
     
     <div>
       <Navbar name = {userdata.name} searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
-      <Container>
-      {userdata && userdata.occupation==="teacher" &&  <Teacher userdata={userdata} searchQuery={searchQuery}/>}
-      {userdata && userdata.occupation==="student" &&  <Student userdata={userdata} searchQuery={searchQuery}/>}
-      {/* {display && <h1>Add quiz </h1> } */}
-      {/* u should load all the quizzes which matches with college name  */}
+      <Container>  
+      {userdata && <User userdata={userdata} searchQuery={searchQuery}/>}
       </Container>
     </div>
   )
