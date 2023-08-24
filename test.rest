@@ -93,3 +93,7 @@ Content-Type: application/json
 ###
 
 get http://localhost:5000/haneesh/getResults
+
+
+###
+get http://localhost:5000/delete/64e1f7fd105057a255bfeb26

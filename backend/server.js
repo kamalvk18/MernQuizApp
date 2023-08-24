@@ -425,6 +425,17 @@ app.get('/logout', isAuthenticated, async (req, res) => {
     }
   });
 })
+app.get("/delete/:quizid",async (req,res)=>{
+  let quiz_id=req.params.quizid
+  try{
+ const result=await quiz.deleteOne({_id:quiz_id})
+  const remaining=await quiz.find({})
+  res.status(200).json({message:"deleted",remaining})
+  }
+  catch(err){
+    res.status(500).json({ message: 'Please check again' });
+  }
+})
 
 // mongoose.connect()
 app.listen(5000,(req,res)=>{

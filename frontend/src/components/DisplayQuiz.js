@@ -10,6 +10,7 @@ const DisplayQuiz = () => {
   const location = useLocation();
   const userdata=location.state.userdata
   const quizdata=location.state.quizdata
+  const quiz_id=quizdata._id
   const quizName = quizdata.subjectName
   const description = quizdata.description
   const setBy=quizdata.setBy
@@ -24,9 +25,17 @@ const DisplayQuiz = () => {
   const editQuiz=(e) => {
       
     const editquiz=JSON.parse(e.target.value)
-    // console.log("edited",editquiz['subjectName'],editquiz,editquiz.subjectName)
-    // console.log("edited",editquiz,Object.entries(editquiz.split(",")[5]))
     navigate("/editquiz",{state: {userdata, editquiz}})  
+  }
+  const deleteQuiz= async ()=>{
+    try {
+      console.log("deleted!")
+      await axios.get(`${base_url}delete/${quiz_id}`);
+      navigate("/main",{state: {email:setBy}}) 
+    }
+    catch(err){
+      console.log("error:"+ err)
+    }
   }
   const attemptHere=()=>{
     navigate("/exam",{state: {userdata, quizdata}})  
@@ -88,7 +97,7 @@ const DisplayQuiz = () => {
 
   return (
     <div>
-      <Navbar name = {username} />
+      <Navbar name = {username} email={usermail} />
       <div className="container">
         <div className="row">
           <div className="col-lg-8 text-center mt-5 mb-4">
@@ -116,7 +125,7 @@ const DisplayQuiz = () => {
                         <Button variant="outline-warning" className="w-25 mb-2" size="sm" onClick={editQuiz} value={JSON.stringify(quizdata)}>
                           Edit
                         </Button>
-                        <Button variant="outline-danger" className="w-25" size="sm" onClick={editQuiz} value={JSON.stringify(quizdata)}>
+                        <Button variant="outline-danger" className="w-25" size="sm" onClick={deleteQuiz} value={JSON.stringify(quizdata)}>
                           Delete
                         </Button>
                       </>

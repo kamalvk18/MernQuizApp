@@ -1,10 +1,9 @@
 
 Things to handle:
-1)search feature
-2)the cards which are used in student and teacher are same so i guess we can move the common code to a seperate component.
-3)create a settings component and also create ui for that where can edit username,password etc 
-4)for teacher,quiz delete feature make it work
-5) when clicked on home in the navbar it should redirect to the home page!
+
+3)create a settings component and also create ui for that where can edit username,password etc (todo)
+4)for teacher,quiz delete feature make it work (done!)
+5) when clicked on home in the navbar it should redirect to the home page(done!)
 
 
 

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 
-const CustomNavbar = ({name, searchQuery, setSearchQuery}) => {
+const CustomNavbar = ({name, email,searchQuery, setSearchQuery}) => {
   const base_url = "http://localhost:5000"
   const navigate=useNavigate()
 
@@ -26,7 +26,8 @@ const CustomNavbar = ({name, searchQuery, setSearchQuery}) => {
           style={{ maxHeight: '100px' }}
           navbarScroll
         >
-          <Nav.Link href="#action1" className="text-white">Home</Nav.Link>
+          <span className="nav-link text-white" onClick={() => navigate("/main",{state: {email}}) }>Home</span>
+          {/* <Nav.Link href="#action1" className="text-white">Home</Nav.Link> */}
         </Nav>
         <Navbar.Text style={{marginRight:'5px'}} className="text-white">
           Hi, {name}!

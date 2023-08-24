@@ -23,7 +23,7 @@ const HomePage=()=> {
   return (
     
     <div>
-      <Navbar name = {userdata.name} searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <Navbar name = {userdata.name} email={userdata.emmail} searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
       <Container>  
       {userdata && <User userdata={userdata} searchQuery={searchQuery}/>}
       </Container>
