@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 
-const CustomNavbar = ({name, email,searchQuery, setSearchQuery}) => {
+const CustomNavbar = ({name, email, college, phone, searchQuery, setSearchQuery}) => {
   const base_url = "http://localhost:5000"
   const navigate=useNavigate()
 
@@ -13,6 +13,10 @@ const CustomNavbar = ({name, email,searchQuery, setSearchQuery}) => {
     if (res.status === 200){
       navigate('/')
     }
+  }
+
+  const Settings = () =>{
+    navigate('/settings', {state: {name, email, college, phone}})
   }
 
   return (
@@ -46,7 +50,7 @@ const CustomNavbar = ({name, email,searchQuery, setSearchQuery}) => {
         </Form>
         <Nav>
         <NavDropdown title={<img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/user--v1.png" alt="user--v1" style={{ filter: 'brightness(0) invert(1)' }}/>} id="basic-nav-dropdown" align="end">
-          <NavDropdown.Item href="#settings">Settings</NavDropdown.Item>
+          <NavDropdown.Item onClick={Settings}>Settings</NavDropdown.Item>
           <NavDropdown.Divider />
           <NavDropdown.Item onClick={logOut}>Logout</NavDropdown.Item>
         </NavDropdown>

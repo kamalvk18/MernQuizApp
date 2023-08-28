@@ -18,12 +18,17 @@ const HomePage=()=> {
         setUserdata(json[0])
     })
   },[])
-
   // console.log(userdata)
   return (
     
     <div>
-      <Navbar name = {userdata.name} email={userdata.emmail} searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
+      <Navbar name = {userdata.name}
+              email={userdata.email}
+              college = {userdata.college} 
+              phone = {userdata.phone}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+      />
       <Container>  
       {userdata && <User userdata={userdata} searchQuery={searchQuery}/>}
       </Container>

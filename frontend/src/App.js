@@ -10,6 +10,7 @@ import Writequiz from './components/Writequiz';
 import PrivateRoute from './components/PrivateRoute';
 import EditQuiz from './components/EditQuiz';
 import DisplayQuiz from './components/DisplayQuiz';
+import Settings from './components/Settings';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
       <Route exact path='/exam' element={< Writequiz/>} />
       <Route exact path='/editquiz' element={< EditQuiz/>} />
       <Route exact path='/quiz' element={< DisplayQuiz/>} />
+      <Route exact path='/settings' element={< Settings/>} />
       </Routes>
       </Router>
 
