@@ -343,11 +343,12 @@ app.post("/login",passport.authenticate('custom', { failureRedirect: '/login' })
 //   var ObjectId = (mongoose.Types.ObjectId);
 //   return new ObjectId(this.toString());
 // };
-app.post('/edit/:quesid',isTeacher, async (req,res)=>{
+app.post('/:quesid/edit/',isTeacher, async (req,res)=>{
   const ques_id=req.params.quesid
   const {question,a,b,c,d,key,quiz_id}=req.body
-  const foundQuiz = quiz.findById(quiz_id)
-  if (foundQuiz.setBy === req.user.email){
+  const foundQuiz = await quiz.findById(quiz_id)
+  console.log(foundQuiz)
+  if (foundQuiz && foundQuiz.setBy === req.user.email){
     const new_options = [
       { option: a, isAnswer: key==="1" },
       { option: b, isAnswer: key==="2" },
@@ -355,66 +356,60 @@ app.post('/edit/:quesid',isTeacher, async (req,res)=>{
       { option: d, isAnswer: key==="4" },
     ];
     
-    // console.log(options,question,ques_id.toObjectId(),mongoose.Types.ObjectId.createFromHexString(ques_id))
     try {
-      // console.log(ques_id,quiz_id)
       if(ques_id!=="undefined"){
-      console.log("gud la petuko")
-      const result = await quiz.updateOne(
-        { 'questions._id': mongoose.Types.ObjectId.createFromHexString(ques_id) }, // Query to match documents that have the 'options' field in the 'questions' array
-        {
-          $set: {
-            'questions.$.question': question, // Update the 'question' field in all elements of the 'questions' array
-            'questions.$.options': new_options, // Update the 'options' field in all elements of the 'questions' array
-          },
-        },
-        { new: true }
-      );
-
-      if (result){
-        console.log(result)
-        res.status(200).json({ message: 'super values are inserted!' });
-      }
-    }
-
-    else{
-      //that means that question is not there in our db and we need to push a new value 
-      console.log("here it is",quiz_id,ques_id,"nulls")
-      try {
-        const newQuestion=[
-
+        const result = await quiz.updateOne(
+          { 'questions._id': mongoose.Types.ObjectId.createFromHexString(ques_id) }, // Query to match documents that have the 'options' field in the 'questions' array
           {
-            
-            question:question,
-          options:new_options}
-        ]
-        // Find the quiz by its _id (quizId) and push the new question into the questions array
-        const updatedQuiz = await quiz.findOneAndUpdate(
-          { _id: quiz_id },
-          { $push: { questions: newQuestion },
-          $inc: { totalMarks: 1 } },
+            $set: {
+              'questions.$.question': question, // Update the 'question' field in all elements of the 'questions' array
+              'questions.$.options': new_options, // Update the 'options' field in all elements of the 'questions' array
+            },
+          },
           { new: true }
         );
-        if (updatedQuiz) {
-          console.log('New question inserted into the quiz:', updatedQuiz);
-          res.status(200).json({ message: 'new ques is added into db!' });
-        } else {
-          console.log('Quiz not found or question not inserted.');
-          res.status(500).json({ message: 'Please check again' });
+
+        if (result){
+          console.log(result)
+          res.status(200).json({ message: 'super values are inserted!' });
         }
-      } catch (error) {
-        console.error('Error inserting new question:', error);
-        res.status(500).json({ message: 'Please check again' });
       }
-    }
     } catch(err){
-        console.log(err)
-        res.status(500).json({ message: 'Internal server error' });
+      console.log(err)
+      res.status(500).json({ message: 'Internal server error' });
     }
   } else {
     res.status(400).json({message: 'You are not the one who created this quiz!'})
   }
 })
+    
+app.post('/addques/',isTeacher, async (req,res)=>{
+  const {question,a,b,c,d,key,quiz_id}=req.body
+  try {
+    const newQuestion=[{ 
+      question:question,
+      options:new_options
+    }]
+    // Find the quiz by its _id (quizId) and push the new question into the questions array
+    const updatedQuiz = await quiz.findOneAndUpdate(
+      { _id: quiz_id },
+      { $push: { questions: newQuestion },
+      $inc: { totalMarks: 1 } },
+      { new: true }
+    );
+    if (updatedQuiz) {
+      console.log('New question inserted into the quiz:', updatedQuiz);
+      res.status(200).json({ message: 'new ques is added into db!' });
+    } else {
+      console.log('Quiz not found or question not inserted.');
+      res.status(500).json({ message: 'Please check again' });
+    }
+  } catch (error) {
+    console.error('Error inserting new question:', error);
+    res.status(500).json({ message: 'Please check again' });
+  }
+})
+
 app.get('/logout', isAuthenticated, async (req, res) => {
   req.logout((err) => {
     if (err) {
@@ -425,6 +420,7 @@ app.get('/logout', isAuthenticated, async (req, res) => {
     }
   });
 })
+
 app.get("/delete/:quizid",async (req,res)=>{
   let quiz_id=req.params.quizid
   try{

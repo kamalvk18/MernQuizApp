@@ -3,7 +3,7 @@ import './App.css';
 import LandingPage from './components/LandingPage';
 import RegistrationForm from './components/RegistrationForm';
 import LoginForm from './components/LoginForm';
-import Quiz from './components/Quiz';
+import AddQuiz from './components/AddQuiz';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import Writequiz from './components/Writequiz';
@@ -11,7 +11,8 @@ import PrivateRoute from './components/PrivateRoute';
 import EditQuiz from './components/EditQuiz';
 import DisplayQuiz from './components/DisplayQuiz';
 import Settings from './components/Settings';
-
+import Addques from './components/Addques';
+import Editques from './components/Editques'
 function App() {
 
   return (
@@ -24,9 +25,11 @@ function App() {
       <Route exact path='/register' element={<RegistrationForm/>} />
       <Route exact path='/login' element={< LoginForm/>} />
       <Route path="/main" element={<PrivateRoute Component={HomePage} />} />
-      <Route path="/addquiz" element={<PrivateRoute Component={Quiz} />} />
+      <Route path="/addquiz" element={<PrivateRoute Component={AddQuiz} />} />
+      <Route path="/addques" element={<PrivateRoute Component={Addques} />} />
+      <Route path="/editques" element={<PrivateRoute Component={Editques} />} />
       <Route exact path='/exam' element={< Writequiz/>} />
-      <Route exact path='/editquiz' element={< EditQuiz/>} />
+      <Route exact path='/editquiz' element={<PrivateRoute Component={EditQuiz} />} />
       <Route exact path='/quiz' element={< DisplayQuiz/>} />
       <Route exact path='/settings' element={< Settings/>} />
       </Routes>
