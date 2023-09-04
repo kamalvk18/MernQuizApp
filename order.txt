@@ -1,11 +1,7 @@
 
 Things to handle:
 
-3)create a settings component and also create ui for that where can edit username,password etc (todo)
-4)for teacher,quiz delete feature make it work (done!)
-5) when clicked on home in the navbar it should redirect to the home page(done!)
-
-
+2)timestamp when quiz is attempted should also be stored in the database.
 
 
 After everything:

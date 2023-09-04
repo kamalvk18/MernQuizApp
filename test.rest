@@ -97,3 +97,15 @@ get http://localhost:5000/haneesh/getResults
 
 ###
 get http://localhost:5000/delete/64e1f7fd105057a255bfeb26
+
+###
+POST http://localhost:5000/settings/dabbiruhaneesh@gmail.com/
+Content-Type: application/json
+
+{
+       "username":"hds",
+       "pass":"haneesh123",
+       "phone":994495949594
+
+
+}
