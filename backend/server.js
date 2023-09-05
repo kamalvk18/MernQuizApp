@@ -207,7 +207,7 @@ app.get('/:quizName/getResults', async (req, res) => {
       const foundQuizResult = await quizResult.findOne({ quizName })
         .populate({
           path: 'studentResults',
-          select: 'studentEmail marksObtained attempt',
+          select: 'studentEmail marksObtained attempt date',
           options: {
             sort: { marksObtained: -1 }, // Sort by marks in descending order
             // group: 'studentEmail', // Group by studentEmail
@@ -254,7 +254,7 @@ app.post("/:quizName/store-result", isAuthenticated, async (req, res) => {
       const studentResult = new result({
         quizName,
         studentEmail: email,
-        marksObtained
+        marksObtained,
       })
       console.log('quiz result Found', foundQuizResult)
       await studentResult.save()

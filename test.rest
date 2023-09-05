@@ -2,7 +2,7 @@ get http://localhost:5000/login
 
 ###
 
-get http://localhost:5000/userdata/dabbiruhaneesh@gmail.com
+get http://localhost:5000/userdata/dabbiruhaneesh123@gmail.com
 
 ###
 

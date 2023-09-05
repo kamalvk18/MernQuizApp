@@ -79,6 +79,7 @@ const DisplayQuiz = () => {
             <th>Marks</th>
             <th>Attempt Number</th>
             <th>Date</th>
+            <th>Time</th>
           </tr>
         </thead>
         <tbody>
@@ -87,7 +88,13 @@ const DisplayQuiz = () => {
               <td>{index + 1}</td>
               <td>{attempt.marksObtained}</td>
               <td>{attempt.attempt}</td>
-              <td>{new Date().toLocaleDateString()}</td>
+              <td> {new Date(attempt.date).toLocaleDateString('en-GB')}</td>
+              <td>{new Date(attempt.date).toLocaleString('en-GB', {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true,
+                  })
+              }</td>
             </tr>
           ))}
         </tbody>
