@@ -385,6 +385,12 @@ app.post('/:quesid/edit/',isTeacher, async (req,res)=>{
     
 app.post('/addques/',isTeacher, async (req,res)=>{
   const {question,a,b,c,d,key,quiz_id}=req.body
+  const new_options = [
+    { option: a, isAnswer: key==="1" },
+    { option: b, isAnswer: key==="2" },
+    { option: c, isAnswer: key==="3" },
+    { option: d, isAnswer: key==="4" },
+  ];
   try {
     const newQuestion=[{ 
       question:question,

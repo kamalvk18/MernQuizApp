@@ -28,15 +28,18 @@ const EditQuiz = () => {
     },[])
 
     const editQues=(it)=>{
-        // setDescription("worked bro"  )
-        // console.log(options[0].option,q)
-        // const v={1:options[0].option,2:options[1].option,3:options[2].option,4:options[3].option,q:q,key:options[0].isAnswer?1:options[1].isAnswer?2:options[2].isAnswer?3:options[3].isAnswer?4:5}
-        // console.log(v)
-        // setQuesid(question_id)
-        // setques(v)
-        navigate('/editques', {state: {subjectName, description, it, data, quiz_id}})
-
+        navigate('/editques', {state: {subjectName, description, it, data, quiz_id, preserveState: location.state}})
     }
+
+    const addQues=()=>{
+      navigate('/addques', {state: {subjectName, description, userdata: data, isEdit: true, quiz_id, preserveState: location.state}})
+    }
+
+    const getAnswer = (options)=>{
+      const key = options.findIndex((option) => option.isAnswer === true);
+      return key+1
+    }
+
   return (
     <Container style={{width:'1000px'}}>
         {/* {console.log("velyundo00")} */}
@@ -55,7 +58,7 @@ const EditQuiz = () => {
           </Card.Text>
           <div className='d-flex justify-content-between'>
             <Card.Text>
-              Key: {it.key}
+              Key: {getAnswer(it.options)}
             </Card.Text>
             <div class="d-flex gap-1 h-100">
               <Button variant='warning' size='sm' onClick={() => {editQues(it)}}>Edit</Button>
@@ -65,6 +68,7 @@ const EditQuiz = () => {
         </Card.Body>
       </Card>
       ))}
+      <Button variant='primary' size='md' onClick={addQues}>Add</Button>
     </Container>
   )
 }

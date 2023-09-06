@@ -6,6 +6,7 @@ const User = ({userdata, searchQuery}) => {
     const base_url="http://localhost:5000"
     const navigate=useNavigate()
     const [quiz,setquiz]=useState([])
+    const college = userdata.college
     const handleClick = () => {
         navigate('/addquiz', { state: { userdata } });
       };
@@ -13,13 +14,13 @@ const User = ({userdata, searchQuery}) => {
     
       useEffect(()=>{
         // console.log(data)
-        fetch(base_url+"/quizzes/"+userdata.college)
+        fetch(base_url+"/quizzes/"+college)
         .then((res) => res.json())
         .then((json) => {
             console.log(json);
             setquiz(json)
         })
-      },[userdata.college])
+      },[college])
   return (
     <div>
     <div className="d-flex justify-content-between align-items-center p-3 mb-0">

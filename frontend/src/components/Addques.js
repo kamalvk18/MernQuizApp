@@ -7,10 +7,11 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Card from 'react-bootstrap/Card';
 
 // ques,setques,quesid,userdata,quizdata,isEdit
-const Addques = ({quesid, isEdit, quizdata}) => {
+const Addques = () => {
   const location = useLocation();
   const navigate=useNavigate();
-  const {subjectName, description, userdata} = location.state
+  console.log(location.state)
+  const {subjectName, description, userdata, isEdit, quiz_id, preserveState} = location.state
   const [ques,setques]=useState({1:"",2:"",3:"",4:"",q:"",key:""})
   const [display,setDisplay]=useState(false)
   const [totalques,setTotalques]=useState([])
@@ -64,9 +65,9 @@ const Addques = ({quesid, isEdit, quizdata}) => {
       setTimeout(()=>{
         setDisplay(true)
       },1000)
+      setques({1:"",2:"",3:"",4:"",q:"",key:""})
     }
     else{
-      console.log("write logic to edit something",quesid)
       try {
         const response = await axios.post(base_url+'/addques', {
           question:ques.q,
@@ -75,9 +76,14 @@ const Addques = ({quesid, isEdit, quizdata}) => {
           c:ques[3],
           d:ques[4],
           key:ques.key,
-          quiz_id:quizdata._id
+          quiz_id
         }, {withCredentials: true});
-        console.log(response)
+        
+        if(response.status === 200){
+          navigate('/editquiz',
+            {state: {editquiz: preserveState.editquiz, userdata: preserveState.userdata}}
+          )
+        }
     }
       
     catch(err){
@@ -92,8 +98,36 @@ const Addques = ({quesid, isEdit, quizdata}) => {
 
   return (
     <Container style={{width:'1000px'}}>
-    <h3>Quiz: {subjectName}</h3>
-    <h3>Description: {description}</h3>
+    <div className='text-center'>
+      <h3>Quiz: {subjectName}</h3>
+      <h3>Description: {description}</h3>
+    </div>
+    {!isEdit && <div>
+      {totalques.length > 0 && <h4>Available questions:</h4>}
+      {totalques.map((data,index)=>{
+          return(
+            <>
+              <Card className='mb-1'>
+              <Card.Body>
+                <Card.Title>{data[0].q}</Card.Title>
+                <Card.Text>
+                  a. {data[0][1]} <br />
+                  b. {data[0][2]} <br />
+                  c. {data[0][3]} <br />
+                  d. {data[0][4]} <br />
+                </Card.Text>
+                <Card.Text>
+                  Key: {data[0].key}
+                </Card.Text>
+              </Card.Body>
+              </Card>
+            </>
+        )})}
+      {display && <Alert key='success' variant='success'>
+          Added!
+      </Alert>}
+    </div>}
+    <h4>Add question:</h4>
     <Form>
       <FloatingLabel
         controlId="floatingInput"
@@ -169,29 +203,9 @@ const Addques = ({quesid, isEdit, quizdata}) => {
         <option value="3">D</option>
       </Form.Select>
       <Button variant="outline-primary" onClick={addQuestion} className="mb-2" style={{width: '100px'}}>Add</Button>
-      {display && <Alert key='success' variant='success' style={{width: '100px'}}>
-          Added!
-      </Alert>}
-      {totalques.map((data,index)=>{
-        return(
-          <Card className='mb-1'>
-          <Card.Body>
-            <Card.Title>{data[0].q}</Card.Title>
-            <Card.Text>
-              a. {data[0][1]} <br />
-              b. {data[0][2]} <br />
-              c. {data[0][3]} <br />
-              d. {data[0][4]} <br />
-            </Card.Text>
-            <Card.Text>
-              Key: {data[0].key}
-            </Card.Text>
-          </Card.Body>
-        </Card>
-      )})}
-      <div className="d-flex justify-content-end">
+      {!isEdit && <div className="d-flex justify-content-end">
         <Button type='submit' variant="success" onClick={handleSubmit}>Submit</Button>
-      </div>
+      </div>}
     </Form>
     </Container>
   )

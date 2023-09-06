@@ -2,14 +2,12 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom"
 import { Container, Button, Form } from 'react-bootstrap';
-import Alert from 'react-bootstrap/Alert';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Card from 'react-bootstrap/Card';
 
 const Editques = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const {subjectName, description, it, data, quiz_id} = location.state
+    const {subjectName, description, it, data, quiz_id, preserveState} = location.state
     const key = it.options.findIndex((option) => option.isAnswer === true);
     const [ques, setques] = useState({1:it.options[0].option,
                                       2:it.options[1].option,
@@ -30,8 +28,7 @@ const Editques = () => {
                 key: ques.key,
                 quiz_id,
             },{ withCredentials: true });
-            console.log(response)
-            navigate('/main',{state:{email: data.email}})
+            navigate('/editquiz',{state:{editquiz: preserveState.editquiz, userdata: preserveState.userdata}})
         }catch (error) {
           console.error('Error saving quiz:', error.message);
         }
