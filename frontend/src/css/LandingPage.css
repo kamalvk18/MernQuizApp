@@ -147,7 +147,6 @@ height: 8%;
   /* padding:5% 12.5%; */
   position: relative;
   color: white;
-  color:black;
   display: inline-block;
   animation: cursor-blink 0.7s infinite;
 }
