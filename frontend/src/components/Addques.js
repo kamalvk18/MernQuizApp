@@ -15,9 +15,9 @@ const Addques = () => {
   const [ques,setques]=useState({1:"",2:"",3:"",4:"",q:"",key:""})
   const [display,setDisplay]=useState(false)
   const [totalques,setTotalques]=useState([])
+  const [validated, setValidated] = useState(false);
 
   const handleSubmit=async (e,req,res)=>{
-    e.preventDefault()
     const questions=[] 
     totalques.map((data)=>{
       const d=data[0];
@@ -55,158 +55,169 @@ const Addques = () => {
 } 
 
   const base_url="http://localhost:5000"
-  const addQuestion=async ()=>{
-    if(isEdit===undefined){
-      console.log("here in non edit ")
-      const data=[...totalques]
-      data.push([ques])
-      setTotalques(data)
-      console.log(totalques)
-      setTimeout(()=>{
-        setDisplay(true)
-      },1000)
-      setques({1:"",2:"",3:"",4:"",q:"",key:""})
+  const addQuestion=async (event)=>{
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.stopPropagation();
     }
     else{
-      try {
-        const response = await axios.post(base_url+'/addques', {
-          question:ques.q,
-          a:ques[1],
-          b:ques[2],
-          c:ques[3],
-          d:ques[4],
-          key:ques.key,
-          quiz_id
-        }, {withCredentials: true});
-        
-        if(response.status === 200){
-          navigate('/editquiz',
-            {state: {editquiz: preserveState.editquiz, userdata: preserveState.userdata}}
-          )
+      if(isEdit===undefined){
+        console.log("here in non edit ")
+        const data=[...totalques]
+        data.push([ques])
+        setTotalques(data)
+        console.log(totalques)
+        setTimeout(()=>{
+          setDisplay(true)
+        },1000)
+        setques({1:"",2:"",3:"",4:"",q:"",key:""})
+      }
+      else{
+        try {
+          const response = await axios.post(base_url+'/addques', {
+            question:ques.q,
+            a:ques[1],
+            b:ques[2],
+            c:ques[3],
+            d:ques[4],
+            key:ques.key,
+            quiz_id
+          }, {withCredentials: true});
+          
+          if(response.status === 200){
+            navigate('/editquiz',
+              {state: {editquiz: preserveState.editquiz, userdata: preserveState.userdata}}
+            )
+          }
         }
+        catch(err){
+          console.log(err)
+        }
+      }
     }
-      
-    catch(err){
-      console.log(err)
-    }
-    finally{
-      alert("successfully updated!")
-      window.location.reload();
-    }
-    }
+    setValidated(true);
   }
 
   return (
     <Container style={{width:'1000px'}}>
-    <div className='text-center'>
-      <h3>Quiz: {subjectName}</h3>
-      <h3>Description: {description}</h3>
-    </div>
-    {!isEdit && <div>
-      {totalques.length > 0 && <h4>Available questions:</h4>}
-      {totalques.map((data,index)=>{
-          return(
-            <>
-              <Card className='mb-1'>
-              <Card.Body>
-                <Card.Title>{data[0].q}</Card.Title>
-                <Card.Text>
-                  a. {data[0][1]} <br />
-                  b. {data[0][2]} <br />
-                  c. {data[0][3]} <br />
-                  d. {data[0][4]} <br />
-                </Card.Text>
-                <Card.Text>
-                  Key: {data[0].key}
-                </Card.Text>
-              </Card.Body>
-              </Card>
-            </>
-        )})}
-      {display && <Alert key='success' variant='success'>
-          Added!
-      </Alert>}
-    </div>}
-    <h4>Add question:</h4>
-    <Form>
-      <FloatingLabel
-        controlId="floatingInput"
-        label="Question"
-        className="mb-3"
-      >
-        <Form.Control 
-          type="text" 
-          placeholder="Enter question" 
-          value={ques.q}
-          onChange={(e) => setques((prev)=>({...prev,q:e.target.value}))}
-        />
-      </FloatingLabel>
-      <FloatingLabel
-        controlId="floatingInput"
-        label="Option A"
-        className="mb-1"
-      >
-        <Form.Control 
-          type="text" 
-          placeholder="option A" 
-          value={ques[1]} 
-          onChange={(e) => setques((prev)=>({...prev,1:e.target.value}))}
-        />
-      </FloatingLabel>
-      <FloatingLabel
-        controlId="floatingInput"
-        label="Option B"
-        className="mb-1"
-      >
-        <Form.Control 
-          type="text"
-          placeholder="option B"
-          value={ques[2]}
-          onChange={(e) => setques((prev)=>({...prev,2:e.target.value}))}
-        />
-      </FloatingLabel>
-      <FloatingLabel
-        controlId="floatingInput"
-        label="Option C"
-        className="mb-1"
-      >
-        <Form.Control 
-          type="text"
-          placeholder="option C"
-          value={ques[3]}
-          onChange={(e) => setques((prev)=>({...prev,3:e.target.value}))}
-        />
-      </FloatingLabel>
-      <FloatingLabel
-        controlId="floatingInput"
-        label="Option D"
-        className="mb-1"
-      >
-        <Form.Control 
-          type="text"
-          placeholder="option D"
-          value={ques[4]}
-          onChange={(e) => setques((prev)=>({...prev,4:e.target.value}))}
-        />
-      </FloatingLabel>
-      <Form.Select 
-        aria-label="Default select example" 
-        className="mb-1" 
-        style={{width:'100px'}} 
-        value={ques.key}
-        onChange={(e) => setques((prev)=>({...prev,key:e.target.value}))}
-      >
-        <option>Key</option>
-        <option value="1">A</option>
-        <option value="2">B</option>
-        <option value="3">C</option>
-        <option value="3">D</option>
-      </Form.Select>
-      <Button variant="outline-primary" onClick={addQuestion} className="mb-2" style={{width: '100px'}}>Add</Button>
-      {!isEdit && <div className="d-flex justify-content-end">
-        <Button type='submit' variant="success" onClick={handleSubmit}>Submit</Button>
+      <div className='text-center'>
+        <h3>Quiz: {subjectName}</h3>
+        <h3>Description: {description}</h3>
+      </div>
+      {!isEdit && <div>
+        {totalques.length > 0 && <h4>Available questions:</h4>}
+        {totalques.map((data,index)=>{
+            return(
+              <>
+                <Card className='mb-1'>
+                <Card.Body>
+                  <Card.Title>{data[0].q}</Card.Title>
+                  <Card.Text>
+                    a. {data[0][1]} <br />
+                    b. {data[0][2]} <br />
+                    c. {data[0][3]} <br />
+                    d. {data[0][4]} <br />
+                  </Card.Text>
+                  <Card.Text>
+                    Key: {data[0].key}
+                  </Card.Text>
+                </Card.Body>
+                </Card>
+              </>
+          )})}
+        {display && <Alert key='success' variant='success'>
+            Added!
+        </Alert>}
       </div>}
-    </Form>
+      <h4>Add question:</h4>
+      {/* <Form onSubmit={handleSubmit}> */}
+        <Form noValidate validated={validated} onSubmit={addQuestion}>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Question"
+            className="mb-3"
+          >
+            <Form.Control 
+              type="text" 
+              placeholder="Enter question" 
+              value={ques.q}
+              onChange={(e) => setques((prev)=>({...prev,q:e.target.value}))}
+              required
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Option A"
+            className="mb-1"
+          >
+            <Form.Control 
+              type="text" 
+              placeholder="option A" 
+              value={ques[1]} 
+              onChange={(e) => setques((prev)=>({...prev,1:e.target.value}))}
+              required
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Option B"
+            className="mb-1"
+          >
+            <Form.Control 
+              type="text"
+              placeholder="option B"
+              value={ques[2]}
+              onChange={(e) => setques((prev)=>({...prev,2:e.target.value}))}
+              required
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Option C"
+            className="mb-1"
+          >
+            <Form.Control 
+              type="text"
+              placeholder="option C"
+              value={ques[3]}
+              onChange={(e) => setques((prev)=>({...prev,3:e.target.value}))}
+              required
+            />
+          </FloatingLabel>
+          <FloatingLabel
+            controlId="floatingInput"
+            label="Option D"
+            className="mb-1"
+          >
+            <Form.Control 
+              type="text"
+              placeholder="option D"
+              value={ques[4]}
+              onChange={(e) => setques((prev)=>({...prev,4:e.target.value}))}
+              required
+            />
+          </FloatingLabel>
+          <Form.Select 
+            aria-label="Default select example" 
+            className="mb-1" 
+            style={{width:'100px'}} 
+            value={ques.key}
+            onChange={(e) => setques((prev)=>({...prev,key:e.target.value}))}
+            required
+          >
+            <option value="">Key</option>
+            <option value="1">A</option>
+            <option value="2">B</option>
+            <option value="3">C</option>
+            <option value="4">D</option>
+          </Form.Select>
+          <Button type='submit' variant="primary" className="mb-2" style={{width: '100px'}}>Add</Button>
+        </Form>
+        {!isEdit && <div className="d-flex justify-content-end">
+          <Button variant="success" onClick={handleSubmit}>Submit</Button>
+        </div>}
+      {/* </Form> */}
     </Container>
   )
 }

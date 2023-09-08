@@ -416,6 +416,32 @@ app.post('/addques/',isTeacher, async (req,res)=>{
   }
 })
 
+app.post('/:quesid/delete/',isTeacher, async (req,res)=>{
+  const questionId=req.params.quesid
+  const {quiz_id}=req.body
+  const foundQuiz = await quiz.findById(quiz_id)
+  if (foundQuiz && foundQuiz.setBy === req.user.email && questionId){
+    questionObj = new mongoose.Types.ObjectId(questionId)
+    const questionIndex = foundQuiz.questions.findIndex(question => question._id.equals(questionObj));
+
+    if (questionIndex === -1) {
+      console.error(`No question found with ID ${questionId} in quiz ${quiz_id}`);
+      return;
+    }
+  
+    // Remove the question from the questions array
+    foundQuiz.questions.splice(questionIndex, 1);
+    // Save the updated quiz
+    try {
+      await foundQuiz.save();
+      return res.json(foundQuiz.questions);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'An error occurred while saving the quiz.' });
+    }
+  }
+})
+
 app.get('/logout', isAuthenticated, async (req, res) => {
   req.logout((err) => {
     if (err) {

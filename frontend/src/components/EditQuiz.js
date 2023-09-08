@@ -28,7 +28,18 @@ const EditQuiz = () => {
     },[])
 
     const editQues=(it)=>{
-        navigate('/editques', {state: {subjectName, description, it, data, quiz_id, preserveState: location.state}})
+      navigate('/editques', {state: {subjectName, description, it, data, quiz_id, preserveState: location.state}})
+    }
+
+    const deleteQues= async (it)=>{
+      try{
+        const res = await axios.post(base_url+`/${it._id}/delete/`,{
+          quiz_id
+        },{ withCredentials: true })
+        setTotalques(res.data)
+      } catch(err){
+        console.log(`Cannot delete ${it._id} because of ${err}`)
+      }
     }
 
     const addQues=()=>{
@@ -62,7 +73,7 @@ const EditQuiz = () => {
             </Card.Text>
             <div class="d-flex gap-1 h-100">
               <Button variant='warning' size='sm' onClick={() => {editQues(it)}}>Edit</Button>
-              <Button variant='danger' size='sm'>Delete</Button>
+              <Button variant='danger' size='sm' onClick={()=>{deleteQues(it)}}>Delete</Button>
             </div>
           </div>
         </Card.Body>
@@ -72,5 +83,4 @@ const EditQuiz = () => {
     </Container>
   )
 }
-
 export default EditQuiz
