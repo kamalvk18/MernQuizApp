@@ -28,6 +28,7 @@ const HomePage=()=> {
               phone = {userdata.phone}
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
+              isHome={true}
       />
       <Container>  
       {userdata && <User userdata={userdata} searchQuery={searchQuery}/>}

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Navbar, Nav, NavDropdown, Form, FormControl, Button, Container } from 'react-bootstrap';
 import axios from 'axios';
 
-const CustomNavbar = ({name, email, college, phone, searchQuery, setSearchQuery}) => {
+const CustomNavbar = ({name, email, college, phone, searchQuery, setSearchQuery, isHome}) => {
   const base_url = "http://localhost:5000"
   const navigate=useNavigate()
 
@@ -31,12 +31,11 @@ const CustomNavbar = ({name, email, college, phone, searchQuery, setSearchQuery}
           navbarScroll
         >
           <span className="nav-link text-white" onClick={() => navigate("/main",{state: {email}}) }>Home</span>
-          {/* <Nav.Link href="#action1" className="text-white">Home</Nav.Link> */}
         </Nav>
         <Navbar.Text style={{marginRight:'5px'}} className="text-white">
           Hi, {name}!
         </Navbar.Text>
-        <Form className="d-flex">
+        {isHome && <Form className="d-flex">
           <Form.Control
             type="search"
             placeholder="Search"
@@ -47,7 +46,7 @@ const CustomNavbar = ({name, email, college, phone, searchQuery, setSearchQuery}
             onChange={e => setSearchQuery(e.target.value)}
           />
           <Button variant="outline-light" className="text-white">Search</Button>
-        </Form>
+        </Form>}
         <Nav>
         <NavDropdown title={<img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/user--v1.png" alt="user--v1" style={{ filter: 'brightness(0) invert(1)' }}/>} id="basic-nav-dropdown" align="end">
           <NavDropdown.Item onClick={Settings}>Settings</NavDropdown.Item>
