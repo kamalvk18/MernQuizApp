@@ -56,7 +56,7 @@ const Writequiz = () => {
             <div key={idx}>
             <input type="radio" value={idx1+" "+idx} name={item._id} /> 
              <span>{op.option}</span> 
-        </div>  
+        </div>
         ))}
         </div>
       ))}

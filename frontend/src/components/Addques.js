@@ -130,94 +130,94 @@ const Addques = () => {
             Added!
         </Alert>}
       </div>}
+      
       <h4>Add question:</h4>
-      {/* <Form onSubmit={handleSubmit}> */}
-        <Form noValidate validated={validated} onSubmit={addQuestion}>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Question"
-            className="mb-3"
-          >
-            <Form.Control 
-              type="text" 
-              placeholder="Enter question" 
-              value={ques.q}
-              onChange={(e) => setques((prev)=>({...prev,q:e.target.value}))}
-              required
-            />
-          </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Option A"
-            className="mb-1"
-          >
-            <Form.Control 
-              type="text" 
-              placeholder="option A" 
-              value={ques[1]} 
-              onChange={(e) => setques((prev)=>({...prev,1:e.target.value}))}
-              required
-            />
-          </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Option B"
-            className="mb-1"
-          >
-            <Form.Control 
-              type="text"
-              placeholder="option B"
-              value={ques[2]}
-              onChange={(e) => setques((prev)=>({...prev,2:e.target.value}))}
-              required
-            />
-          </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Option C"
-            className="mb-1"
-          >
-            <Form.Control 
-              type="text"
-              placeholder="option C"
-              value={ques[3]}
-              onChange={(e) => setques((prev)=>({...prev,3:e.target.value}))}
-              required
-            />
-          </FloatingLabel>
-          <FloatingLabel
-            controlId="floatingInput"
-            label="Option D"
-            className="mb-1"
-          >
-            <Form.Control 
-              type="text"
-              placeholder="option D"
-              value={ques[4]}
-              onChange={(e) => setques((prev)=>({...prev,4:e.target.value}))}
-              required
-            />
-          </FloatingLabel>
-          <Form.Select 
-            aria-label="Default select example" 
-            className="mb-1" 
-            style={{width:'100px'}} 
-            value={ques.key}
-            onChange={(e) => setques((prev)=>({...prev,key:e.target.value}))}
+
+      <Form noValidate validated={validated} onSubmit={addQuestion}>
+        <FloatingLabel
+          controlId="floatingInput"
+          label="Question"
+          className="mb-3"
+        >
+          <Form.Control 
+            type="text" 
+            placeholder="Enter question" 
+            value={ques.q}
+            onChange={(e) => setques((prev)=>({...prev,q:e.target.value}))}
             required
-          >
-            <option value="">Key</option>
-            <option value="1">A</option>
-            <option value="2">B</option>
-            <option value="3">C</option>
-            <option value="4">D</option>
-          </Form.Select>
-          <Button type='submit' variant="primary" className="mb-2" style={{width: '100px'}}>Add</Button>
-        </Form>
-        {!isEdit && <div className="d-flex justify-content-end">
-          <Button variant="success" onClick={handleSubmit}>Submit</Button>
-        </div>}
-      {/* </Form> */}
+          />
+        </FloatingLabel>
+        <FloatingLabel
+          controlId="floatingInput"
+          label="Option A"
+          className="mb-1"
+        >
+          <Form.Control 
+            type="text" 
+            placeholder="option A" 
+            value={ques[1]} 
+            onChange={(e) => setques((prev)=>({...prev,1:e.target.value}))}
+            required
+          />
+        </FloatingLabel>
+        <FloatingLabel
+          controlId="floatingInput"
+          label="Option B"
+          className="mb-1"
+        >
+          <Form.Control 
+            type="text"
+            placeholder="option B"
+            value={ques[2]}
+            onChange={(e) => setques((prev)=>({...prev,2:e.target.value}))}
+            required
+          />
+        </FloatingLabel>
+        <FloatingLabel
+          controlId="floatingInput"
+          label="Option C"
+          className="mb-1"
+        >
+          <Form.Control 
+            type="text"
+            placeholder="option C"
+            value={ques[3]}
+            onChange={(e) => setques((prev)=>({...prev,3:e.target.value}))}
+            required
+          />
+        </FloatingLabel>
+        <FloatingLabel
+          controlId="floatingInput"
+          label="Option D"
+          className="mb-1"
+        >
+          <Form.Control 
+            type="text"
+            placeholder="option D"
+            value={ques[4]}
+            onChange={(e) => setques((prev)=>({...prev,4:e.target.value}))}
+            required
+          />
+        </FloatingLabel>
+        <Form.Select 
+          aria-label="Default select example" 
+          className="mb-1" 
+          style={{width:'100px'}} 
+          value={ques.key}
+          onChange={(e) => setques((prev)=>({...prev,key:e.target.value}))}
+          required
+        >
+          <option value="">Key</option>
+          <option value="1">A</option>
+          <option value="2">B</option>
+          <option value="3">C</option>
+          <option value="4">D</option>
+        </Form.Select>
+        <Button type='submit' variant="primary" className="mb-2" style={{width: '100px'}}>Add</Button>
+      </Form>
+      {!isEdit && <div className="d-flex justify-content-end">
+        <Button variant="success" onClick={handleSubmit}>Submit</Button>
+      </div>}
     </Container>
   )
 }
