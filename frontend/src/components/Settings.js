@@ -13,29 +13,36 @@ const Settings = () => {
   const [password, setPassword] = useState("");
   const [number, setNumber] = useState(phone);
   const [error, setError] = useState(null);
+  const [validated, setValidated] = useState(false);
 
   const changeValues = async (e) => {
-    e.preventDefault(); // Prevent form submission behavior
-
-    try {
-      // Send a POST request to update user settings
-      const response = await axios.post(base_url + "/settings/" + email, {
-        username,
-        pass: password,
-        phone,
-      });
-
-      // Check the response status for success
-      if (response.status === 200) {
-        // Successfully updated settings, navigate to the main page
-        navigate("/main", { state: { email } });
-      } else {
+    const form = e.currentTarget;
+    e.preventDefault()
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    }
+    else {
+      try {
+        // Send a POST request to update user settings
+        const response = await axios.post(base_url + "/settings/" + email, {
+          username,
+          pass: password,
+          phone,
+        });
+  
+        // Check the response status for success
+        if (response.status === 200) {
+          // Successfully updated settings, navigate to the main page
+          navigate("/main", { state: { email } });
+        } else {
+          setError("Failed to update settings. Please try again.");
+        }
+      } catch (err) {
+        console.error("Error updating settings:", err);
         setError("Failed to update settings. Please try again.");
       }
-    } catch (err) {
-      console.error("Error updating settings:", err);
-      setError("Failed to update settings. Please try again.");
     }
+    setValidated(true); 
   };
 
   return (
@@ -48,7 +55,7 @@ const Settings = () => {
         height: "100vh",
       }}
     >
-      <Form style={{ width: "300px" }}>
+      <Form noValidate validated={validated} onSubmit={changeValues} style={{ width: "300px" }}>
         {error && <Alert variant="danger">{error}</Alert>}
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Username</Form.Label>
@@ -56,6 +63,7 @@ const Settings = () => {
             type="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
           />
         </Form.Group>
 
@@ -65,6 +73,7 @@ const Settings = () => {
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </Form.Group>
 
@@ -95,7 +104,7 @@ const Settings = () => {
           <Form.Control value={college} disabled />
         </Form.Group>
 
-        <Button variant="primary" type="submit" onClick={changeValues}>
+        <Button variant="primary" type="submit">
           Submit
         </Button>
       </Form>

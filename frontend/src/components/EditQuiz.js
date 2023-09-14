@@ -11,6 +11,7 @@ const EditQuiz = () => {
     const location=useLocation()
     const base_url="http://localhost:5000"
     const data=location.state.userdata
+    const email = data.email
     const quiz=location.state.editquiz
     const quiz_id=quiz._id
     const navigate=useNavigate();
@@ -51,6 +52,10 @@ const EditQuiz = () => {
       return key+1
     }
 
+    const goBack = () =>{
+      navigate('/main',{state:{email}})
+    }
+
   return (
     <Container style={{width:'1000px'}}>
         {/* {console.log("velyundo00")} */}
@@ -79,7 +84,8 @@ const EditQuiz = () => {
         </Card.Body>
       </Card>
       ))}
-      <Button variant='primary' size='md' onClick={addQues}>Add</Button>
+      <Button variant='primary' size='md' onClick={addQues} className='mb-2'>Add</Button>
+      <Button variant='outline-success' size='sm' onClick={goBack} className='mb-2 d-block'>Back</Button>
     </Container>
   )
 }

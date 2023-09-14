@@ -8,6 +8,7 @@ const Editques = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const {subjectName, description, it, data, quiz_id, preserveState} = location.state
+    const email = data.email
     const key = it.options.findIndex((option) => option.isAnswer === true);
     const [ques, setques] = useState({1:it.options[0].option,
                                       2:it.options[1].option,
@@ -34,6 +35,10 @@ const Editques = () => {
         }
     }
 
+    const goBack = () =>{
+        navigate('/editquiz',{state:{editquiz: preserveState.editquiz, userdata: preserveState.userdata}})
+    }
+    
     return(
         <Container style={{width:'1000px'}}>
             <div className='text-center'>
@@ -114,8 +119,9 @@ const Editques = () => {
                     <option value="3">C</option>
                     <option value="4">D</option>
                 </Form.Select>
-                <Button variant="outline-primary" onClick={() => {editQuestion(it._id)}} size='sm' style={{width: '100px'}}>Submit</Button>
+                <Button variant="primary" onClick={() => {editQuestion(it._id)}} size='sm' className='mb-2' style={{width: '100px'}}>Submit</Button>
             </Form>
+            <Button variant='outline-success' size='sm' onClick={goBack} className='mb-2 d-block'>Back</Button>
         </Container>
     )
 }
