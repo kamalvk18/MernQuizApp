@@ -1,0 +1,159 @@
+.centered-box {
+  width: 1200px; /* Set the desired width */
+  background-color: #fff; /* Background color for the box */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Box shadow to create the shadow effect */
+  border-radius: 5px; /* Optional: Add rounded corners */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto; /* Center the box horizontally */
+  margin-top: 170px; /* Adjust the top margin to position the box lower */
+  flex-direction: column; /* Stack child elements vertically */
+  padding: 26px; /* Optional: Add padding to the box */
+}
+
+
+.question-card,
+.options-card{
+  margin: 10px;
+  padding: 10px;
+  width:1000px;
+  /* border: 1px solid #ccc; */
+  background-color: #fff;
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+}
+
+/* Style radio buttons as needed */
+label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.action-buttons{
+  float:right;
+  margin:20px;
+  margin-right: 40px;
+  
+  
+}
+.btn-primary{
+  margin: 20px;
+}
+/* .next-button,
+.submit-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  margin:15px;
+  margin-top: 10px;
+
+  cursor: pointer;
+}
+
+.next-button:hover,
+.submit-button:hover {
+  background-color: #0056b3;
+} */
+/* Style radio buttons and increase their size */
+/* Style the options with a black border by default */
+/* Style the option cards */
+.option-card {
+  border: 2px solid #000;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Add a smooth transition for background color */
+  transition-property: transform; /* Add animation to the transform property */
+  transition-duration: 0.2s; /* Duration of the animation */
+  transition-timing-function: ease-in-out; /* Easing function for smooth animation */
+}
+
+/* Style the selected option card */
+.option-card.selected {
+  border: 2px solid #007bff;
+  background-color: #f0f0f0; /* Add a background color for the selected option */
+  transform: translateY(-5px); /* Move the card up by 5px when selected */
+}
+
+/* Style card content (option text) */
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Style cool graphics section */
+.cool-graphics {
+  font-size: 24px;
+  color: #007bff; /* Color for cool graphics */
+}
+
+/* Style the countdown timer */
+/* Style the countdown timer */
+.timer {
+  font-size: 24px;
+  text-align: center;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: color 0.3s ease, transform 0.3s ease; /* Add transitions for color and transform */
+}
+
+/* Style the countdown timer when it's red */
+.timer.red {
+  color: red;
+}
+
+/* Style the countdown animation */
+.countdown-animation {
+  animation: moveUpDown 0.5s infinite alternate; /* Add the default up-and-down animation */
+}
+
+/* Define the moveUpDown animation */
+@keyframes moveUpDown {
+  0% {
+    transform: translateY(-2px); /* Move up by 2 pixels */
+  }
+  100% {
+    transform: translateY(2px); /* Move down by 2 pixels */
+  }
+}
+
+/* Add shake animation for the timer when it's red */
+.timer-count.shake {
+  animation: shake 0.5s infinite; /* Shake animation for the last 5 seconds */
+}
+
+/* Define the shake animation */
+@keyframes shake {
+  0% {
+    transform: translateX(-2px); /* Move left by 2 pixels */
+  }
+  25% {
+    transform: translateX(2px); /* Move right by 2 pixels */
+  }
+  50% {
+    transform: translateX(-2px); /* Move left by 2 pixels */
+  }
+  75% {
+    transform: translateX(2px); /* Move right by 2 pixels */
+  }
+  100% {
+    transform: translateX(-2px); /* Move left by 2 pixels */
+  }
+}
+

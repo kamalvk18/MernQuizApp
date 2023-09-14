@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation,useNavigate } from 'react-router-dom'
+import CenteredBox from './CenteredBox'
 import axios from 'axios'
+import DisplayQues from './DisplayQues'
 const Writequiz = () => {
     const location=useLocation()
     const navigate=useNavigate()
@@ -46,24 +48,11 @@ const Writequiz = () => {
     }
     return (
     <div>
-      you can write here!
         {/* <form onClick={submitQuiz}> */}
-      {data.questions.map((item,idx1)=>(
-        <div key={idx1} onChange={onChangeValue}>
-            <label htmlFor={item._id}><h1>{item.question}</h1></label>
-        
-        {item.options.map((op,idx)=>(
-            <div key={idx}>
-            <input type="radio" value={idx1+" "+idx} name={item._id} /> 
-             <span>{op.option}</span> 
-        </div>  
-        ))}
+        <DisplayQues questions={data.questions}/>
         </div>
-      ))}
-      <button type="submit" onClick={submitQuiz}>Submit</button>
-      {/* </form> */}
-
-    </div>
+        
+    // </div>
   )
 }
 

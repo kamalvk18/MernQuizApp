@@ -13,6 +13,8 @@ import DisplayQuiz from './components/DisplayQuiz';
 import Settings from './components/Settings';
 import Addques from './components/Addques';
 import Editques from './components/Editques'
+import DisplayQues from './components/DisplayQues'
+
 function App() {
 
   return (
@@ -31,6 +33,7 @@ function App() {
       <Route exact path='/exam' element={< Writequiz/>} />
       <Route exact path='/editquiz' element={<PrivateRoute Component={EditQuiz} />} />
       <Route exact path='/quiz' element={< DisplayQuiz/>} />
+      <Route exact path='/q' element={< DisplayQues/>} />
       <Route exact path='/settings' element={< Settings/>} />
       </Routes>
       </Router>

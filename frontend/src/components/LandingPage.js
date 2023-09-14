@@ -3,13 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import '../css/LandingPage.css';
-import Particles from "react-tsparticles";
 import { Button } from 'react-bootstrap';  
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
-import { loadFull } from "tsparticles";
-// import Particles from 'react-particles-js';
-// import ParticleBackground from './ParticleBackground';
 import jwtDecode from 'jwt-decode';
 
 const BASE_URL = 'http://localhost:5000';
@@ -22,6 +18,7 @@ const LandingPage = () => {
   const quotes = [
     "The secret of getting ahead is getting started - Mark Twain",
     "Knowledge is power - Francis Bacon",
+    "Knowledge makes you intelligent; experience makes you wiser - Anonymous", 
     "The expert in anything was once a beginner - Helen Hayes",
     "Learning never exhausts the mind - Leonardo da Vinci",
     "The only way to do great work is to love what you do - Steve Jobs"
