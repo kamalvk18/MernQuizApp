@@ -118,21 +118,6 @@ label {
   color: red;
 }
 
-/* Style the countdown animation */
-.countdown-animation {
-  animation: moveUpDown 0.5s infinite alternate; /* Add the default up-and-down animation */
-}
-
-/* Define the moveUpDown animation */
-@keyframes moveUpDown {
-  0% {
-    transform: translateY(-2px); /* Move up by 2 pixels */
-  }
-  100% {
-    transform: translateY(2px); /* Move down by 2 pixels */
-  }
-}
-
 /* Add shake animation for the timer when it's red */
 .timer-count.shake {
   animation: shake 0.5s infinite; /* Shake animation for the last 5 seconds */

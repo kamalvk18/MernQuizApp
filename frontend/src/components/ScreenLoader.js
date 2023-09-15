@@ -14,12 +14,12 @@ const ScreenLoader = ({email}) => {
   })
   return (
     <div className="loader-container">
-    <div className="loader">
-      <div className="loader-circle"></div>
-      <div className="loader-tick"></div>
+      <div className="loader">
+        <div className="loader-circle"></div>
+        <div className="loader-tick"></div>
+      </div>
+      <div className="success-message">{text}</div>
     </div>
-    <div className="success-message">{text}</div>
-  </div>
   );
 };
 
