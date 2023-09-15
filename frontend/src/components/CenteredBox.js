@@ -14,15 +14,19 @@ const Timer = ({ time, isRed }) => (
   </div>
 );
 
-const CenteredBox = ({ questionObject}) => {
+const CenteredBox = ({ questionObject,qno,onChangeValue}) => {
     const question=questionObject.question
   const options=questionObject.options
   const time=questionObject.timeInSec
+
   const [selectedOption, setSelectedOption] = useState(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [timer, setTimer] = useState(time);
 
-  const handleOptionChange = (option) => {
-    setSelectedOption(option === selectedOption ? null : option);
+  const handleOptionChange =(optionIndex) => {
+    setSelectedOption(optionIndex === selectedOption ? null : optionIndex);
+    onChangeValue(qno,optionIndex)
+    // console.log(selectedOption)
   };
 
   useEffect(() => {
@@ -39,6 +43,8 @@ const CenteredBox = ({ questionObject}) => {
   }, [timer]);
 
   return (
+    <>
+
     <div className="centered-box">
       <div className="question-card">
         <h2>{question}</h2>
@@ -48,8 +54,8 @@ const CenteredBox = ({ questionObject}) => {
           {options.map((option, index) => (
             <div
               key={index}
-              className={`option-card ${selectedOption === option.option ? 'selected' : ''}`}
-              onClick={() => handleOptionChange(option.option)}
+              className={`option-card ${selectedOption === index ? 'selected' : ''}`}
+              onClick={() => handleOptionChange(index)}
             >
               <div className="card-content">
                 <h3>{option.option}</h3>
@@ -66,6 +72,15 @@ const CenteredBox = ({ questionObject}) => {
       </div>
       <Timer time={timer} isRed={timer <= 5} />
     </div>
+    <div className="action-buttons">
+        <button className="btn btn-primary" disabled={isButtonDisabled}>
+          Next
+        </button>
+        <button className="btn btn-primary" disabled={isButtonDisabled}>
+          Submit
+        </button>
+      </div>
+    </>
   );
 };
 

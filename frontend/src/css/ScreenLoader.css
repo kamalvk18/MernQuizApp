@@ -1,0 +1,65 @@
+.loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .loader {
+    position: relative;
+    width: 150px; /* Adjust size as needed */
+    height: 150px; /* Adjust size as needed */
+  }
+  
+  .loader-circle {
+    width: 100%;
+    height: 100%;
+    border: 6px solid #ccc; /* Adjust border size as needed */
+    border-top: 6px solid #007bff; /* Change color as needed */
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+    transition: border-top-color 0.5s ease-in-out;
+  }
+  
+  .loader-tick {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 75px; /* Adjust size as needed */
+    height: 40px; /* Adjust size as needed */
+    background-color: transparent;
+    border-left: 8px solid transparent; /* Adjust border size as needed */
+    border-bottom: 8px solid transparent; /* Adjust border size as needed */
+    border-right: 8px solid #007bff; /* Change color as needed */
+    border-top: 8px solid #007bff; /* Change color as needed */
+    animation: tick 0.5s 2.5s forwards ease-in-out;
+  }
+  
+  .success-message {
+    margin-top: 20px; /* Add margin to separate it from the animation */
+    font-size: 18px; /* Adjust font size as needed */
+    font-weight: bold; /* Adjust font weight as needed */
+    color: #333; /* Adjust text color as needed */
+  }
+  
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @keyframes tick {
+    0% {
+      transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1) rotate(-220deg); /* Adjust the angle as needed */
+    }
+  }
+  
