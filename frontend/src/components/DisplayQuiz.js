@@ -120,10 +120,10 @@ const DisplayQuiz = () => {
                 <div style={{ display: 'flex', flexDirection: 'column' , alignItems: 'center' }}>
                     {userdata.occupation === "student" ? (
                       <>
-                        <Button variant="success" className='w-25 mb-2' onClick={attemptHere}>
+                        <Button variant="success" className='w-25' onClick={attemptHere}>
                           Attempt here
                         </Button>
-                        <Button variant="primary" className="w-25" onClick={(e) => setShowAttemptHistory(!showAttemptHistory)}>
+                        <Button variant="primary" className="w-25 mt-2" onClick={(e) => setShowAttemptHistory(!showAttemptHistory)}>
                           View Attempt History
                         </Button>
                       </>

@@ -1,5 +1,5 @@
 import '../css/CenteredBox.css'; // Import your CSS file
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // Custom Timer Component
 const Timer = ({ time, isRed }) => (
@@ -14,33 +14,21 @@ const Timer = ({ time, isRed }) => (
   </div>
 );
 
-const CenteredBox = ({ questionObject,qno,onChangeValue}) => {
-    const question=questionObject.question
+const CenteredBox = ({ questionObject,qno,onChangeValue, timer}) => {
+  const question=questionObject.question
   const options=questionObject.options
-  const time=questionObject.timeInSec
+  const originalTime = questionObject.timeInSec;
+  const savedTimer = parseInt(localStorage.getItem('timer'));
+  const time= !isNaN(savedTimer) ? savedTimer : originalTime;
 
   const [selectedOption, setSelectedOption] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [timer, setTimer] = useState(time);
 
   const handleOptionChange =(optionIndex) => {
     setSelectedOption(optionIndex === selectedOption ? null : optionIndex);
     onChangeValue(qno,optionIndex)
     // console.log(selectedOption)
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (timer > 0) {
-        setTimer(timer - 1);
-      }
-      else{
-        setTimer(time)
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [timer]);
 
   return (
     <>
