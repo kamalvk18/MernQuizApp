@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import User from './User';
 import Container from 'react-bootstrap/Container';
 import Navbar from './Navbar';
+import axios from 'axios'; 
 
 const HomePage=()=> {
   const location = useLocation();
@@ -11,14 +12,21 @@ const HomePage=()=> {
   const [searchQuery, setSearchQuery] = useState('');
   const base_url="http://localhost:5000"
 
-  useEffect(()=>{
-    fetch(base_url+"/userdata/"+data.email)
-    .then((res) => res.json())
-    .then((json) => {
-        setUserdata(json[0])
-    })
-  },[])
-  // console.log(userdata)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${base_url}/userdata/${data.email}`);
+        setUserdata(response.data[0]);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // Retry fetching after 2 seconds if there's some error fetching data.
+        setTimeout(fetchData, 2000);
+      }
+    };
+  
+    fetchData();
+  }, [data.email]);
+
   return (
     
     <div>
@@ -31,7 +39,11 @@ const HomePage=()=> {
               isHome={true}
       />
       <Container>  
-      {userdata && <User userdata={userdata} searchQuery={searchQuery}/>}
+        {userdata !== null ? (
+          <User userdata={userdata} searchQuery={searchQuery} />
+        ) : (
+          <p>Loading...</p>
+        )}
       </Container>
     </div>
   )

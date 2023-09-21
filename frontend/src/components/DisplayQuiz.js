@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'; // Adjust the import path as needed
 import { Table, Card } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import '../css/Popup.css'
+
 const DisplayQuiz = () => {
   const base_url="http://localhost:5000/"
   const location = useLocation();
@@ -17,7 +19,7 @@ const DisplayQuiz = () => {
   const navigate=useNavigate()
   const usermail = userdata.email
   const username = userdata.name
-  console.log(userdata,quizdata)
+
   //try to fetch quizname and descriptionn from attribute instead of api
   const [results,setResults]=useState([])
   const [leaderboard,setLeaderboard]=useState([])
@@ -37,9 +39,34 @@ const DisplayQuiz = () => {
       console.log("error:"+ err)
     }
   }
-  const attemptHere=()=>{
-    navigate("/exam",{state: {userdata, quizdata}})  
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const continueQuiz = () => {
+    navigate("/exam",{state: {userdata, quizdata}})
   }
+
+  const attemptHere=()=>{
+    setIsPopupOpen(true)
+  }
+
+  const renderPopup = () => {
+    if (isPopupOpen){
+      return (
+        <div className="popup">
+          <div className="popup-content">
+            <h2>Warning</h2>
+            <p>Once the quiz is started, you can't go back or reload the page.</p>
+            <p>Do you want to continue?</p>
+            <button className="continueButton" onClick={continueQuiz}>Continue</button>
+            <button className="cancelButton" onClick={() => setIsPopupOpen(false)}>Cancel</button>
+          </div>
+        </div>
+      );
+    }else{
+      return null
+    }
+  }
+
   useEffect(() => {
     const fetchResults = async () => {
       try {
@@ -126,6 +153,7 @@ const DisplayQuiz = () => {
                         <Button variant="primary" className="w-25 mt-2" onClick={(e) => setShowAttemptHistory(!showAttemptHistory)}>
                           View Attempt History
                         </Button>
+                        {renderPopup()}
                       </>
                     ) : usermail===setBy && (
                       <>

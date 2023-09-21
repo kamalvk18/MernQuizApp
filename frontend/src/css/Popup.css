@@ -1,0 +1,56 @@
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+.popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.popup-content h2 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.popup-content p {
+    margin-bottom: 15px;
+    font-size: 1em;
+    color: #555;
+}
+
+.popup-content button {
+    margin: 0 10px;
+    padding: 8px 20px;
+    font-size: 1em;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.popup-content button:focus {
+    outline: none;
+}
+
+.continueButton:hover{
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+.cancelButton:hover {
+    background: #dc3545;
+    color: #fff;
+}
