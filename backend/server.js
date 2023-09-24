@@ -4,15 +4,14 @@ const cors=require('cors')
 const mongoose=require('mongoose')
 const bodyParser=require("body-parser")
 passport = require("passport"),
-passportCustom = require('passport-custom');
-const CustomStrategy = passportCustom.Strategy;
+flash	= require("connect-flash"),
+localStrategy = require("passport-local")
 
 //requiring models
 const result = require('./models/result')
 const quiz = require('./models/quiz')
 const quizResult = require('./models/quizResult')
 const user = require('./models/user')
-const { ObjectId } = mongoose.Types;
 
 mongoose.connect(
     "mongodb+srv://admin:admin143@cluster0.0ggnx.mongodb.net/MernStackQuizApp"
@@ -26,6 +25,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
+app.use(flash());
 
 //Passport configuration
 app.use(require("express-session")({
@@ -37,38 +37,54 @@ app.use(require("express-session")({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new CustomStrategy(
-  async function(req, done) {
-    try {
-      const foundUser = await user.findOne({ email: req.body.email });
-      if (foundUser) {
-        done(null, foundUser);
-      } else {
-        done(null, false);
-      }
-    } catch (err) {
-      done(err);
-    }
-  }
-));
+// passport.use(new CustomStrategy(
+//   async function(req, done) {
+//     try {
+//       const foundUser = await user.findOne({ email: req.body.email });
+//       if (foundUser) {
+//         done(null, foundUser);
+//       } else {
+//         done(null, false);
+//       }
+//     } catch (err) {
+//       done(err);
+//     }
+//   }
+// ));
 
-// Serialize the user
-passport.serializeUser((user, done) => {
-  done(null, user._id);
-});
+// // Serialize the user
+// passport.serializeUser((user, done) => {
+//   done(null, user._id);
+// });
 
-// Deserialize the user
-passport.deserializeUser(async (id, done) => {
-  try {
-    const foundUser = await user.findById(id);
-    if (foundUser) {
-      done(null, foundUser);
-    } else {
-      done(null, false);
-    }
-  } catch (err) {
-    done(err);
-  }
+// // Deserialize the user
+// passport.deserializeUser(async (id, done) => {
+//   try {
+//     const foundUser = await user.findById(id);
+//     if (foundUser) {
+//       done(null, foundUser);
+//     } else {
+//       done(null, false);
+//     }
+//   } catch (err) {
+//     done(err);
+//   }
+// });
+
+//Telling passport to use authenticate method on UserSchema
+passport.use(new localStrategy({
+  usernameField: 'email'
+}, user.authenticate()));
+
+//Serialization means how do we store user in the session
+passport.serializeUser(user.serializeUser());
+passport.deserializeUser(user.deserializeUser());
+
+app.use(function(req,res,next){
+	res.locals.currentUser = req.user;
+	res.locals.error= req.flash("error");
+	res.locals.success=req.flash("success");
+	next();
 });
 
 const isAuthenticated = (req, res, next) => {
@@ -289,37 +305,34 @@ app.post("/:quizName/store-result", isAuthenticated, async (req, res) => {
 
 app.post("/signup",async (req,res)=>{
     try{
-      const { name, email, college,phone,occupation } = req.body;
-      const data= new user({
+      const { name, email, password, college,phone,occupation } = req.body;
+      const userdata= new user({
           name,
           email,
+          password,
           phone,
           college,
           occupation
       })
-      await data.save()
-      await passport.authenticate("custom", { failureRedirect: "/login" })(req, res, async () => {
-        // After successful authentication, manually log in the user
-        req.login(data, (err) => {
-          if (err) return next(err);
-          res.status(200).json({ message: 'User Registered' });
-        });
-      });
+      const registeredUser = await user.register(userdata, req.body.password)
+      req.login(registeredUser, err => {
+        if(err) return next(err);
+        res.status(200).json({ message: 'User Registered' });
+      })
   } catch (error) {
     console.error('Error registering user:', error.message);
     res.status(500).json({ message: 'An error occurred while registering the user.' });
   }
 })
 
-app.post("/login",passport.authenticate('custom', { failureRedirect: '/login' }), async (req,res)=>{
-  try{
-      const { email } = req.body;
-      res.status(200).json({  message: 'User logged in!'  });
-    } catch (error) {
-      console.error('Error logging in:', error);
-      res.status(500).json({ message: 'Internal server error' });
-    }
-})
+app.post("/login", passport.authenticate('local', {
+    failureRedirect: '/login', // Redirect on failure
+    failureFlash: true // Enable flash messages for failure
+  }), (req, res) => {
+    res.status(200).json({ message: 'User logged in!' });
+});
+
+
 // app.get('/edit/:quesid',async (req,res)=>{
 //   const ques_id=req.params.quesid
 //   try{

@@ -40,25 +40,32 @@ const LandingPage = () => {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
+
+  const handleLogin = async ({name, email, password}) => {
+    try {
+      const res = await axios.post(BASE_URL + '/check-user', { email });
+      console.log(res.data.exists)
+      if (res.data.exists) {
+        const resp = await axios.post(BASE_URL + '/login', { email, password }, { withCredentials: true });
+        if (resp.status == 200){
+          navigate('/main', { state: { email } });
+        }
+      } else {
+        navigate('/register', { state: { name, email } });
+      }
+    } catch (error) {
+      console.log('Error checking user:', error);
+    }
+  }
+
   const responseGoogle = async (response) => {
     // Decoding the response object
     try {
       if (response.credential != null) {
         const USER_CREDENTIAL = jwtDecode(response.credential);
         const { name, email } = USER_CREDENTIAL;
-
         // Making post request to check if the user exists
-        try {
-          const res = await axios.post(BASE_URL + '/check-user', { email });
-          if (res.data.exists) {
-            const resp = await axios.post(BASE_URL + '/login', { email }, { withCredentials: true });
-            navigate('/main', { state: { email } });
-          } else {
-            navigate('/register', { state: { name, email } });
-          }
-        } catch (error) {
-          console.log('Error checking user:', error);
-        }
+        handleLogin({name, email})
       } else {
         console.log('Google login failed');
       }
@@ -107,7 +114,10 @@ const LandingPage = () => {
             <div className="separator-line"></div>
           </div>
           <div className="login-form">
-        <Form>
+        <Form onSubmit = {(e)=> {
+          e.preventDefault();
+          handleLogin({email, password})
+        }}>
           <FloatingLabel
             controlId="floatingInput"
             label="Email address"
