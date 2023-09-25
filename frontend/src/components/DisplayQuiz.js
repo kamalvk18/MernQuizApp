@@ -54,9 +54,10 @@ const DisplayQuiz = () => {
       return (
         <div className="popup">
           <div className="popup-content">
-            <h2>Warning</h2>
-            <p>Once the quiz is started, you can't go back or reload the page.</p>
-            <p>Do you want to continue?</p>
+            <h2 className='text-danger'>Warning</h2>
+            <p>Once the quiz is started, <br/> you can't go back or reload the page.</p>
+            <p>The quiz will automatically be submitted if you do so.</p>
+            <p>Do you still want to continue?</p>
             <button className="continueButton" onClick={continueQuiz}>Continue</button>
             <button className="cancelButton" onClick={() => setIsPopupOpen(false)}>Cancel</button>
           </div>

@@ -18,8 +18,6 @@ const CenteredBox = ({ questionObject,qno,onChangeValue, timer}) => {
   const question=questionObject.question
   const options=questionObject.options
   const originalTime = questionObject.timeInSec;
-  const savedTimer = parseInt(localStorage.getItem('timer'));
-  const time= !isNaN(savedTimer) ? savedTimer : originalTime;
 
   const [selectedOption, setSelectedOption] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
