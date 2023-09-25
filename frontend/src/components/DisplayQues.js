@@ -18,12 +18,21 @@ function DisplayQues() {
   const [loader, showLoader] = useState(false)
   const base_url = 'http://localhost:5000/'
 
+  useEffect(() => {
+    const showLoaderValue = localStorage.getItem('showLoader');
+  
+    if (showLoaderValue === 'true') {
+      localStorage.removeItem('showLoader');
+      showLoader(true);
+    }
+  }, []);
+  
   const backConfirm = async () => {
     window.history.pushState(location.state, "", window.location.href);
   };
 
   useEffect(() => {
-    window.history.pushState(location.state, '', window.location.href);
+    window.history.pushState(location.state, "", window.location.href);
     window.onpopstate = backConfirm;
     return () => {
       window.onpopstate = null;
@@ -31,41 +40,47 @@ function DisplayQues() {
   }, []);
 
   const submitQuiz= async ()=>{
-      let c=0
-      data.questions.map((item,idx1)=>(
-          item.options.forEach((op,idx2)=>{
-              if(op.isAnswer && Number(quiz[idx1])===idx2){
-                 c+=1
-              }
-          })
-      ))
-      try{
-        await axios.post(`${base_url}${data.subjectName}/store-result`,{"score": c}, { withCredentials: true });
-      } catch(error){
-        console.error('Error saving quiz', error.response)
-      }
+    let c=0
+    data.questions.map((item,idx1)=>(
+        item.options.forEach((op,idx2)=>{
+            if(op.isAnswer && Number(quiz[idx1])===idx2){
+               c+=1
+            }
+        })
+    ))
+    try{
+      await axios.post(`${base_url}${data.subjectName}/store-result`,{"score": c}, { withCredentials: true });
+    } catch(error){
+      console.error('Error saving quiz', error.response)
+    }
   }
 
+  useEffect(() => {
+    const handleBeforeUnload = async (event) => {
+      localStorage.setItem('showLoader', 'true');
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
   const onChangeValue=(ques,ans)=>{
-    console.log(ques,ans)
     setquiz({...quiz,[Number(ques)]:Number(ans)})
   }
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const originalTime = questions[currentQuestionIndex].timeInSec;
-  const savedTimer = parseInt(localStorage.getItem('timerPar'));
-  const time = !isNaN(savedTimer) ? savedTimer : originalTime;
-  const [timer, setTimer] = useState(time);
+  const [timer, setTimer] = useState(originalTime);
   const timerRef = useRef(null)
   
   useEffect(() => {
     timerRef.parent = setInterval(() => {
       if (timer > 0) {
         setTimer(timer - 1);
-        localStorage.setItem('timerPar', timer.toString());
       } else {
-        localStorage.removeItem('timerPar');
         if (currentQuestionIndex < questions.length - 1) {
           setCurrentQuestionIndex(currentQuestionIndex + 1);
         }
