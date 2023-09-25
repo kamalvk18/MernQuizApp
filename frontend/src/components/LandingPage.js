@@ -14,6 +14,8 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [validated, setValidated] = useState(false);
 
   const quotes = [
     "The secret of getting ahead is getting started - Mark Twain",
@@ -44,17 +46,22 @@ const LandingPage = () => {
   const handleLogin = async ({name, email, password}) => {
     try {
       const res = await axios.post(BASE_URL + '/check-user', { email });
-      console.log(res.data.exists)
       if (res.data.exists) {
-        const resp = await axios.post(BASE_URL + '/login', { email, password }, { withCredentials: true });
-        if (resp.status == 200){
-          navigate('/main', { state: { email } });
+        try{
+          const resp = await axios.post(BASE_URL + '/login', { email, password }, { withCredentials: true });
+          if (resp.status === 200){
+            navigate('/main', { state: { email } });
+          }
+        } catch(error){
+          console.log(error);
+          setError('Invalid Credentials!')
         }
       } else {
-        navigate('/register', { state: { name, email } });
+        navigate('/register', { state: { name, email, msg: 'Looks like you are new here, Please Register!' } });
       }
     } catch (error) {
-      console.log('Error checking user:', error);
+      console.log(error);
+      setError('Error checking user!')
     }
   }
 
@@ -114,24 +121,47 @@ const LandingPage = () => {
             <div className="separator-line"></div>
           </div>
           <div className="login-form">
-        <Form onSubmit = {(e)=> {
-          e.preventDefault();
-          handleLogin({email, password})
+        <Form
+          noValidate
+          validated={validated}
+          onSubmit = {(e)=> {
+            e.preventDefault()
+            const form = e.currentTarget;
+            if (form.checkValidity() === false) {
+              e.stopPropagation();
+            } else {
+              handleLogin({email, password})
+            }
+            setValidated(true);
         }}>
           <FloatingLabel
             controlId="floatingInput"
             label="Email address"
             className="mb-2"
           >
-            <Form.Control type="email" id="email" value={email} onChange={handleEmailChange} placeholder="Email"/>
+            <Form.Control 
+              type="email"
+              id="email"
+              value={email}
+              onChange={handleEmailChange} 
+              placeholder="Email"
+              required
+            />
           </FloatingLabel>
           <FloatingLabel 
             controlId="floatingPassword" 
             label="Password"
             className="mb-2"
           >
-            <Form.Control type="password" value={password} onChange={handlePasswordChange} placeholder="Password"/>
+            <Form.Control 
+              type="password" 
+              value={password} 
+              onChange={handlePasswordChange} 
+              placeholder="Password"
+              required
+            />
           </FloatingLabel>
+          {error && <div className="text-danger">{error}</div>}
           <div className='d-flex'>
             <Button type="submit" variant="primary" className='flex-grow-1'>
               Login

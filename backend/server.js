@@ -325,11 +325,25 @@ app.post("/signup",async (req,res)=>{
   }
 })
 
-app.post("/login", passport.authenticate('local', {
-    failureRedirect: '/login', // Redirect on failure
-    failureFlash: true // Enable flash messages for failure
-  }), (req, res) => {
-    res.status(200).json({ message: 'User logged in!' });
+app.post("/login", (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      return next(err); // Pass the error to the next middleware
+    }
+
+    if (!user) {
+      // Authentication failed
+      return res.status(401).json({ error: 'Invalid credentials' }); // Send an error response
+    }
+
+    // Authentication succeeded, proceed with your logic
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      return res.status(200).json({ message: 'User logged in!' });
+    });
+  })(req, res, next);
 });
 
 

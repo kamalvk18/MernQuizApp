@@ -15,6 +15,7 @@ function DisplayQues() {
   const userdata=location.state.userdata
   const email=userdata.email
   const [quiz,setquiz]=useState({})
+  const [loader, showLoader] = useState(false)
   const base_url = 'http://localhost:5000/'
 
   const backConfirm = async () => {
@@ -30,14 +31,10 @@ function DisplayQues() {
   }, []);
 
   const submitQuiz= async ()=>{
-      // e.preventDefault()
-      // console.log(quiz)
       let c=0
       data.questions.map((item,idx1)=>(
           item.options.forEach((op,idx2)=>{
-              // console.log(op.isAnswer,Number(quiz[idx1]),Number(quiz[idx1])===idx2,idx1,idx2)
               if(op.isAnswer && Number(quiz[idx1])===idx2){
-                //  console.log("mad king")
                  c+=1
               }
           })
@@ -73,8 +70,8 @@ function DisplayQues() {
           setCurrentQuestionIndex(currentQuestionIndex + 1);
         }
         else{
+          showLoader(true)
           submitQuiz()
-          navigate('/main', {state: {email}})
         }
       }
     }, 1000);
@@ -84,9 +81,9 @@ function DisplayQues() {
 
   return (
     <div className="">
-      {currentQuestionIndex < questions.length ? (
+      {!loader ? (
         <CenteredBox questionObject={questions[currentQuestionIndex]} qno={currentQuestionIndex} onChangeValue={onChangeValue} timer = {timer}/>
-      ):   (<ScreenLoader email={email}/>) }
+      ): <ScreenLoader email={email}/>}
     </div>
   );
 }

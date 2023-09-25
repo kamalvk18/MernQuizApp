@@ -23,7 +23,6 @@ const RegistrationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const {name, email} = data
-    console.log(data)
     try {
       const response = await axios.post(base_url+'/signup', {
         name: name,
@@ -44,9 +43,11 @@ const RegistrationForm = () => {
   
   return (
     <Container style = {{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems:'center', height: '100vh'}}>
+      {data.msg && <h4>{data.msg}</h4>}
+      {!data.msg && 
       <Row>
         <h3>Registration Form</h3>
-      </Row>
+      </Row>}
       <br />
       <Row>
       <Form onSubmit={handleSubmit}>
