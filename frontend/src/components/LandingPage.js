@@ -6,7 +6,6 @@ import '../css/LandingPage.css';
 import { Button } from 'react-bootstrap';  
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
-import jwtDecode from 'jwt-decode';
 
 const BASE_URL = 'http://localhost:5000';
 
@@ -20,7 +19,7 @@ const LandingPage = () => {
   const quotes = [
     "The secret of getting ahead is getting started - Mark Twain",
     "Knowledge is power - Francis Bacon",
-    "Knowledge makes you intelligent; experience makes you wiser - Anonymous", 
+    "Knowledge makes you intelligent, experience makes you wiser - Anonymous", 
     "The expert in anything was once a beginner - Helen Hayes",
     "Learning never exhausts the mind - Leonardo da Vinci",
     "The only way to do great work is to love what you do - Steve Jobs"
@@ -50,7 +49,7 @@ const LandingPage = () => {
         try{
           const resp = await axios.post(BASE_URL + '/login', { email, password }, { withCredentials: true });
           if (resp.status === 200){
-            navigate('/main', { state: { email } });
+            navigate('/main');
           }
         } catch(error){
           console.log(error);
@@ -65,21 +64,9 @@ const LandingPage = () => {
     }
   }
 
-  const responseGoogle = async (response) => {
-    // Decoding the response object
-    try {
-      if (response.credential != null) {
-        const USER_CREDENTIAL = jwtDecode(response.credential);
-        const { name, email } = USER_CREDENTIAL;
-        // Making post request to check if the user exists
-        handleLogin({name, email})
-      } else {
-        console.log('Google login failed');
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const google = async () => {
+    window.open("http://localhost:5000/auth/google", "_self");
+  }
 
   return (
     <div className="split-container">
@@ -94,7 +81,7 @@ const LandingPage = () => {
           <div className="Welcome-text mb-2">
             <h2 className="typing-animation">{quotes[quoteIndex]}</h2>
           </div>
-          <Button variant='primary'>Get Started</Button>
+          <Button variant='success'>Get Started</Button>
         </div>
       </div>
 
@@ -104,17 +91,11 @@ const LandingPage = () => {
           <h2>Login in to your account</h2>
           <h4>Don't have an account? <span>Sign Up</span></h4>
         </div>
-        <GoogleOAuthProvider clientId="806225457345-dlv6oecjp4db580q4oo8dj0ln8sgte6o.apps.googleusercontent.com">
-          <div className="d-flex justify-content-center align-items-center">
-            <GoogleLogin
-              className="custom-google-login-button"
-              buttonText="Sign in with Google"
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy={'single_host_origin'}
-            />
-          </div>
-        </GoogleOAuthProvider>
+        
+        <button type="button" class="login-with-google-btn" onClick={google}>
+          Sign in with Google
+        </button>
+
         <div className="separator">
             <div className="separator-line"></div>
             <div className="separator-text">Or with email and password</div>
@@ -163,7 +144,7 @@ const LandingPage = () => {
           </FloatingLabel>
           {error && <div className="text-danger">{error}</div>}
           <div className='d-flex'>
-            <Button type="submit" variant="primary" className='flex-grow-1'>
+            <Button type="submit" variant="success" className='flex-grow-1'>
               Login
             </Button>
           </div>

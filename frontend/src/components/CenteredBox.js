@@ -17,7 +17,6 @@ const Timer = ({ time, isRed }) => (
 const CenteredBox = ({ questionObject,qno,onChangeValue, timer}) => {
   const question=questionObject.question
   const options=questionObject.options
-  const originalTime = questionObject.timeInSec;
 
   const [selectedOption, setSelectedOption] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);

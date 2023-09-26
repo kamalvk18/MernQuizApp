@@ -53,7 +53,7 @@ const EditQuiz = () => {
     }
 
     const goBack = () =>{
-      navigate('/main',{state:{email}})
+      navigate('/main')
     }
 
   return (

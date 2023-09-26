@@ -12,22 +12,13 @@ const Userschema= new mongoose.Schema({
         required:true
     },
     
-    password:{
-        type:String,
-        required:true
-    },
+    password:String,
     
     phone:Number,
     
-    college:{   
-        type:String,
-        required:true
-    },
+    college:String,
     
-    occupation:{
-        type:String,
-        required:true
-    },
+    occupation: String,
   
     quizzesAttempted:[{
         type:mongoose.Schema.Types.ObjectId,

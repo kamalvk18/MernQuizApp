@@ -3,11 +3,13 @@ import { useLocation } from "react-router-dom";
 import User from './User';
 import Container from 'react-bootstrap/Container';
 import Navbar from './Navbar';
-import axios from 'axios'; 
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const HomePage=()=> {
   const location = useLocation();
-  const data = location.state;
+  const data = location.state; 
+  const email = Cookies.get('email');
   const [userdata,setUserdata]=useState([])
   const [searchQuery, setSearchQuery] = useState('');
   const base_url="http://localhost:5000"
@@ -15,7 +17,7 @@ const HomePage=()=> {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${base_url}/userdata/${data.email}`);
+        const response = await axios.get(`${base_url}/userdata/${email}`);
         setUserdata(response.data[0]);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -25,7 +27,7 @@ const HomePage=()=> {
     };
   
     fetchData();
-  }, [data.email]);
+  }, [email]);
 
   return (
     

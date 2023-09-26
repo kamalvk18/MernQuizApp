@@ -46,8 +46,7 @@ const Addques = () => {
         setByTeacher:userdata.email,
         collegeName:userdata.college,
       },{ withCredentials: true });
-      console.log(response)
-      navigate('/main',{state:{email: userdata.email}})
+      navigate('/main')
 
   }catch (error) {
     console.error('Error saving quiz:', error.message);

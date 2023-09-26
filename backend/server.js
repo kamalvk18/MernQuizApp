@@ -3,9 +3,9 @@ const app=express()
 const cors=require('cors')
 const mongoose=require('mongoose')
 const bodyParser=require("body-parser")
-passport = require("passport"),
-flash	= require("connect-flash"),
-localStrategy = require("passport-local")
+const passport = require("passport")
+const passportConfig = require('./passport')
+const cookieParser = require("cookie-parser")
 
 //requiring models
 const result = require('./models/result')
@@ -21,11 +21,11 @@ app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true,
 }))
+
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
-app.use(flash());
 
 //Passport configuration
 app.use(require("express-session")({
@@ -33,59 +33,10 @@ app.use(require("express-session")({
 	resave :false,
 	saveUninitialized :false
 }));
+app.use(cookieParser('This project is created using MERN Stack 2'));
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-// passport.use(new CustomStrategy(
-//   async function(req, done) {
-//     try {
-//       const foundUser = await user.findOne({ email: req.body.email });
-//       if (foundUser) {
-//         done(null, foundUser);
-//       } else {
-//         done(null, false);
-//       }
-//     } catch (err) {
-//       done(err);
-//     }
-//   }
-// ));
-
-// // Serialize the user
-// passport.serializeUser((user, done) => {
-//   done(null, user._id);
-// });
-
-// // Deserialize the user
-// passport.deserializeUser(async (id, done) => {
-//   try {
-//     const foundUser = await user.findById(id);
-//     if (foundUser) {
-//       done(null, foundUser);
-//     } else {
-//       done(null, false);
-//     }
-//   } catch (err) {
-//     done(err);
-//   }
-// });
-
-//Telling passport to use authenticate method on UserSchema
-passport.use(new localStrategy({
-  usernameField: 'email'
-}, user.authenticate()));
-
-//Serialization means how do we store user in the session
-passport.serializeUser(user.serializeUser());
-passport.deserializeUser(user.deserializeUser());
-
-app.use(function(req,res,next){
-	res.locals.currentUser = req.user;
-	res.locals.error= req.flash("error");
-	res.locals.success=req.flash("success");
-	next();
-});
 
 const isAuthenticated = (req, res, next) => {
   console.log("Checking Authentication...")
@@ -123,6 +74,16 @@ app.get('/check-auth', (req, res) => {
     return res.status(401).send('Unauthorized user!')
   }
 })
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: 'http://localhost:3000/'}), 
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('http://localhost:3000/main');
+  });
 
 app.post('/check-user', async (req, res) => {
   try {
@@ -182,15 +143,7 @@ app.get("/quizzes/:college", async (req, res) => {
     res.status(500).json({ message: 'An error occurred while retreiving quizzes.' });
   }
 })
-// app.get("/quizzes/fetch/:college/:quizid", async (req, res) => {
-//   try{
-//     const allQuizes = await quiz.find({collegeName:req.params.college})
-//     res.status(200).json(allQuizes+" "+req.params.quizid)
-//   }catch(error){
-//     console.error('Error retreiving quizzes', error.message);
-//     res.status(500).json({ message: 'An error occurred while retreiving quizzes.' });
-//   }
-// })
+
 app.get("/userdata/:email", async (req, res) => {
   try{
     const usersdata = await user.find({email:req.params.email})
@@ -251,10 +204,8 @@ app.get("/get-all-quizzes", isAuthenticated, async (req, res) => {
     const foundUser = await user.findById(req.user._id);
     await foundUser.populate('quizzesAttempted');
     const allQuizzes = foundUser.quizzesAttempted
-    console.log("is it gng")
     return res.status(200).json({allQuizzes})
   }catch(err){
-    console.log("fuck off")
     return res.status(400).json(err)
   }
 })
@@ -271,8 +222,8 @@ app.post("/:quizName/store-result", isAuthenticated, async (req, res) => {
         quizName,
         studentEmail: email,
         marksObtained,
-      })
-      console.log('quiz result Found', foundQuizResult)
+      }) 
+
       await studentResult.save()
       if (foundQuizResult){
         foundQuizResult.studentResults.push(studentResult)
@@ -341,35 +292,13 @@ app.post("/login", (req, res, next) => {
       if (err) {
         return next(err);
       }
+      res.cookie('email', req.user.email, { secure: true });
       return res.status(200).json({ message: 'User logged in!' });
     });
   })(req, res, next);
 });
 
 
-// app.get('/edit/:quesid',async (req,res)=>{
-//   const ques_id=req.params.quesid
-//   try{
-//     const foundQuiz = await quiz.findOne({subjectName: "fewefwe"})
-//     if (foundQuiz){
-//       // const foundQuizResult = await quizResult.findOne({quizName})
-//       foundQuiz.questions.map((q,id)=>{
-//         if(q._id.equals(ques_id)){
-//           console.log("got it boss",q)
-//           q.question="can i write this"
-//         }
-//       })
-//       await foundQuiz.save()
-//     }
-//   }
-//   catch(err){
-//     console.log(err)
-//   }
-// })
-// String.prototype.toObjectId = function() {
-//   var ObjectId = (mongoose.Types.ObjectId);
-//   return new ObjectId(this.toString());
-// };
 app.post('/:quesid/edit/',isTeacher, async (req,res)=>{
   const ques_id=req.params.quesid
   const {question,a,b,c,d,key,quiz_id}=req.body
@@ -475,6 +404,7 @@ app.get('/logout', isAuthenticated, async (req, res) => {
       console.error('Error logging out:', err);
       res.status(500).json({ message: 'Internal server error' });
     } else {
+      res.clearCookie('email');
       res.status(200).json({ message: 'Logged out successfully' });
     }
   });

@@ -19,7 +19,7 @@ const LoginForm = () => {
       console.log(response.data.token); // You can store the token in local storage or state for further use
       if(response.data.token){    
         // <Link to="/main">main</Link>
-     navigate('/main',{state:{email}})
+     navigate('/main')
     }
     } catch (error) {
       setError(error.response.data.message)

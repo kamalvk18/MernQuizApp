@@ -34,7 +34,7 @@ const RegistrationForm = () => {
       }, {withCredentials: true});
 
       if(response.status === 200)
-        navigate('/main',{state:{email}})
+        navigate('/main')
       } catch (error) {
         console.error('Error registering user:', error);
         setError('An error occurred while registering the user.');
