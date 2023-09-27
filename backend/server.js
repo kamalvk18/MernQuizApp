@@ -72,14 +72,6 @@ app.get("/",(req,res)=>{
     res.send("hello world")
 })
 
-app.get('/check-auth', (req, res) => {
-  if (req.isAuthenticated()){
-    return res.status(200).send('Authenticated user!')
-  }else{
-    return res.status(401).send('Unauthorized user!')
-  }
-})
-
 app.post('/check-user', async (req, res) => {
   try {
     const { email } = req.body;
