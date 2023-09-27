@@ -56,7 +56,7 @@ const LandingPage = () => {
           setError('Invalid Credentials!')
         }
       } else {
-        navigate('/register', { state: { name, email, msg: 'Looks like you are new here, Please Register!' } });
+        navigate('/register', { state: { email, msg: 'Looks like you are new here, Please Register!' } });
       }
     } catch (error) {
       console.log(error);
@@ -89,7 +89,7 @@ const LandingPage = () => {
         <div className="brand-logo">
           <div className="brand-name">QuizApp</div>
           <h2>Login in to your account</h2>
-          <h4>Don't have an account? <span>Sign Up</span></h4>
+          <h4>Don't have an account? <a href='' onClick={()=>{ navigate('/register')}}>Sign Up</a></h4>
         </div>
         
         <button type="button" class="login-with-google-btn" onClick={google}>
@@ -98,7 +98,7 @@ const LandingPage = () => {
 
         <div className="separator">
             <div className="separator-line"></div>
-            <div className="separator-text">Or with email and password</div>
+            <div className="separator-text">or</div>
             <div className="separator-line"></div>
           </div>
           <div className="login-form">

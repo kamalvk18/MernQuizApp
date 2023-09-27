@@ -12,7 +12,6 @@ passport.use(new GoogleStrategy({
   },
   async function(accessToken, refreshToken, profile, cb) {
     try {
-      console.log(profile)
       const user = await User.findOne({email: profile.emails[0].value});
       if(user){
         return cb(null, user);
@@ -21,7 +20,6 @@ passport.use(new GoogleStrategy({
             name: profile.displayName,
             email: profile.emails[0].value
         });
-        await newUser.save();
         return cb(null, newUser);
       }
     } catch (err) {

@@ -8,18 +8,7 @@
 .large-section {
 
   flex: 3; 
-   /* padding: 10px;  */
   width: 60%;
-  
-
-   /* Adjust the width as needed */
-/* display: flex;
-justify-content: center;
-align-items: center;
-position: relative;
-overflow: hidden;
-  background-color: brown; */
-  /* z-index: 2; */
 }
 
 .small-section {
@@ -51,8 +40,10 @@ overflow: hidden;
   font-weight: 700;
 }
 
-.brand-logo h4 span {
+.brand-logo h4 a {
   color: rgb(1, 107, 248);
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .brand-name {

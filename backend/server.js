@@ -13,6 +13,9 @@ const quiz = require('./models/quiz')
 const quizResult = require('./models/quizResult')
 const user = require('./models/user')
 
+//requiring routes
+const authRoutes = require("./routes/auth")
+
 mongoose.connect(
     "mongodb+srv://admin:admin143@cluster0.0ggnx.mongodb.net/MernStackQuizApp"
 );
@@ -37,6 +40,9 @@ app.use(cookieParser('This project is created using MERN Stack 2'));
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+//using routes
+app.use("/",authRoutes)
 
 const isAuthenticated = (req, res, next) => {
   console.log("Checking Authentication...")
@@ -74,16 +80,6 @@ app.get('/check-auth', (req, res) => {
     return res.status(401).send('Unauthorized user!')
   }
 })
-
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: 'http://localhost:3000/'}), 
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('http://localhost:3000/main');
-  });
 
 app.post('/check-user', async (req, res) => {
   try {
@@ -254,51 +250,6 @@ app.post("/:quizName/store-result", isAuthenticated, async (req, res) => {
   }
 })
 
-app.post("/signup",async (req,res)=>{
-    try{
-      const { name, email, password, college,phone,occupation } = req.body;
-      const userdata= new user({
-          name,
-          email,
-          password,
-          phone,
-          college,
-          occupation
-      })
-      const registeredUser = await user.register(userdata, req.body.password)
-      req.login(registeredUser, err => {
-        if(err) return next(err);
-        res.status(200).json({ message: 'User Registered' });
-      })
-  } catch (error) {
-    console.error('Error registering user:', error.message);
-    res.status(500).json({ message: 'An error occurred while registering the user.' });
-  }
-})
-
-app.post("/login", (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
-    if (err) {
-      return next(err); // Pass the error to the next middleware
-    }
-
-    if (!user) {
-      // Authentication failed
-      return res.status(401).json({ error: 'Invalid credentials' }); // Send an error response
-    }
-
-    // Authentication succeeded, proceed with your logic
-    req.logIn(user, (err) => {
-      if (err) {
-        return next(err);
-      }
-      res.cookie('email', req.user.email, { secure: true });
-      return res.status(200).json({ message: 'User logged in!' });
-    });
-  })(req, res, next);
-});
-
-
 app.post('/:quesid/edit/',isTeacher, async (req,res)=>{
   const ques_id=req.params.quesid
   const {question,a,b,c,d,key,quiz_id}=req.body
@@ -396,18 +347,6 @@ app.post('/:quesid/delete/',isTeacher, async (req,res)=>{
       return res.status(500).json({ message: 'An error occurred while saving the quiz.' });
     }
   }
-})
-
-app.get('/logout', isAuthenticated, async (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      console.error('Error logging out:', err);
-      res.status(500).json({ message: 'Internal server error' });
-    } else {
-      res.clearCookie('email');
-      res.status(200).json({ message: 'Logged out successfully' });
-    }
-  });
 })
 
 app.get("/delete/:quizid",async (req,res)=>{
