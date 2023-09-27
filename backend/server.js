@@ -5,7 +5,6 @@ const mongoose=require('mongoose')
 const bodyParser=require("body-parser")
 const passport = require("passport")
 const passportConfig = require('./passport')
-const cookieParser = require("cookie-parser")
 
 //requiring models
 const result = require('./models/result')
@@ -34,9 +33,9 @@ app.use(bodyParser.json());
 app.use(require("express-session")({
 	secret :"This project is created using MERN Stack",
 	resave :false,
-	saveUninitialized :false
+	saveUninitialized :false,
+  cookie: { maxAge: 24 * 60 * 60 * 1000 } 
 }));
-app.use(cookieParser('This project is created using MERN Stack 2'));
 
 app.use(passport.initialize());
 app.use(passport.session());

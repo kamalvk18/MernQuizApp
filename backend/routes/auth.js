@@ -3,6 +3,11 @@ var router  = express.Router();
 var passport = require("passport")
 const user = require('../models/user')
 
+const setCookies = (req, res) => {
+    res.cookie('email', req.user.email, { secure: true, maxAge: 24 * 60 * 60 * 1000 });
+    res.cookie('name', req.user.name, { secure: true, maxAge: 24 * 60 * 60 * 1000 });
+}
+
 //google auth
 router.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -11,8 +16,7 @@ router.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: 'http://localhost:3000/'}), 
   function(req, res) {
     // Successful authentication, redirect home.
-    res.cookie('email', req.user.email, { secure: true });
-    res.cookie('name', req.user.name, { secure: true });
+    setCookies(req, res);
     if (!req.user.college){
       res.redirect('http://localhost:3000/register')
     } else {
@@ -35,8 +39,7 @@ router.post("/signup",async (req,res)=>{
       const registeredUser = await user.register(userdata, req.body.password)
       req.login(registeredUser, err => {
         if(err) return next(err);
-        res.cookie('email', req.user.email, { secure: true });
-        res.cookie('name', req.user.name, { secure: true });
+        setCookies(req, res);
         res.status(200).json({ message: 'User Registered' });
       })
   } catch (error) {
@@ -61,8 +64,7 @@ router.post("/login", (req, res, next) => {
       if (err) {
         return next(err);
       }
-      res.cookie('email', req.user.email, { secure: true });
-      res.cookie('name', req.user.name, { secure: true });
+      setCookies(req, res);
       return res.status(200).json({ message: 'User logged in!' });
     });
   })(req, res, next);
