@@ -34,7 +34,7 @@ app.use(require("express-session")({
 	secret :"This project is created using MERN Stack",
 	resave :false,
 	saveUninitialized :false,
-  cookie: { maxAge: 24 * 60 * 60 * 1000 } 
+  cookie: { maxAge: 24 * 60 * 60 * 1000 }
 }));
 
 app.use(passport.initialize());
@@ -94,7 +94,6 @@ app.get("/get/:quizid",async (req,res)=>{
   try{
     const result= await quiz.findById(req.params.quizid)
     res.status(200).json(result)
-    // console.log(res)
   }
   catch(err){
     console.log(err)
@@ -155,7 +154,6 @@ app.get('/:quizName/getTotalMarks', isAuthenticated, async (req, res) => {
 app.get('/:quizName/getResults', async (req, res) => {
   try {
     const foundQuiz = await quiz.findOne({ subjectName: req.params.quizName });
-    // console.log(req.params.quizName, foundQuiz);
 
     if (foundQuiz) {
       const quizName = req.params.quizName; 
@@ -169,7 +167,6 @@ app.get('/:quizName/getResults', async (req, res) => {
             // group: 'studentEmail', // Group by studentEmail
             // limit: 1 // Limit to 1 document per group (highest score)
     } })
-    console.log(foundQuizResult)
       if (foundQuizResult) {
         res.status(200).json(foundQuizResult);
       } else {
@@ -245,7 +242,6 @@ app.post('/:quesid/edit/',isTeacher, async (req,res)=>{
   const ques_id=req.params.quesid
   const {question,a,b,c,d,key,quiz_id}=req.body
   const foundQuiz = await quiz.findById(quiz_id)
-  console.log(foundQuiz)
   if (foundQuiz && foundQuiz.setBy === req.user.email){
     const new_options = [
       { option: a, isAnswer: key==="1" },
@@ -268,7 +264,6 @@ app.post('/:quesid/edit/',isTeacher, async (req,res)=>{
         );
 
         if (result){
-          console.log(result)
           res.status(200).json({ message: 'super values are inserted!' });
         }
       }
@@ -302,10 +297,8 @@ app.post('/addques/',isTeacher, async (req,res)=>{
       { new: true }
     );
     if (updatedQuiz) {
-      console.log('New question inserted into the quiz:', updatedQuiz);
       res.status(200).json({ message: 'new ques is added into db!' });
     } else {
-      console.log('Quiz not found or question not inserted.');
       res.status(500).json({ message: 'Please check again' });
     }
   } catch (error) {
@@ -382,5 +375,5 @@ app.post("/settings/:email", async (req, res) => {
 
 // mongoose.connect()
 app.listen(5000,(req,res)=>{
-   console.log("Server started at http://localhost:5000/")
+  console.log("Server started at http://localhost:5000/")
 })

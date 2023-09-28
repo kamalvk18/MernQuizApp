@@ -1,17 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/ScreenLoader.css'
-const ScreenLoader = ({email}) => {
-    const [text,setText]=useState("")
-    const navigate=useNavigate()
-    useEffect(() =>{
-      setTimeout(() => {
-        navigate("/main", { state: { email } }
-      )}, 3000);
-      setTimeout(() => {
-        setText("Quiz Submitted Successfully")
-      }, 2000);
-    })
+const ScreenLoader = ({email, submitQuiz}) => {
+  const [text,setText]=useState("")
+  const navigate=useNavigate()
+
+  useEffect(() => {
+    const submit = setTimeout(() => {
+      submitQuiz();
+      setText("Quiz Submitted Successfully");
+    }, 2000);
+    
+    return () =>{
+      clearTimeout(submit)
+    }
+  }, []);
+
+  useEffect(() => {
+    const navigateToMain = setTimeout(() => {
+      navigate("/main");
+    }, 3000);
+    
+    return () =>{
+      clearTimeout(navigateToMain)
+    }
+  }, []);
+
   return (
     <div className="loader-container">
       <div className="loader">

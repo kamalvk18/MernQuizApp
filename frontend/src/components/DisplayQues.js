@@ -24,7 +24,6 @@ const DisplayQues=()=> {
   const [isSubmitButtonDisabled,setIsSubmitButtonDisabled]=useState(true)
   const [quiz,setquiz]=useState({})
   const [loader, showLoader] = useState(false)
-  const [isQuizSubmitted, setisQuizSubmitted] = useState(false)
   const base_url = 'http://localhost:5000/'
 
   useEffect(()=>{
@@ -50,10 +49,8 @@ const DisplayQues=()=> {
   }
   useEffect(() => {
     const showLoaderValue = localStorage.getItem('showLoader');
-  
     if (showLoaderValue === 'true') {
       localStorage.removeItem('showLoader');
-      submitQuiz()
       showLoader(true);
     }
   }, []);
@@ -71,7 +68,7 @@ const DisplayQues=()=> {
   }, []);
 
   const submitQuiz= async ()=>{
-    let c=0
+        let c=0
     data.questions.map((item,idx1)=>(
         item.options.forEach((op,idx2)=>{
             if(op.isAnswer && Number(quiz[idx1])===idx2){
@@ -102,8 +99,6 @@ const DisplayQues=()=> {
     setquiz({...quiz,[Number(ques)]:Number(ans)})
   }
 
-
-  
   useEffect(() => {
     timerRef.parent = setInterval(() => {
       if (timer > 0) {
@@ -120,7 +115,7 @@ const DisplayQues=()=> {
     <div className="">
       {!loader ? (
         <CenteredBox questionObject={questions[currentQuestionIndex]} qno={currentQuestionIndex} onChangeValue={onChangeValue} timer = {timer} isNextButtonDisabled={isNextButtonDisabled} isSubmitButtonDisabled={isSubmitButtonDisabled} loadNextQues={loadNextQues} />
-      ): <ScreenLoader email={email}/>}
+      ): <ScreenLoader email={email} submitQuiz={submitQuiz}/>}
     </div>
   );
 }
