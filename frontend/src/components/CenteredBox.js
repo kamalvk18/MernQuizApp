@@ -14,12 +14,12 @@ const Timer = ({ time, isRed }) => (
   </div>
 );
 
-const CenteredBox = ({ questionObject,qno,onChangeValue, timer}) => {
+const CenteredBox = ({ questionObject,qno,onChangeValue, timer,isNextButtonDisabled,isSubmitButtonDisabled}) => {
   const question=questionObject.question
   const options=questionObject.options
 
   const [selectedOption, setSelectedOption] = useState(null);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
 
   const handleOptionChange =(optionIndex) => {
     setSelectedOption(optionIndex === selectedOption ? null : optionIndex);
@@ -58,10 +58,10 @@ const CenteredBox = ({ questionObject,qno,onChangeValue, timer}) => {
       <Timer time={timer} isRed={timer <= 5} />
     </div>
     <div className="action-buttons">
-        <button className="btn btn-primary" disabled={isButtonDisabled}>
+        <button className="btn btn-primary first-bt" disabled={isNextButtonDisabled}>
           Next
         </button>
-        <button className="btn btn-primary" disabled={isButtonDisabled}>
+        <button className="btn btn-primary second-bt" disabled={isSubmitButtonDisabled}>
           Submit
         </button>
       </div>

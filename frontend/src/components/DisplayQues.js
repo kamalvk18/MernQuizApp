@@ -14,6 +14,8 @@ function DisplayQues() {
   const questions=data.questions
   const userdata=location.state.userdata
   const email=userdata.email
+  const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(false);
+  const [isSubmitButtonDisabled,setIsSubmitButtonDisabled]=useState(true)
   const [quiz,setquiz]=useState({})
   const [loader, showLoader] = useState(false)
   const base_url = 'http://localhost:5000/'
@@ -85,10 +87,13 @@ function DisplayQues() {
           const newQuestionIndex = currentQuestionIndex + 1
           setCurrentQuestionIndex(newQuestionIndex);
           setTimer(questions[newQuestionIndex].timeInSec)
+          setIsNextButtonDisabled(false)
         }
         else{
           showLoader(true)
           submitQuiz()
+          setIsNextButtonDisabled(true)
+          setIsSubmitButtonDisabled(false)
         }
       }
     }, 1000);
@@ -99,7 +104,7 @@ function DisplayQues() {
   return (
     <div className="">
       {!loader ? (
-        <CenteredBox questionObject={questions[currentQuestionIndex]} qno={currentQuestionIndex} onChangeValue={onChangeValue} timer = {timer}/>
+        <CenteredBox questionObject={questions[currentQuestionIndex]} qno={currentQuestionIndex} onChangeValue={onChangeValue} timer = {timer} isNextButtonDisabled={isNextButtonDisabled} isSubmitButtonDisabled={isSubmitButtonDisabled} />
       ): <ScreenLoader email={email}/>}
     </div>
   );

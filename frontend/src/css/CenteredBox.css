@@ -137,4 +137,12 @@ label {
     transform: translateX(-2px); /* Move left by 2 pixels */
   }
 }
+.first-bt{
+  margin: 10px;
+}
+/* .btn1, .btn2{
+  color:black;
+  /* padding: 20px; */
+  /* margin:40px; */
+/*  */
 
