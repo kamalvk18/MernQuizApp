@@ -16,15 +16,12 @@ function DisplayQues() {
   const email=userdata.email
   const [quiz,setquiz]=useState({})
   const [loader, showLoader] = useState(false)
-  const [isQuizSubmitted, setisQuizSubmitted] = useState(false)
   const base_url = 'http://localhost:5000/'
 
   useEffect(() => {
     const showLoaderValue = localStorage.getItem('showLoader');
-  
     if (showLoaderValue === 'true') {
       localStorage.removeItem('showLoader');
-      submitQuiz()
       showLoader(true);
     }
   }, []);
@@ -42,7 +39,7 @@ function DisplayQues() {
   }, []);
 
   const submitQuiz= async ()=>{
-    let c=0
+        let c=0
     data.questions.map((item,idx1)=>(
         item.options.forEach((op,idx2)=>{
             if(op.isAnswer && Number(quiz[idx1])===idx2){
@@ -75,7 +72,7 @@ function DisplayQues() {
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const originalTime = questions[currentQuestionIndex].timeInSec;
-  const [timer, setTimer] = useState(originalTime);
+  const [timer, setTimer] = useState(10);
   const timerRef = useRef(null)
   
   useEffect(() => {
@@ -101,7 +98,7 @@ function DisplayQues() {
     <div className="">
       {!loader ? (
         <CenteredBox questionObject={questions[currentQuestionIndex]} qno={currentQuestionIndex} onChangeValue={onChangeValue} timer = {timer}/>
-      ): <ScreenLoader email={email}/>}
+      ): <ScreenLoader email={email} submitQuiz={submitQuiz}/>}
     </div>
   );
 }
