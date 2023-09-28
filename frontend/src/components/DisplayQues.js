@@ -82,7 +82,9 @@ function DisplayQues() {
         setTimer(timer - 1);
       } else {
         if (currentQuestionIndex < questions.length - 1) {
-          setCurrentQuestionIndex(currentQuestionIndex + 1);
+          const newQuestionIndex = currentQuestionIndex + 1
+          setCurrentQuestionIndex(newQuestionIndex);
+          setTimer(questions[newQuestionIndex].timeInSec)
         }
         else{
           showLoader(true)

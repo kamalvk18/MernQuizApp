@@ -81,7 +81,7 @@ const LandingPage = () => {
           <div className="Welcome-text mb-2">
             <h2 className="typing-animation">{quotes[quoteIndex]}</h2>
           </div>
-          <Button variant='success'>Get Started</Button>
+          <Button variant='success' onClick={()=>{ navigate('/register')}}>Get Started</Button>
         </div>
       </div>
 

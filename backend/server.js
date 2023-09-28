@@ -351,6 +351,7 @@ app.get("/delete/:quizid",async (req,res)=>{
     res.status(500).json({ message: 'Please check again' });
   }
 })
+
 app.post("/settings/:email", async (req, res) => {
   try {
     // Validate input data (ensure it meets your requirements)
@@ -378,8 +379,6 @@ app.post("/settings/:email", async (req, res) => {
     return res.status(500).json({ message: 'Internal server error.' });
   }
 });
-
-
 
 // mongoose.connect()
 app.listen(5000,(req,res)=>{

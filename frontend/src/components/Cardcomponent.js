@@ -28,10 +28,10 @@ const Cardcomponent = ({userdata,searchQuery,quiz}) => {
   return (
     <>
       <Container>
-        <Row xs={1} md={4} className="g-4">
+        <Row xs={1} md={2} lg={3} xl={4} className="g-4">
           {(quizzesToDisplay).map((q,ind)=>(
             <Col key={ind}>
-            <Card id="allCards" style={{ width: '18rem' }} className = 'h-100'>
+            <Card id="allCards" style={{ width: '18rem', borderRadius:'1%' }} className = 'h-100'>
             <Card.Body className="d-flex flex-column">
               <Card.Title>{q.subjectName}</Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">Set by: {q.setBy}</Card.Subtitle>

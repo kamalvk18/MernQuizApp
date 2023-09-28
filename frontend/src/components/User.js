@@ -21,7 +21,7 @@ const User = ({userdata, searchQuery}) => {
 
     return (
       <div>
-        <div className="d-flex justify-content-between align-items-center p-3 mb-0">
+        <div className="d-flex justify-content-between align-items-center p-3 pb-0 mb-0">
           <h5>Available quizzes by {userdata.college} are: </h5>
           {userdata.occupation==="teacher" && <Button variant="primary" size="sm" onClick={handleClick}>Add Quiz</Button>}
         </div>
