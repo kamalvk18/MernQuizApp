@@ -102,7 +102,7 @@ app.get("/get/:quizid",async (req,res)=>{
 
 app.post("/addQuiz", isTeacher, async (req,res)=>{
   try{
-    const {quizName, subjectName, description,collegeName, questions} = req.body;
+    const {quizName, subjectName, description,collegeName, questions,maxAttempts} = req.body;
     const newQuiz = new quiz({
       quizName,
       subjectName,
@@ -110,6 +110,7 @@ app.post("/addQuiz", isTeacher, async (req,res)=>{
       setBy: req.user.email,
       collegeName,
       questions,
+      maxAttempts,
       totalMarks: questions.length
     })
     await newQuiz.save()

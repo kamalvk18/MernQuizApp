@@ -2,11 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import CenteredBox from './CenteredBox';
 import ScreenLoader from './ScreenLoader';
 import axios from 'axios'
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const DisplayQues=()=> {
   const location=useLocation()
-  const navigate=useNavigate()
   if(!location.state){
     location.state = window.history.state
   }
@@ -44,9 +43,8 @@ const DisplayQues=()=> {
     }
     else{
       showLoader(true)
-      submitQuiz()
     }
-  }
+  } 
   useEffect(() => {
     const showLoaderValue = localStorage.getItem('showLoader');
     if (showLoaderValue === 'true') {
@@ -96,6 +94,7 @@ const DisplayQues=()=> {
   }, []);
 
   const onChangeValue=(ques,ans)=>{
+    // console.log(ques,ans)
     setquiz({...quiz,[Number(ques)]:Number(ans)})
   }
 

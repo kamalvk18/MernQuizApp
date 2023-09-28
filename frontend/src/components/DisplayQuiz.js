@@ -57,6 +57,7 @@ const DisplayQuiz = () => {
             <h2 className='text-danger'>Warning</h2>
             <p>Once the quiz is started, <br/> you can't go back or reload the page.</p>
             <p>The quiz will automatically be submitted if you do so.</p>
+            <p>Once next is clicked you cannot move back to previous question.</p>
             <p>Do you still want to continue?</p>
             <button className="continueButton" onClick={continueQuiz}>Continue</button>
             <button className="cancelButton" onClick={() => setIsPopupOpen(false)}>Cancel</button>
@@ -168,20 +169,10 @@ const DisplayQuiz = () => {
                     )}
                   </div>
                   {userdata.occupation === "student" && showAttemptHistory && renderAttemptHistoryTable()}
-
-                 {/* {userdata.occupation=="student" ? (<div><Button variant="success" className='w-25 mb-4' onClick={attemptHere}>
-                    Attempt here
-                  </Button><Button variant="primary" className="w-25 mt-2" onClick={(e)=>setShowAttemptHistory(!showAttemptHistory)}>
-                    View Attempt History
-                  </Button></div>) : <div><Button variant="outline-warning" className="w-25 mb-4" size="sm" onClick={editQuiz} value={JSON.stringify(quizdata)}>Edit</Button>
-                   <br/>
-                    <Button variant="outline-danger" className="w-25" size="sm" onClick={editQuiz} value={JSON.stringify(quizdata)}>Delete</Button></div>}
-                  {userdata.occupation=="student" && showAttemptHistory && renderAttemptHistoryTable()} */}
                 </>
               )}
             </Card>
-            {/* Your main content here */}
-            {/* For example, the quiz display */}
+
           </div>
           <div className="col-lg-4 text-center mt-4"> {/* Add margin to move it down */}
             <h2>Leaderboard</h2>

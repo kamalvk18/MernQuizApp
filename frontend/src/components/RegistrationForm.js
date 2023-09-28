@@ -2,6 +2,7 @@ import React, {  useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
+import '../css/Popup.css'
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -23,6 +24,7 @@ const RegistrationForm = () => {
   const availColleges=["mvgr","anits","gvp","other"]
   const navigate=useNavigate()
   const base_url="http://localhost:5000"
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [validated, setValidated] = useState(false)
 
   const handleSubmit = async (event) => {
@@ -32,6 +34,12 @@ const RegistrationForm = () => {
       event.stopPropagation();
     } else{
       try {
+        const res = await axios.post(base_url + '/check-user', { email });
+        console.log(res,"from res")
+        if (res.data.exists) {
+          setIsPopupOpen(true)
+        }
+        else{
         const response = await axios.post(base_url+'/signup', {
           name: name,
           email: email,
@@ -43,14 +51,31 @@ const RegistrationForm = () => {
 
         if(response.status === 200)
           navigate('/main')
-      } catch (error) {
+      } }
+      catch (error) {
           console.error('Error registering user:', error);
           setError('An error occurred while registering the user.');
       }
     }
     setValidated(true);
   };
-  
+  const renderPopup = () => {
+    if (isPopupOpen){
+      return (
+        <div className="popup">
+          <div className="popup-content">
+            <h2 className='text-danger'>Warning</h2>
+            <p>You already have an account with this mail</p>
+            <p>Please login from here</p>
+            <button className="continueButton" onClick={()=> navigate('/')}>Login</button>
+            <button className="cancelButton" onClick={() => setIsPopupOpen(false)}>Cancel</button>
+          </div>
+        </div>
+      );
+    }else{
+      return null
+    }
+  }
   return (
     <Container className="d-flex flex-column justify-content-center align-items-center vh-100">
       {data !== null && data.msg ? (
@@ -137,6 +162,7 @@ const RegistrationForm = () => {
         <Button variant="primary" type="submit" className='d-flex mx-auto'>
           Register
         </Button>
+        {renderPopup()}
         {error && <p> Registration Failed due to {error}</p>}
       </Form>
       </Row>

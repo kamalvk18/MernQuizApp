@@ -18,7 +18,6 @@ const Timer = ({ time, isRed }) => (
 const CenteredBox = ({ questionObject,qno,onChangeValue, timer,isNextButtonDisabled,isSubmitButtonDisabled,loadNextQues}) => {
   const question=questionObject.question
   const options=questionObject.options
-  console.log(timer)
   const [selectedOption, setSelectedOption] = useState(null);
 
 
@@ -27,11 +26,8 @@ const CenteredBox = ({ questionObject,qno,onChangeValue, timer,isNextButtonDisab
     onChangeValue(qno,optionIndex)
     // console.log(selectedOption)
   };
-  const nextIsClicked=()=>{
+  const nextOrSubmitIsClicked=()=>{
     loadNextQues()
-  }
-  const submitIsClicked=()=>{
-  loadNextQues()
   }
 
   return (
@@ -65,10 +61,10 @@ const CenteredBox = ({ questionObject,qno,onChangeValue, timer,isNextButtonDisab
       <Timer time={timer} isRed={timer <= 5} />
     </div>
     <div className="action-buttons">
-        <button className="btn btn-primary first-bt" disabled={isNextButtonDisabled} onClick={nextIsClicked}>
+        <button className="btn btn-primary first-bt" disabled={isNextButtonDisabled} onClick={nextOrSubmitIsClicked}>
           Next
         </button>
-        <button className="btn btn-primary second-bt" disabled={isSubmitButtonDisabled}  onClick={submitIsClicked}>
+        <button className="btn btn-primary second-bt" disabled={isSubmitButtonDisabled}  onClick={nextOrSubmitIsClicked}>
           Submit
         </button>
       </div>

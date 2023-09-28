@@ -52,7 +52,7 @@ const quizschema=new mongoose.Schema({
   questions: [
     questionSchema
   ],
-
+  maxAttempts: Number,
   totalMarks: Number
 })
 

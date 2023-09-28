@@ -11,7 +11,7 @@ const Addques = () => {
   const location = useLocation();
   const navigate=useNavigate();
   console.log(location.state)
-  const {subjectName, description, userdata, isEdit, quiz_id, preserveState} = location.state
+  const {subjectName, description,maxAttempts, userdata, isEdit, quiz_id, preserveState} = location.state
   const [ques,setques]=useState({1:"",2:"",3:"",4:"",q:"",key:""})
   const [display,setDisplay]=useState(false)
   const [totalques,setTotalques]=useState([])
@@ -40,16 +40,18 @@ const Addques = () => {
 
     try {
       const response = await axios.post(base_url+'/addQuiz', {
+        quizName:subjectName,
         subjectName,
         description,
-        questions,
-        setByTeacher:userdata.email,
         collegeName:userdata.college,
+        questions,
+        maxAttempts,
+        setByTeacher:userdata.email
       },{ withCredentials: true });
       navigate('/main')
 
   }catch (error) {
-    console.error('Error saving quiz:', error.message);
+    console.error('Error saving quiz:', error.message,error);
   }
 } 
 
@@ -104,6 +106,7 @@ const Addques = () => {
       <div className='text-center'>
         <h3>Quiz: {subjectName}</h3>
         <h3>Description: {description}</h3>
+        <h3>Max attempts: {maxAttempts}</h3>
       </div>
       {!isEdit && <div>
         {totalques.length > 0 && <h4>Available questions:</h4>}

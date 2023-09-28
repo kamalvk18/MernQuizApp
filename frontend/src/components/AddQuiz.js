@@ -8,6 +8,7 @@ function Quiz() {
   const userdata=location.state.userdata
   const [subjectName,setSubjectName]=useState("")
   const [description,setDescription]=useState("")
+  const [maxAttempts,setMaxAttempts]=useState(1)
   const [validated, setValidated] = useState(false);
 
   const handleSubmit=(e,req,res)=>{
@@ -16,7 +17,7 @@ function Quiz() {
     if (form.checkValidity() === false) {
       e.stopPropagation();
     } else {
-      navigate('/addques', {state: {subjectName, description, userdata}})
+      navigate('/addques', {state: {subjectName, description,maxAttempts, userdata}})
     }
     setValidated(true); 
   }
@@ -41,6 +42,16 @@ return (
             placeholder="Enter description for the quiz" 
             value={description} 
             onChange={(e)=>setDescription(e.target.value)}
+            required
+          />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Max Attempts</Form.Label>
+          <Form.Control 
+            type="text" 
+            placeholder="Enter the maximum number of attempts that a student can make" 
+            value={maxAttempts} 
+            onChange={(e)=>setMaxAttempts(e.target.value)}
             required
           />
         </Form.Group>
