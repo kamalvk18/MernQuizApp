@@ -16,6 +16,7 @@ function DisplayQues() {
   const email=userdata.email
   const [quiz,setquiz]=useState({})
   const [loader, showLoader] = useState(false)
+  const [isQuizSubmitted, setisQuizSubmitted] = useState(false)
   const base_url = 'http://localhost:5000/'
 
   useEffect(() => {
@@ -23,6 +24,7 @@ function DisplayQues() {
   
     if (showLoaderValue === 'true') {
       localStorage.removeItem('showLoader');
+      submitQuiz()
       showLoader(true);
     }
   }, []);
@@ -88,7 +90,6 @@ function DisplayQues() {
         }
         else{
           showLoader(true)
-          submitQuiz()
         }
       }
     }, 1000);

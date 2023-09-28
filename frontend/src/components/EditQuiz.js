@@ -84,7 +84,7 @@ const EditQuiz = () => {
         </Card.Body>
       </Card>
       ))}
-      <Button variant='primary' size='md' onClick={addQues} className='mb-2'>Add</Button>
+      <Button variant='primary' size='sm' onClick={addQues} className='mb-2'>Add</Button>
       <Button variant='outline-success' size='sm' onClick={goBack} className='mb-2 d-block'>Back</Button>
     </Container>
   )

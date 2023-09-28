@@ -58,9 +58,11 @@ const Addques = () => {
     event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
+      setValidated(true);
       event.stopPropagation();
     }
     else{
+      setValidated(false);
       if(isEdit===undefined){
         console.log("here in non edit ")
         const data=[...totalques]
@@ -95,7 +97,6 @@ const Addques = () => {
         }
       }
     }
-    setValidated(true);
   }
 
   return (
@@ -212,7 +213,7 @@ const Addques = () => {
           <option value="3">C</option>
           <option value="4">D</option>
         </Form.Select>
-        <Button type='submit' variant="primary" className="mb-2" style={{width: '100px'}}>Add</Button>
+        <Button type='submit' variant="success" size ="sm" className="mb-2" style={{width: '100px'}}>Add</Button>
       </Form>
       {!isEdit && <div className="d-flex justify-content-end">
         <Button variant="success" onClick={handleSubmit}>Submit</Button>
