@@ -1,6 +1,7 @@
 import React,{useEffect, useState} from 'react';
 import { useLocation } from "react-router-dom";
 import axios from 'axios'
+import Error from './Error';
 import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'; // Adjust the import path as needed
 import { Table, Card } from 'react-bootstrap';
@@ -10,15 +11,15 @@ import '../css/Popup.css'
 const DisplayQuiz = () => {
   const base_url="http://localhost:5000/"
   const location = useLocation();
-  const userdata=location.state.userdata
-  const quizdata=location.state.quizdata
-  const quiz_id=quizdata._id
-  const quizName = quizdata.subjectName
-  const description = quizdata.description
-  const setBy=quizdata.setBy
   const navigate=useNavigate()
-  const usermail = userdata.email
-  const username = userdata.name
+  const userdata = location.state ? location.state.userdata : null;
+  const quizdata = location.state ? location.state.quizdata : null;
+  const quiz_id = quizdata ? quizdata._id : null;
+  const quizName =quizdata ? quizdata.subjectName:null;
+  const description = quizdata ? quizdata.description:null
+  const setBy=quizdata ? quizdata.setBy:null
+  const usermail = userdata?userdata.email:null
+  const username = userdata?userdata.name:null
 
   //try to fetch quizname and descriptionn from attribute instead of api
   const [results,setResults]=useState([])
