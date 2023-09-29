@@ -39,7 +39,6 @@ const DisplayQues=()=> {
       const newQuestionIndex = currentQuestionIndex + 1
       setCurrentQuestionIndex(newQuestionIndex);
       setTimer(questions[newQuestionIndex].timeInSec)
-      
     }
     else{
       showLoader(true)
