@@ -29,7 +29,7 @@ const questionSchema = new mongoose.Schema({
 const quizschema=new mongoose.Schema({
   quizName:{
     type:String,
-    require: true
+    required: true
   },
 
   subjectName: {

@@ -27,6 +27,7 @@ const CenteredBox = ({ questionObject,qno,onChangeValue, timer,isNextButtonDisab
     // console.log(selectedOption)
   };
   const nextOrSubmitIsClicked=()=>{
+    setSelectedOption(null)
     loadNextQues()
   }
 
