@@ -109,3 +109,14 @@ Content-Type: application/json
 
 
 }
+
+###
+get http://localhost:5000/get_all_colleges
+
+###
+POST http://localhost:5000/add_College
+Content-Type: application/json
+
+{
+       "college":"other"
+}

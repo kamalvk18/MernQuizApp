@@ -18,6 +18,10 @@ const Addques = () => {
   const [validated, setValidated] = useState(false);
 
   const handleSubmit=async (e,req,res)=>{
+    if(ques.q!==""){
+      alert("please click add before submit")
+    }
+    else{
     const questions=[] 
     totalques.map((data)=>{
       const d=data[0];
@@ -52,7 +56,7 @@ const Addques = () => {
 
   }catch (error) {
     console.error('Error saving quiz:', error.message,error);
-  }
+  }}
 } 
 
   const base_url="http://localhost:5000"
