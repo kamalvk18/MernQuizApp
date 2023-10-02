@@ -19,10 +19,11 @@ const DisplayQuiz = () => {
   const quizName =quizdata ? quizdata.subjectName:null;
   const description = quizdata ? quizdata.description:null
   const maxAttempts=quizdata ? quizdata.maxAttempts:null
+  const deadline=quizdata ? new Date(quizdata.deadline).getTime():null
   const setBy=quizdata ? quizdata.setBy:null
   const usermail = userdata?userdata.email:null
   const username = userdata?userdata.name:null
-
+  console.log(Date.now(), deadline)
   //try to fetch quizname and descriptionn from attribute instead of api
   const [results,setResults]=useState([])
   const [leaderboard,setLeaderboard]=useState([])
@@ -165,17 +166,20 @@ const DisplayQuiz = () => {
                 <div style={{ display: 'flex', flexDirection: 'column' , alignItems: 'center' }}>
                     {userdata.occupation === "student" ? (
                       <>
-                              <Button
-                                variant="success"
-                                size="sm"
-                                className={`w-25 ${maxAttempts - attempted <= 0?"disabled":""}`}
-                                title={maxAttempts - attempted <= 0 ? 'Max attempts reached' : ''}
-                                onClick={attemptHere}
-                                disabled={maxAttempts - attempted <= 0}
-                                
-                              >
-                                Attempt here
-                              </Button>
+                        {Date.now() >= deadline ? (
+                          <h5>Time up!</h5>
+                        ) : maxAttempts - attempted <= 0 ? (
+                          <h5>Max Attempts reached!</h5>
+                        ) : (
+                          <Button
+                            variant="success"
+                            size="sm"
+                            className="w-25"
+                            onClick={attemptHere}
+                          >
+                            Attempt here
+                          </Button>
+                        )}
                         <Button variant="primary" size = 'sm' className="w-25 mt-2 mb-2" onClick={(e) => setShowAttemptHistory(!showAttemptHistory)}>
                           View Attempt History
                         </Button>

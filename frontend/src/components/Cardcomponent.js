@@ -6,15 +6,15 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
+import Pagination from 'react-bootstrap/Pagination'
+
 const Cardcomponent = ({userdata,searchQuery,quiz}) => {
   const navigate=useNavigate()
   const itemsPerPage = 12; // Number of items to show per page
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastItem = currentPage * itemsPerPage;
-  const currentItems = quiz.slice(0, indexOfLastItem);
-  const handleSeeMore = () => {
-    setCurrentPage(currentPage + 1);
-  };
+  const currentItems = quiz.slice(indexOfLastItem - itemsPerPage, indexOfLastItem);
+
   const viewDetails=(quizdata)=>{
     navigate('/quiz',{state:{quizdata,userdata}})
   }
@@ -24,6 +24,7 @@ const Cardcomponent = ({userdata,searchQuery,quiz}) => {
   );
 
   const quizzesToDisplay = (filteredQuizzes.length !== 0) ? filteredQuizzes : currentItems;
+  console.log(quizzesToDisplay)
 
   return (
     <>
@@ -49,12 +50,12 @@ const Cardcomponent = ({userdata,searchQuery,quiz}) => {
           ))}
         </Row>
         <Row>
-          <Col className="d-flex justify-content-end mt-3">
-            {quiz.length > indexOfLastItem && (
-              <Button variant="primary" size="sm" onClick={handleSeeMore} className='mb-2'>
-                See More
-              </Button>
-            )}
+          <Col className="d-flex justify-content-end mt-3 gap-2">
+            <Pagination>
+              {currentPage > 1 && <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)}/>}
+              <Pagination.Item active>{currentPage}</Pagination.Item>
+              {indexOfLastItem < quiz.length && <Pagination.Next onClick={() => setCurrentPage(currentPage + 1)}/>}
+            </Pagination>
           </Col>
         </Row>
       </Container> 

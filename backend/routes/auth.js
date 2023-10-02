@@ -8,6 +8,16 @@ const setCookies = (req, res) => {
     res.cookie('name', req.user.name, { secure: true, maxAge: 24 * 60 * 60 * 1000 });
 }
 
+router.post('/check-user', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const userData = await user.findOne({ email });
+    res.json({ exists: !!userData });
+  } catch (error) {
+    res.status(500).json({ error: 'Error checking user' });
+  }
+})
+
 //google auth
 router.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));

@@ -10,11 +10,11 @@ import Card from 'react-bootstrap/Card';
 const Addques = () => {
   const location = useLocation();
   const navigate=useNavigate();
-  console.log(location.state)
-  const {subjectName, description,maxAttempts, userdata, isEdit, quiz_id, preserveState} = location.state
+  const {subjectName, description,maxAttempts, deadline, userdata, isEdit, quiz_id, preserveState} = location.state
   const [ques,setques]=useState({1:"",2:"",3:"",4:"",q:"",key:""})
   const [display,setDisplay]=useState(false)
   const [totalques,setTotalques]=useState([])
+  const [time, setTime] = useState()
   const [validated, setValidated] = useState(false);
 
   const handleSubmit=async (e,req,res)=>{
@@ -29,7 +29,6 @@ const Addques = () => {
       const indivialques=[]
       indivialques.push(q);
       const options=[]
-      console.log(d)
       for(let i=1;i<=4;i++)
       {
         if(Number(d.key)===i){
@@ -50,6 +49,7 @@ const Addques = () => {
         collegeName:userdata.college,
         questions,
         maxAttempts,
+        deadline,
         setByTeacher:userdata.email
       },{ withCredentials: true });
       navigate('/main')
@@ -220,6 +220,18 @@ const Addques = () => {
           <option value="3">C</option>
           <option value="4">D</option>
         </Form.Select>
+        <FloatingLabel
+          controlId="floatingInput"
+          label="timeInSec"
+          className="mb-1"
+        >
+          <Form.Control 
+            type="text"
+            placeholder="timeInSec"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+          />
+        </FloatingLabel>
         <Button type='submit' variant="success" size ="sm" className="mb-2" style={{width: '100px'}}>Add</Button>
       </Form>
       {!isEdit && <div className="d-flex justify-content-end">
