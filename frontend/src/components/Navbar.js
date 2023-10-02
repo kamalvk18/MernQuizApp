@@ -30,7 +30,7 @@ const CustomNavbar = ({name, email, college, phone, searchQuery, setSearchQuery,
           style={{ maxHeight: '100px' }}
           navbarScroll
         >
-          <span className="nav-link text-white" onClick={() => navigate("/main",{state: {email}}) }>Home</span>
+          <span className="nav-link text-white" style={{cursor: 'pointer'}} onClick={() => navigate("/main",{state: {email}}) }>Home</span>
         </Nav>
         <Navbar.Text style={{marginRight:'5px'}} className="text-white">
           Hi, {name}!

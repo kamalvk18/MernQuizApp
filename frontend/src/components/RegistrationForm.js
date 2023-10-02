@@ -35,7 +35,6 @@ const RegistrationForm = () => {
     } else{
       try {
         const res = await axios.post(base_url + '/check-user', { email });
-        console.log(res,"from res")
         if (res.data.exists) {
           setIsPopupOpen(true)
         }

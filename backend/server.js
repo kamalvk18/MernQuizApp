@@ -48,7 +48,6 @@ const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next();
   } else {
-    // Redirect the user to the login page or send an error response
     res.status(401).json({ message: 'Unauthorized' });
   }
 };
@@ -61,7 +60,6 @@ const isTeacher = async (req, res, next) => {
       res.status(401).json({message: 'Only teachers can add quizzes!'})
     }
   } else {
-    // Redirect the user to the login page or send an error response
     res.status(401).json({ message: 'Unauthorized' });
   }
 }
@@ -75,16 +73,12 @@ app.get("/",(req,res)=>{
 app.post('/check-user', async (req, res) => {
   try {
     const { email } = req.body;
-    console.log('Checking {email}', email)
-    // Check if the user exists
     const userData = await user.findOne({ email });
-    // Send the response indicating whether the user exists or not
     res.json({ exists: !!userData });
   } catch (error) {
-    // Handle any errors that occurred during the query
     res.status(500).json({ error: 'Error checking user' });
   }
-}) 
+})
 
 app.get("/sarada",async (req,res)=>{
   const temp = await user.findOneAndDelete({"email":"codebean0308@gmail.com"})
@@ -152,6 +146,7 @@ app.get('/:quizName/getTotalMarks', isAuthenticated, async (req, res) => {
    
   }
 })
+
 app.get('/:quizName/getResults', async (req, res) => {
   try {
     const foundQuiz = await quiz.findOne({ subjectName: req.params.quizName });
