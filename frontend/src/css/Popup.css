@@ -54,3 +54,6 @@
     background: #dc3545;
     color: #fff;
 }
+  .disabled {
+    pointer-events: all !important;
+  }

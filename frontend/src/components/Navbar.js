@@ -22,7 +22,7 @@ const CustomNavbar = ({name, email, college, phone, searchQuery, setSearchQuery,
   return (
     <Navbar expand="lg" bg="dark" data-bs-theme="dark" className="bg-body-tertiary">
     <Container fluid>
-      <Navbar.Brand href="#">Quiz App</Navbar.Brand>
+      <Navbar.Brand href="">Quiz App</Navbar.Brand>
       <Navbar.Toggle aria-controls="navbarScroll" />
       <Navbar.Collapse id="navbarScroll">
         <Nav

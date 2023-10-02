@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, {  useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
@@ -21,12 +21,27 @@ const RegistrationForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState('');
-  const availColleges=["mvgr","anits","gvp","other"]
+  const [availableColleges,setAvailablecolleges]=useState([])
   const navigate=useNavigate()
   const base_url="http://localhost:5000"
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [validated, setValidated] = useState(false)
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const colleges = await axios.get(`${base_url}/get_all_colleges`);
+        console.log(colleges.data)
+        setAvailablecolleges(colleges.data)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // Retry fetching after 2 seconds if there's some error fetching data.
+        setTimeout(fetchData, 2000);
+      }
+    };
+  
+    fetchData();
+  }, []);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -39,6 +54,9 @@ const RegistrationForm = () => {
           setIsPopupOpen(true)
         }
         else{
+          if(college==="other"){
+            const res = await axios.post(base_url + '/add_College', { college:collegeName});
+          }
         const response = await axios.post(base_url+'/signup', {
           name: name,
           email: email,
@@ -137,7 +155,7 @@ const RegistrationForm = () => {
         <Form.Group className="mb-3" controlId="formBasicCollege">
           <Form.Label>College</Form.Label>
           <Form.Select value={college} onChange={e=>setCollege(e.target.value)}>
-            {availColleges.map((option,ind) => (
+            {availableColleges.map((option,ind) => (
               <option value={option} key={ind}>{option}</option>
             ))}
           </Form.Select>

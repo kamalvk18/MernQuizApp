@@ -22,14 +22,15 @@ const User = ({userdata, searchQuery}) => {
     return (
       <div>
         <div className="d-flex justify-content-between align-items-center p-3 pb-0 mb-0">
-          <h5>Available quizzes by {userdata.college} are: </h5>
+          <h5>Available quizzes by {userdata.college}   : </h5>
           {userdata.occupation==="teacher" && <Button variant="primary" size="sm" onClick={handleClick}>Add Quiz</Button>}
         </div>
         <hr />
-        {quiz !== null ? (
+        {/* {console.log(quiz)} */}
+        {quiz.length !== 0 ? (
           <Cardcomponent userdata={userdata} searchQuery={searchQuery} quiz={quiz}/>
         ): (
-          <p>Loading...</p>
+          <p>No quizzes are added by ur college!</p>
         )}
       </div>
   )
