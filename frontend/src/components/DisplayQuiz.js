@@ -165,21 +165,19 @@ const DisplayQuiz = () => {
                   </div>
                 <div style={{ display: 'flex', flexDirection: 'column' , alignItems: 'center' }}>
                     {userdata.occupation === "student" ? (
+
                       <>
-                        {Date.now() >= deadline ? (
-                          <h5>Time up!</h5>
-                        ) : maxAttempts - attempted <= 0 ? (
-                          <h5>Max Attempts reached!</h5>
-                        ) : (
-                          <Button
-                            variant="success"
-                            size="sm"
-                            className="w-25"
-                            onClick={attemptHere}
-                          >
-                            Attempt here
-                          </Button>
-                        )}
+                      <Button
+                        variant="success"
+                        size="sm"
+                        className={`w-25 ${maxAttempts - attempted <= 0 || Date.now() >= deadline?"disabled":""}`}
+                        title={maxAttempts - attempted <= 0 ? 'Max attempts reached' : Date.now() >= deadline?'Time up!':''}
+                        onClick={attemptHere}
+                        disabled={maxAttempts - attempted <= 0}
+                        
+                      >
+                        Attempt here
+                      </Button>
                         <Button variant="primary" size = 'sm' className="w-25 mt-2 mb-2" onClick={(e) => setShowAttemptHistory(!showAttemptHistory)}>
                           View Attempt History
                         </Button>
