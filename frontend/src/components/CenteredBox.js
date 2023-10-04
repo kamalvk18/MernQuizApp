@@ -15,7 +15,7 @@ const Timer = ({ time, isRed }) => (
 );
 
 
-const CenteredBox = ({ questionObject,qno,onChangeValue, timer,isNextButtonDisabled,isSubmitButtonDisabled,loadNextQues}) => {
+const CenteredBox = ({ questionObject,qno,onChangeValue, timer,isNextButtonDisabled,isSubmitButtonDisabled,loadNextQues,timerOff}) => {
   const question=questionObject.question
   const options=questionObject.options
   const [selectedOption, setSelectedOption] = useState(null);
@@ -50,7 +50,6 @@ const CenteredBox = ({ questionObject,qno,onChangeValue, timer,isNextButtonDisab
                 <h3>{option.option}</h3>
                 {selectedOption === option.option && (
                   <div className="cool-graphics">
-                    {/* Add your cool graphics here */}
                     <span>🚀</span>
                   </div>
                 )}
@@ -59,8 +58,8 @@ const CenteredBox = ({ questionObject,qno,onChangeValue, timer,isNextButtonDisab
           ))}
         </div>
       </div>
-      <Timer time={timer} isRed={timer <= 5} />
-    </div>
+      {timerOff && <Timer time={timer} isRed={timer <= 5} />
+ }   </div>
     <div className="action-buttons">
         <button className="btn btn-primary first-bt" disabled={isNextButtonDisabled} onClick={nextOrSubmitIsClicked}>
           Next

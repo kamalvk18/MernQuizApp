@@ -16,6 +16,7 @@ const DisplayQues=()=> {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const originalTime = questions[currentQuestionIndex].timeInSec;
   const [timer, setTimer] = useState(originalTime);
+  const [timerOff,setTimerOff]=useState(false)
   const timerRef = useRef(null)
   const userdata=location.state.userdata
   const email=userdata.email
@@ -34,6 +35,11 @@ const DisplayQues=()=> {
       setIsSubmitButtonDisabled(false)
     }
   },[currentQuestionIndex])
+  useEffect(()=>{
+    if(originalTime===10000000){
+      setTimerOff(true)
+    }
+  },[originalTime])
   const loadNextQues=()=>{
     if (currentQuestionIndex < questions.length - 1) {
       const newQuestionIndex = currentQuestionIndex + 1
@@ -112,7 +118,7 @@ const DisplayQues=()=> {
   return (
     <div className="">
       {!loader ? (
-        <CenteredBox questionObject={questions[currentQuestionIndex]} qno={currentQuestionIndex} onChangeValue={onChangeValue} timer = {timer} isNextButtonDisabled={isNextButtonDisabled} isSubmitButtonDisabled={isSubmitButtonDisabled} loadNextQues={loadNextQues} />
+        <CenteredBox questionObject={questions[currentQuestionIndex]} qno={currentQuestionIndex} onChangeValue={onChangeValue} timer = {timer} isNextButtonDisabled={isNextButtonDisabled} isSubmitButtonDisabled={isSubmitButtonDisabled} loadNextQues={loadNextQues} timerOff={timerOff} />
       ): <ScreenLoader email={email} submitQuiz={submitQuiz}/>}
     </div>
   );

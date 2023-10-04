@@ -5,16 +5,29 @@ import { Container, Button, Form } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Card from 'react-bootstrap/Card';
+import '../css/Addques.css'
 
 // ques,setques,quesid,userdata,quizdata,isEdit
 const Addques = () => {
   const location = useLocation();
   const navigate=useNavigate();
+  const [timerEnable,setTimerEnable]=useState(false)
   const {subjectName, description,maxAttempts, deadline, userdata, isEdit, quiz_id, preserveState} = location.state
   const [ques,setques]=useState({1:"",2:"",3:"",4:"",q:"",key:""})
   const [display,setDisplay]=useState(false)
   const [totalques,setTotalques]=useState([])
   const [time, setTime] = useState()
+  const [answer, setAnswer] = useState('');
+  const handleSelectChange = (e) => {
+    setAnswer(e.target.value);
+    if(e.target.value==="Yes"){
+      setTimerEnable(true)
+    }
+    else{
+      setTimerEnable(false)
+    }
+  };
+  
   const [validated, setValidated] = useState(false);
 
   const handleSubmit=async (e,req,res)=>{
@@ -107,11 +120,26 @@ const Addques = () => {
 
   return (
     <Container style={{width:'1000px'}}>
-      <div className='text-center'>
-        <h3>Quiz: {subjectName}</h3>
-        <h3>Description: {description}</h3>
-        <h3>Max attempts: {maxAttempts}</h3>
-      </div>
+      <div className="custom-card-container">
+      <Card className="custom-card">
+        <Card.Body className="custom-card-body">
+          <Card.Title className='card-text'><h3>Quiz: {subjectName}</h3></Card.Title>
+          <Card.Text className='card-text'>
+            <h3>Description: {description}</h3>
+            <h3>Max attempts: {maxAttempts}</h3>
+            <h5>Do you want to enable a timer for this quiz: 
+              <select value={answer} onChange={handleSelectChange}>
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+              </select>
+            </h5>
+          </Card.Text>
+        </Card.Body>
+      </Card>
+    </div>
+      
+
+
       {!isEdit && <div>
         {totalques.length > 0 && <h4>Available questions:</h4>}
         {totalques.map((data,index)=>{
@@ -220,7 +248,7 @@ const Addques = () => {
           <option value="3">C</option>
           <option value="4">D</option>
         </Form.Select>
-        <FloatingLabel
+        {timerEnable?<FloatingLabel
           controlId="floatingInput"
           label="timeInSec"
           className="mb-1"
@@ -230,8 +258,9 @@ const Addques = () => {
             placeholder="timeInSec"
             value={time}
             onChange={(e) => setTime(e.target.value)}
-          />
-        </FloatingLabel>
+          />         
+
+        </FloatingLabel>:""}
         <Button type='submit' variant="success" size ="sm" className="mb-2" style={{width: '100px'}}>Add</Button>
       </Form>
       {!isEdit && <div className="d-flex justify-content-end">

@@ -23,8 +23,7 @@ const DisplayQuiz = () => {
   const setBy=quizdata ? quizdata.setBy:null
   const usermail = userdata?userdata.email:null
   const username = userdata?userdata.name:null
-  console.log(Date.now(), deadline)
-  //try to fetch quizname and descriptionn from attribute instead of api
+  
   const [results,setResults]=useState([])
   const [leaderboard,setLeaderboard]=useState([])
   const [showAttemptHistory,setShowAttemptHistory]=useState(false)
@@ -52,7 +51,7 @@ const DisplayQuiz = () => {
   const attemptHere=()=>{
     setIsPopupOpen(true)
   }
-
+  // console.log(results)
   const renderPopup = () => {
     if (isPopupOpen){
       return (
@@ -74,13 +73,17 @@ const DisplayQuiz = () => {
   }
   useEffect(() => {
     const AttemptedSoFar= async () => {
-      results.map((attempt, index)=>{
+      let m=attempted
+      results.map((attempt)=>{
         const cc=attempt.attempt
-        setAttempted(cc>attempted?cc:attempted)
+        // console.log(cc,"cc")
+        m=Math.max(m,cc)
       })
+      setAttempted(m)
     }
     AttemptedSoFar()
-  })
+    // console.log(attempted)
+  },[results])
    
 
   useEffect(() => {
@@ -162,6 +165,7 @@ const DisplayQuiz = () => {
                   <p><strong>Description:</strong> {description}</p>
                   <p><strong>Max Attempts:</strong> {maxAttempts}</p>
                   <p><strong>Attempts left:</strong> {maxAttempts-attempted}</p>
+                  {console.log(maxAttempts,attempted)}
                   </div>
                 <div style={{ display: 'flex', flexDirection: 'column' , alignItems: 'center' }}>
                     {userdata.occupation === "student" ? (
@@ -173,7 +177,7 @@ const DisplayQuiz = () => {
                         className={`w-25 ${maxAttempts - attempted <= 0 || Date.now() >= deadline?"disabled":""}`}
                         title={maxAttempts - attempted <= 0 ? 'Max attempts reached' : Date.now() >= deadline?'Time up!':''}
                         onClick={attemptHere}
-                        disabled={maxAttempts - attempted <= 0}
+                        disabled={maxAttempts - attempted <= 0 || Date.now() >= deadline}
                         
                       >
                         Attempt here
