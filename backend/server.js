@@ -5,6 +5,7 @@ const mongoose=require('mongoose')
 const bodyParser=require("body-parser")
 const passport = require("passport")
 const passportConfig = require('./passport')
+const ExpressError = require("./utils/ExpressError")
 
 //requiring models
 const user = require('./models/user')
@@ -93,6 +94,21 @@ app.post('/add_College', async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Server error' });
   }
+});
+
+app.all('*',(req,res,next)=>{
+	next(new ExpressError('Page not Found!!',404))
+})
+
+app.use(function(err, req, res, next) {
+	if(!err.message){
+		err.message = "Something went wrong!"
+	}
+	if(!err.statusCode){
+		err.statusCode = 500
+	}
+	const {statusCode, message} = err
+	res.status(statusCode).json(message)
 });
 
 // mongoose.connect()
