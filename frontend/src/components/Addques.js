@@ -125,11 +125,11 @@ const Addques = () => {
     <Container style={{width:'1000px'}}>
       <div className="custom-card-container">
       <Card className="custom-card">
-        <Card.Body className="custom-card-body">
+        <Card.Body className="addquiz-custom-card-body">
           <Card.Title className='card-text'><h3>Quiz: {subjectName}</h3></Card.Title>
           <Card.Text className='card-text'>
-            <h3>Description: {description}</h3>
-            <h3>Max attempts: {maxAttempts}</h3>
+            <h5>Description: {description}</h5>
+            <h5>Max attempts: {maxAttempts}</h5>
             <h5>Do you want to enable a timer for this quiz: 
               <select value={answer} onChange={handleSelectChange}>
                 <option value="No">No</option>

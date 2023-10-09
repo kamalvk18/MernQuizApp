@@ -26,7 +26,7 @@ const User = ({userdata, searchQuery}) => {
           {userdata.occupation==="teacher" && <Button variant="primary" size="sm" onClick={handleClick}>Add Quiz</Button>}
         </div>
         <hr />
-        {/* {console.log(quiz)} */}
+        {console.log(quiz)}
         {quiz.length !== 0 ? (
           <Cardcomponent userdata={userdata} searchQuery={searchQuery} quiz={quiz}/>
         ): (
