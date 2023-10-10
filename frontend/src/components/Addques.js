@@ -6,7 +6,6 @@ import Alert from 'react-bootstrap/Alert';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Card from 'react-bootstrap/Card';
 import '../css/Addques.css'
-import { useErrorBoundary } from 'react-error-boundary';
 
 // ques,setques,quesid,userdata,quizdata,isEdit
 const Addques = () => {
@@ -19,8 +18,6 @@ const Addques = () => {
   const [totalques,setTotalques]=useState([])
   const [time, setTime] = useState()
   const [answer, setAnswer] = useState('');
-  const { showBoundary } = useErrorBoundary();
-
   const handleSelectChange = (e) => {
     setAnswer(e.target.value);
     if(e.target.value==="Yes"){
@@ -71,7 +68,7 @@ const Addques = () => {
       navigate('/main')
 
   }catch (error) {
-    showBoundary(error);
+    console.error('Error saving quiz:', error.message,error);
   }}
 } 
 
@@ -115,7 +112,7 @@ const Addques = () => {
           }
         }
         catch(err){
-          showBoundary(err);
+          console.log(err)
         }
       }
     }

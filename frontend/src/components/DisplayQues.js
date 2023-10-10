@@ -3,10 +3,8 @@ import CenteredBox from './CenteredBox';
 import ScreenLoader from './ScreenLoader';
 import axios from 'axios'
 import { useLocation } from 'react-router-dom';
-import { useErrorBoundary } from 'react-error-boundary';
 
 const DisplayQues=()=> {
-  const {showBoundary} = useErrorBoundary();
   const location=useLocation()
   if(!location.state){
     location.state = window.history.state
@@ -84,7 +82,7 @@ const DisplayQues=()=> {
     try{
       await axios.post(`${base_url}${data.subjectName}/store-result`,{"score": c}, { withCredentials: true });
     } catch(error){
-      showBoundary(error);
+      console.error('Error saving quiz', error.response)
     }
   }
 

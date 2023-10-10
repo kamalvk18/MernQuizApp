@@ -5,11 +5,9 @@ import Container from 'react-bootstrap/Container';
 import Navbar from './Navbar';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { useErrorBoundary } from 'react-error-boundary';
 
 const HomePage=()=> {
   const location = useLocation();
-  const {showBoundary} = useErrorBoundary();
   const data = location.state; 
   const email = Cookies.get('email');
   const [userdata,setUserdata]=useState([])
@@ -22,7 +20,7 @@ const HomePage=()=> {
         const response = await axios.get(`${base_url}/userdata/${email}`);
         setUserdata(response.data[0]);
       } catch (error) {
-        showBoundary(err)
+        console.error('Error fetching data:', error);
         // Retry fetching after 2 seconds if there's some error fetching data.
         setTimeout(fetchData, 2000);
       }
