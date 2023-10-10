@@ -112,7 +112,7 @@ const DisplayQuiz = () => {
         setResults(filteredResults);
 
       } catch (error) {
-        showBoundary(err)
+        showBoundary(error)
       }
     };
 

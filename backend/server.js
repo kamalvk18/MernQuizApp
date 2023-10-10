@@ -15,10 +15,9 @@ const availableColleges=require('./models/availableColleges')
 const authRoutes = require("./routes/auth")
 const quizRoutes = require("./routes/quiz")
 const userRoutes = require("./routes/user")
-
-mongoose.connect(
-    "mongodb+srv://admin:admin143@cluster0.0ggnx.mongodb.net/MernStackQuizApp"
-);
+require('dotenv').config(); 
+const DB_URI = process.env.MONGODB_URI
+mongoose.connect(DB_URI);
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -52,10 +51,6 @@ app.get("/",(req,res)=>{
     res.send("hello world")
 })
 
-app.get("/sarada",async (req,res)=>{
-  const temp = await user.findOneAndDelete({"email":"codebean0308@gmail.com"})
-  return res.json(temp)
-})
 
 app.get("/get_all_colleges", async (req,res)=>{
   try{
@@ -112,6 +107,7 @@ app.use(function(err, req, res, next) {
 });
 
 // mongoose.connect()
-app.listen(5000,(req,res)=>{
-  console.log("Server started at http://localhost:5000/")
+const PORT = process.env.PORT || 5000;
+app.listen(PORT,(req,res)=>{
+  console.log(`Server started at ${PORT}`)
 })

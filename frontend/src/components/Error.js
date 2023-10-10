@@ -1,10 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FallbackProps } from 'react-error-boundary';
+import { FallbackProps } from 'react-error-boundary'; // Assuming this import is correct
 import '../css/ErrorComponent.css';
 
-const Error = (FallbackProps) => {
-  const {error, resetErrorBoundary} = FallbackProps
+const Error = ({ error, resetErrorBoundary }) => { // Destructure FallbackProps correctly
   const navigate = useNavigate();
 
   const navigateToMainPage = () => {

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom"
 import { Container, Button, Form } from 'react-bootstrap';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import { useErrorBoundary } from 'react-error-boundary';
+import  {useErrorBoundary}  from 'react-error-boundary';
 
 const Editques = () => {
     const location = useLocation();
