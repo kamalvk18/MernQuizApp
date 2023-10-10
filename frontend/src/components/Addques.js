@@ -6,7 +6,6 @@ import Alert from 'react-bootstrap/Alert';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Card from 'react-bootstrap/Card';
 import '../css/Addques.css'
-import { useErrorBoundary } from 'react-error-boundary';
 
 // ques,setques,quesid,userdata,quizdata,isEdit
 const Addques = () => {
@@ -19,8 +18,6 @@ const Addques = () => {
   const [totalques,setTotalques]=useState([])
   const [time, setTime] = useState()
   const [answer, setAnswer] = useState('');
-  const { showBoundary } = useErrorBoundary();
-
   const handleSelectChange = (e) => {
     setAnswer(e.target.value);
     if(e.target.value==="Yes"){
@@ -71,7 +68,7 @@ const Addques = () => {
       navigate('/main')
 
   }catch (error) {
-    showBoundary(error);
+    console.error('Error saving quiz:', error.message,error);
   }}
 } 
 
@@ -115,7 +112,7 @@ const Addques = () => {
           }
         }
         catch(err){
-          showBoundary(err);
+          console.log(err)
         }
       }
     }
@@ -125,11 +122,11 @@ const Addques = () => {
     <Container style={{width:'1000px'}}>
       <div className="custom-card-container">
       <Card className="custom-card">
-        <Card.Body className="addquiz-custom-card-body">
+        <Card.Body className="custom-card-body">
           <Card.Title className='card-text'><h3>Quiz: {subjectName}</h3></Card.Title>
           <Card.Text className='card-text'>
-            <h5>Description: {description}</h5>
-            <h5>Max attempts: {maxAttempts}</h5>
+            <h3>Description: {description}</h3>
+            <h3>Max attempts: {maxAttempts}</h3>
             <h5>Do you want to enable a timer for this quiz: 
               <select value={answer} onChange={handleSelectChange}>
                 <option value="No">No</option>

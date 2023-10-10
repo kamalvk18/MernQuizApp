@@ -3,13 +3,11 @@ import axios from 'axios'
 import { Container, Button, Form } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useErrorBoundary } from 'react-error-boundary';
 
 const EditQuiz = () => {
     const [subjectName,setSubjectName]=useState("")
     const [description,setDescription]=useState("")
     const [totalques,setTotalques]=useState([])
-    const {showBoundary} = useErrorBoundary();
     const location=useLocation()
     const base_url="http://localhost:5000"
     const data=location.state.userdata
@@ -41,7 +39,7 @@ const EditQuiz = () => {
         },{ withCredentials: true })
         setTotalques(res.data)
       } catch(err){
-        showBoundary(err)
+        console.log(`Cannot delete ${it._id} because of ${err}`)
       }
     }
 

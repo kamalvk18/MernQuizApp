@@ -3,11 +3,11 @@
     padding: 20px;
     background-color: #fff;
     border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 255, 0, 0.2); 
+    box-shadow: 0 4px 6px rgba(0, 255, 0, 0.2); /* Green shadow */
     margin: 10px;
     text-align: center;
     justify-content: left;
-  } 
+  }
   .custom-card-container {
     display: flex;
     justify-content: center;
@@ -15,7 +15,10 @@
     
   }
   
-  .addquiz-custom-card-body {
-    text-align: left; 
+  .custom-card-body {
+    text-align: left; /* Ensure content starts from the left within the card body */
   }
-  
+  .card-text{
+    padding-left: 230px;
+    font-family: 'Palatino';
+  }

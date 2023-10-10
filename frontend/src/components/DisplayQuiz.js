@@ -7,11 +7,9 @@ import Navbar from './Navbar'; // Adjust the import path as needed
 import { Table, Card } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import '../css/Popup.css'
-import { useErrorBoundary } from 'react-error-boundary';
 
 const DisplayQuiz = () => {
   const base_url="http://localhost:5000/"
-  const {showBoundary} = useErrorBoundary();
   const location = useLocation();
   const navigate=useNavigate()
   const [attempted,setAttempted]=useState(0)
@@ -41,7 +39,7 @@ const DisplayQuiz = () => {
       navigate("/main",{state: {email:setBy}}) 
     }
     catch(err){
-      showBoundary(err)
+      console.log("error:"+ err)
     }
   }
 
@@ -112,7 +110,7 @@ const DisplayQuiz = () => {
         setResults(filteredResults);
 
       } catch (error) {
-        showBoundary(err)
+        console.error('Error fetching leaderboard data:', error);
       }
     };
 

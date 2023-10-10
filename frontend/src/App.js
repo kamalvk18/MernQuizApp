@@ -38,6 +38,7 @@ function App() {
       <Route exact path='/error' element={< Error/>} />
       </Routes>
       </Router>
+
     </div>
   );
 }
