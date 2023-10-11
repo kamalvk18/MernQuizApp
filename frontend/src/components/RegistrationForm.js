@@ -7,6 +7,7 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Cookies from 'js-cookie';
+import Error from './Error';
 
 const RegistrationForm = () => {
   const location = useLocation();
@@ -20,7 +21,7 @@ const RegistrationForm = () => {
   const [occupation,setOccupation]=useState('student')
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
-  const [error, setError] = useState('');
+  const [errorMsg, setError] = useState(null);
   const [availableColleges,setAvailablecolleges]=useState([])
   const navigate=useNavigate()
   const base_url="http://localhost:5000"
@@ -34,8 +35,7 @@ const RegistrationForm = () => {
         console.log(colleges.data)
         setAvailablecolleges(colleges.data)
       } catch (error) {
-        console.error('Error fetching data:', error);
-        // Retry fetching after 2 seconds if there's some error fetching data.
+        setError(error.response.data.message)
         setTimeout(fetchData, 2000);
       }
     };
@@ -70,7 +70,6 @@ const RegistrationForm = () => {
           navigate('/main')
       } }
       catch (error) {
-          console.error('Error registering user:', error);
           setError('An error occurred while registering the user.');
       }
     }
@@ -95,6 +94,7 @@ const RegistrationForm = () => {
   }
   return (
     <Container className="d-flex flex-column justify-content-center align-items-center vh-100">
+      {errorMsg && <Error errorText={errorMsg} setError={setError}/>}
       {data !== null && data.msg ? (
         <h4>{data.msg}</h4>
       ): (
@@ -180,7 +180,6 @@ const RegistrationForm = () => {
           Register
         </Button>
         {renderPopup()}
-        {error && <p> Registration Failed due to {error}</p>}
       </Form>
       </Row>
     </Container>

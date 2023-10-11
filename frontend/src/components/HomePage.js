@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Navbar from './Navbar';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import Error from './Error';
 
 const HomePage=()=> {
   const location = useLocation();
@@ -12,6 +13,7 @@ const HomePage=()=> {
   const email = Cookies.get('email');
   const [userdata,setUserdata]=useState([])
   const [searchQuery, setSearchQuery] = useState('');
+  const [errorMsg, setError] = useState(null);
   const base_url="http://localhost:5000"
 
   useEffect(() => {
@@ -20,7 +22,7 @@ const HomePage=()=> {
         const response = await axios.get(`${base_url}/userdata/${email}`);
         setUserdata(response.data[0]);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        setError(error.response.data.message)
         // Retry fetching after 2 seconds if there's some error fetching data.
         setTimeout(fetchData, 2000);
       }
@@ -40,7 +42,8 @@ const HomePage=()=> {
               setSearchQuery={setSearchQuery}
               isHome={true}
       />
-      <Container>  
+      <Container>
+        {errorMsg && <Error errorText={errorMsg} setError={setError}/>}
         {userdata !== null ? (
           <User userdata={userdata} searchQuery={searchQuery} />
         ) : (

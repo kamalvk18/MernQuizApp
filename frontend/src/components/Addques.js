@@ -5,6 +5,7 @@ import { Container, Button, Form } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Card from 'react-bootstrap/Card';
+import Error from './Error';
 import '../css/Addques.css'
 
 // ques,setques,quesid,userdata,quizdata,isEdit
@@ -18,6 +19,8 @@ const Addques = () => {
   const [totalques,setTotalques]=useState([])
   const [time, setTime] = useState()
   const [answer, setAnswer] = useState('');
+  const [errorMsg, setError] = useState(null);
+
   const handleSelectChange = (e) => {
     setAnswer(e.target.value);
     if(e.target.value==="Yes"){
@@ -66,9 +69,8 @@ const Addques = () => {
         setByTeacher:userdata.email
       },{ withCredentials: true });
       navigate('/main')
-
-  }catch (error) {
-    console.error('Error saving quiz:', error.message,error);
+  } catch (error) {
+    setError(error.response.data.message)
   }}
 } 
 
@@ -112,7 +114,7 @@ const Addques = () => {
           }
         }
         catch(err){
-          console.log(err)
+          setError(err.response.data.message)
         }
       }
     }
@@ -120,6 +122,7 @@ const Addques = () => {
 
   return (
     <Container style={{width:'1000px'}}>
+      {errorMsg && <Error errorText={errorMsg} setError={setError}/>}
       <div className="custom-card-container">
       <Card className="custom-card">
         <Card.Body className="addquiz-custom-card-body">

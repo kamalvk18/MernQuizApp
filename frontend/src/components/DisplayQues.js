@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import CenteredBox from './CenteredBox';
 import ScreenLoader from './ScreenLoader';
 import axios from 'axios'
+import Error from './Error';
 import { useLocation } from 'react-router-dom';
 
 const DisplayQues=()=> {
@@ -24,6 +25,7 @@ const DisplayQues=()=> {
   const [isSubmitButtonDisabled,setIsSubmitButtonDisabled]=useState(true)
   const [quiz,setquiz]=useState({})
   const [loader, showLoader] = useState(false)
+  const [errorMsg, setError] = useState(null);
   const base_url = 'http://localhost:5000/'
 
   useEffect(()=>{
@@ -82,7 +84,7 @@ const DisplayQues=()=> {
     try{
       await axios.post(`${base_url}${data.subjectName}/store-result`,{"score": c}, { withCredentials: true });
     } catch(error){
-      console.error('Error saving quiz', error.response)
+      setError(error.response)
     }
   }
 
@@ -117,6 +119,7 @@ const DisplayQues=()=> {
 
   return (
     <div className="">
+      {errorMsg && <Error errorText={errorMsg} setError={setError}/>}
       {!loader ? (
         <CenteredBox questionObject={questions[currentQuestionIndex]} qno={currentQuestionIndex} onChangeValue={onChangeValue} timer = {timer} isNextButtonDisabled={isNextButtonDisabled} isSubmitButtonDisabled={isSubmitButtonDisabled} loadNextQues={loadNextQues} timerOff={timerOff} />
       ): <ScreenLoader email={email} submitQuiz={submitQuiz}/>}

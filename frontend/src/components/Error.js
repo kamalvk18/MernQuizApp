@@ -1,20 +1,18 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../css/ErrorComponent.css';
+import { Button } from 'react-bootstrap';
+import '../css/Popup.css'
 
-const Error = () => {
-  const navigate = useNavigate();
-
-  const navigateToMainPage = () => {
-    navigate('/');
-  };
-
+const Error = ({errorText, setError, isWarning}) => {
   return (
-    <div className="error-container">
-      <div className="error-message">OOPSY!</div>
-      <button className="back-button" onClick={navigateToMainPage}>Click to go back</button>
+    <div className="popup">
+        <div className="popup-content">
+        {!isWarning? <h2>Error!</h2>:
+        <h2>Warning!</h2>}
+        <p>{errorText}</p>
+        <Button variant="danger" size ="sm" onClick={() => setError(null)}>Close</Button>
+        </div>
     </div>
   );
-};
+}
 
 export default Error;

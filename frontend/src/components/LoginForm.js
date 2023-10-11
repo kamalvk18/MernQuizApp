@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate} from "react-router-dom";
+import Error from './Error';
+
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error,setError]=useState('')
+  const [errorMsg, setError] = useState('');
   const navigate = useNavigate();
   const base_url="http://localhost:5000"
   const handleSubmit = async (e) => {
@@ -23,12 +25,12 @@ const LoginForm = () => {
     }
     } catch (error) {
       setError(error.response.data.message)
-      console.error('Error logging in:',email,password, error.response.data.message);
     }
   };
 
   return (
     <div>
+    {errorMsg && <Error errorText={errorMsg} setError={setError}/>}
     <form onSubmit={handleSubmit}>
       <input
         type="email"
@@ -43,7 +45,6 @@ const LoginForm = () => {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button type="submit">Login</button>
-      {error && <p>Login Failed due to : {error}</p>}
     </form>
     
     </div>

@@ -3,11 +3,13 @@ import axios from 'axios'
 import { Container, Button, Form } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import { useLocation, useNavigate } from 'react-router-dom'
+import Error from './Error'
 
 const EditQuiz = () => {
     const [subjectName,setSubjectName]=useState("")
     const [description,setDescription]=useState("")
     const [totalques,setTotalques]=useState([])
+    const [errorMsg, setError] = useState(null);
     const location=useLocation()
     const base_url="http://localhost:5000"
     const data=location.state.userdata
@@ -39,7 +41,7 @@ const EditQuiz = () => {
         },{ withCredentials: true })
         setTotalques(res.data)
       } catch(err){
-        console.log(`Cannot delete ${it._id} because of ${err}`)
+        setError(err.response.data.message)
       }
     }
 
@@ -58,7 +60,7 @@ const EditQuiz = () => {
 
   return (
     <Container style={{width:'1000px'}}>
-        {/* {console.log("velyundo00")} */}
+      {errorMsg && <Error errorText={errorMsg} setError={setError}/>}
       <h3 style={{textAlign: 'center'}}>Edit quiz</h3>
       <h4>Quiz: {subjectName}</h4>
       <h4>Description: {description}</h4>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button, Container, Form, Alert } from "react-bootstrap";
+import Error from "./Error";
 
 const Settings = () => {
   const base_url = "http://localhost:5000";
@@ -12,7 +13,7 @@ const Settings = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [number, setNumber] = useState(phone);
-  const [error, setError] = useState(null);
+  const [errorMsg, setError] = useState(null);
   const [validated, setValidated] = useState(false);
 
   const changeValues = async (e) => {
@@ -38,7 +39,6 @@ const Settings = () => {
           setError("Failed to update settings. Please try again.");
         }
       } catch (err) {
-        console.error("Error updating settings:", err);
         setError("Failed to update settings. Please try again.");
       }
     }
@@ -55,8 +55,8 @@ const Settings = () => {
         height: "100vh",
       }}
     >
+      {errorMsg && <Error errorText={errorMsg} setError={setError}/>}
       <Form noValidate validated={validated} onSubmit={changeValues} style={{ width: "300px" }}>
-        {error && <Alert variant="danger">{error}</Alert>}
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Username</Form.Label>
           <Form.Control

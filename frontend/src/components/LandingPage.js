@@ -6,6 +6,7 @@ import '../css/LandingPage.css';
 import { Button } from 'react-bootstrap';  
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
+import Error from './Error';
 
 const BASE_URL = 'http://localhost:5000';
 
@@ -13,7 +14,7 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [errorMsg, setError] = useState(null);
   const [validated, setValidated] = useState(false);
 
   const quotes = [
@@ -52,14 +53,12 @@ const LandingPage = () => {
             navigate('/main');
           }
         } catch(error){
-          console.log(error);
           setError('Invalid Credentials!')
         }
       } else {
         navigate('/register', { state: { email, msg: 'Looks like you are new here, Please Register!' } });
       }
     } catch (error) {
-      console.log(error);
       setError('Error checking user!')
     }
   }
@@ -70,6 +69,7 @@ const LandingPage = () => {
 
   return (
     <div className="split-container">
+      {errorMsg && <Error errorText={errorMsg} setError={setError}/>}
       <div className="large-section">
         <div className="background-image">
           <img
@@ -142,7 +142,6 @@ const LandingPage = () => {
               required
             />
           </FloatingLabel>
-          {error && <div className="text-danger">{error}</div>}
           <div className='d-flex'>
             <Button type="submit" variant="success" className='flex-grow-1'>
               Login

@@ -78,14 +78,13 @@ router.get('/:quizName/getResults', async (req, res) => {
         if (foundQuizResult) {
           res.status(200).json(foundQuizResult);
         } else {
-          res.status(404).json({ error: 'No quiz results found' });
+          res.status(404).json({ message: 'No quiz results found' });
         }
       } else {
-        res.status(404).json({ error: 'Quiz not found' });
+        res.status(404).json({ message: 'Quiz not found' });
       }
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ message: 'Internal server error' });
     }
 });
   
@@ -197,7 +196,6 @@ router.post('/addques/',isTeacher, async (req,res)=>{
         res.status(500).json({ message: 'Please check again' });
       }
     } catch (error) {
-      console.error('Error inserting new question:', error);
       res.status(500).json({ message: 'Please check again' });
     }
 })

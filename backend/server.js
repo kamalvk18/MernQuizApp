@@ -58,7 +58,7 @@ app.get("/get_all_colleges", async (req,res)=>{
 
   res.json(colleges[0].college)}
   catch(err){
-    console.log(err)
+    res.status(500).json({ message: 'Server error' });
   }
 })
 
@@ -86,8 +86,7 @@ app.post('/add_College', async (req, res) => {
 
     res.status(200).json(updatedCollegeDocument);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

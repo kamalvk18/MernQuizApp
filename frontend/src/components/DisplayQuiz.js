@@ -23,6 +23,7 @@ const DisplayQuiz = () => {
   const setBy=quizdata ? quizdata.setBy:null
   const usermail = userdata?userdata.email:null
   const username = userdata?userdata.name:null
+  const [errorMsg, setError] = useState(null);
   
   const [results,setResults]=useState([])
   const [leaderboard,setLeaderboard]=useState([])
@@ -34,12 +35,11 @@ const DisplayQuiz = () => {
   }
   const deleteQuiz= async ()=>{
     try {
-      console.log("deleted!")
       await axios.get(`${base_url}delete/${quiz_id}`);
       navigate("/main",{state: {email:setBy}}) 
     }
     catch(err){
-      console.log("error:"+ err)
+      setError(err.response.data.message)
     }
   }
 
@@ -51,7 +51,7 @@ const DisplayQuiz = () => {
   const attemptHere=()=>{
     setIsPopupOpen(true)
   }
-  // console.log(results)
+
   const renderPopup = () => {
     if (isPopupOpen){
       return (
@@ -110,9 +110,7 @@ const DisplayQuiz = () => {
         setResults(filteredResults);
 
       } catch (error) {
-
-        console.error('Error fetching leaderboard data:', error);
-
+        setError(error.response.data.message)
       }
     };
 
@@ -155,6 +153,7 @@ const DisplayQuiz = () => {
     <div>
       <Navbar name = {username} email={usermail} />
       <div className="container">
+      {errorMsg && <Error errorText={errorMsg} setError={setError} isWarning/>}
         <div className="row">
           <div className="col-lg-8 text-center mt-5 mb-4">
           <Card className="p-4 shadow">

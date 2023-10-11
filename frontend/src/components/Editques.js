@@ -3,10 +3,12 @@ import axios from 'axios';
 import { useLocation, useNavigate } from "react-router-dom"
 import { Container, Button, Form } from 'react-bootstrap';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Error from './Error'
 
 const Editques = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const [errorMsg, setError] = useState(null);
     const {subjectName, description, it, data, quiz_id, preserveState} = location.state
     const email = data.email
     const key = it.options.findIndex((option) => option.isAnswer === true);
@@ -31,7 +33,7 @@ const Editques = () => {
             },{ withCredentials: true });
             navigate('/editquiz',{state:{editquiz: preserveState.editquiz, userdata: preserveState.userdata}})
         }catch (error) {
-          console.error('Error saving quiz:', error.message);
+            setError(error.response.data.message)
         }
     }
 
@@ -41,6 +43,7 @@ const Editques = () => {
     
     return(
         <Container style={{width:'1000px'}}>
+            {errorMsg && <Error errorText={errorMsg} setError={setError}/>}
             <div className='text-center'>
                 <h3>Quiz: {subjectName}</h3>
                 <h3>Description: {description}</h3>
