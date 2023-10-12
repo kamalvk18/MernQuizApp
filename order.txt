@@ -21,3 +21,5 @@ Dummy quiz
     "collegeName":"mvgr",
     "questions": [{"question":"a", "options":[{"option":"a", "isAnswer":"true"}, {"option":"b"}]}]
 }
+
+* "start": "concurrently \"npm run start:server\" \"npm run start:client\"" */
