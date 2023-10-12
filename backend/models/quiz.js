@@ -19,7 +19,7 @@ const questionSchema = new mongoose.Schema({
   },
   timeInSec:{
     type:Number,
-    default:30
+    default:10000000
   },
   options: [
     optionSchema

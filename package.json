@@ -1,13 +1,13 @@
 {
   "dependencies": {
     "bootstrap": "^5.3.1",
-    "react-bootstrap": "^2.8.0",
-    "concurrently": "^8.2.1"
+    "concurrently": "^8.2.1",
+    "nodemon": "^3.0.1",
+    "react-bootstrap": "^2.8.0"
   },
   "scripts": {
-    "start:server": "cd backend && nodemon server.js",
+    "start:server": "cd backend && node server.js",
     "start:client": "cd frontend && npm start",
     "start": "concurrently \"npm run start:server\" \"npm run start:client\""
-    
   }
 }
