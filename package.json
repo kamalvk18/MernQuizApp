@@ -6,8 +6,8 @@
     "react-bootstrap": "^2.8.0"
   },
   "scripts": {
-    "start:server": "cd backend && node server.js",
-    "start:client": "cd frontend && npm start",
+    "start:server": "cd backend && npm install && node server.js",
+    "start:client": "cd frontend &&  npm install && npm start",
     "start": "concurrently \"npm run start:server\" \"npm run start:client\""
   }
 }
